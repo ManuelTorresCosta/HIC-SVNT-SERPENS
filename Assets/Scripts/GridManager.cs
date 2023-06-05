@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour
     // Protected references
     public BoxCollider2D Collider { get; private set; }
     public Tile[,] Tiles { get; private set; }
-    public Vector2 SpawnIndex { get; private set; }
+    public Tile SpawnTile { get; private set; }
 
     // Public variables
     public Transform gridParent;
@@ -25,17 +25,13 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
-        Collider = GetComponent<BoxCollider2D>();
+        Collider = GetComponentInChildren<BoxCollider2D>();
         _tileSprite = tilePrefab.GetComponent<SpriteRenderer>().sprite;
     }
-    private void Start()
-    {
-        CreateMap();
-    }
 
 
 
-    private void CreateMap()
+    public void CreateMap()
     {
         // Get the bounds of the boxcollider2D
         Bounds bounds = Collider.bounds;
@@ -63,7 +59,9 @@ public class GridManager : MonoBehaviour
         CreateGrid(arraySize, origin, offset);
 
         // Set the spawn tile
-        SpawnIndex = new Vector2((int)arraySize.x / 2, (int)arraySize.y / 2);
+        Vector2 spawnIndex = new Vector2((int)arraySize.x / 2, (int)arraySize.y / 2);
+        SpawnTile = Tiles[(int)spawnIndex.x, (int)spawnIndex.y];
+        SpawnTile.Index = spawnIndex;
 
         // -----------------------------------------------------------------------------------------
 
@@ -110,5 +108,4 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-
 }
