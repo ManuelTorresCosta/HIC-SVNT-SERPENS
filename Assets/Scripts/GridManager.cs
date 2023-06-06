@@ -15,6 +15,9 @@ public class GridManager : MonoBehaviour
     public Transform gridParent;
     public Transform borderParent;
     public Tile tilePrefab;
+    public Vector2 arraySize;
+    public Vector2 minPositions;
+    public Vector2 maxPositions;
 
     // Private variables
     private Sprite _tileSprite;
@@ -52,11 +55,15 @@ public class GridManager : MonoBehaviour
         Vector2 offset = _tileSize / 2;
 
         //  Calculate array size
-        Vector2 arraySize = new Vector2((int)(gridSize.x / _tileSize.x), (int)(gridSize.y / _tileSize.y));
+        arraySize = new Vector2((int)(gridSize.x / _tileSize.x), (int)(gridSize.y / _tileSize.y));
         Tiles = new Tile[(int)arraySize.x, (int)arraySize.y];
 
         // Create the grid
-        CreateGrid(arraySize, origin, offset);
+        CreateGrid(origin, offset);
+
+        // Save min and max positions
+        minPositions = Tiles[0, 0].transform.position;
+        maxPositions = Tiles[(int)arraySize.x - 1, (int)arraySize.y - 1].transform.position;
 
         // Set the spawn tile
         Vector2 spawnIndex = new Vector2((int)arraySize.x / 2, (int)arraySize.y / 2);
@@ -69,9 +76,9 @@ public class GridManager : MonoBehaviour
         origin = new Vector2(bounds.min.x - _tileSize.x, bounds.min.y - _tileSize.y);
 
         // Create border
-        CreateBorders(arraySize, origin, offset);
+        CreateBorders(origin, offset);
     }
-    private void CreateGrid(Vector2 arraySize, Vector2 origin, Vector2 offset)
+    private void CreateGrid(Vector2 origin, Vector2 offset)
     {
         for (int y = 0; y < (int)arraySize.y; y++)
         {
@@ -89,7 +96,7 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    private void CreateBorders(Vector2 arraySize, Vector2 origin, Vector2 offset)
+    private void CreateBorders(Vector2 origin, Vector2 offset)
     {
         for (int y = 0; y < (int)arraySize.y + 2; y++)
         {

@@ -8,7 +8,10 @@ public class Tile : MonoBehaviour
     public SpriteRenderer SpriteRenderer { get; private set; }
     public TileType TileType { get; private set; }
     public Vector2 Size { get; private set; }
-    public Vector2 Index { get; set; }
+
+    public Vector2 Index;
+    public Vector2 Direction;
+    public Dictionary<Vector2, Vector2> changeDir;
 
 
     private void Awake()
@@ -26,7 +29,7 @@ public class Tile : MonoBehaviour
         {
             case TileType.Type.Grid:
                 name = "Tile (" + x + ", " + y + ")";
-
+                Direction = Vector2.zero;
                 break;
 
             case TileType.Type.Border:
@@ -34,18 +37,21 @@ public class Tile : MonoBehaviour
 
                 // Turn sprite black
                 SpriteRenderer.color = Color.black;
-
+                Direction = Vector2.zero;
                 break;
 
             case TileType.Type.Segment:
                 name = "Snake";
 
                 SpriteRenderer.color = Color.black;
+                Direction = new Vector2(1, 0);
+                changeDir = new Dictionary<Vector2, Vector2>();
                 break;
         }
 
         Index = new Vector2(x, y);
     }
+
 
     private void CalculateSize()
     {
@@ -56,5 +62,4 @@ public class Tile : MonoBehaviour
 
         Size = world_size;
     }
-
 }

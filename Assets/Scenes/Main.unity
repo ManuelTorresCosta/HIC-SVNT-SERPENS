@@ -311,6 +311,9 @@ MonoBehaviour:
   gridParent: {fileID: 1629626050}
   borderParent: {fileID: 1652216129}
   tilePrefab: {fileID: 4552683099656443630, guid: 19b798f00069ed740a100bd630d4ebe4, type: 3}
+  arraySize: {x: 0, y: 0}
+  minPositions: {x: 0, y: 0}
+  maxPositions: {x: 0, y: 0}
 --- !u!1 &1629626049
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,8 +468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segment: {fileID: 4552683099656443630, guid: 19b798f00069ed740a100bd630d4ebe4, type: 3}
   sprite: {fileID: 21300000, guid: a402c3ab11b73a0478381d3924cb7a0f, type: 3}
-  position: {x: 0, y: 0}
-  snakeParent: {fileID: 1686756332}
+  snakeSpeed: 10
 --- !u!1 &2047894826
 GameObject:
   m_ObjectHideFlags: 0
