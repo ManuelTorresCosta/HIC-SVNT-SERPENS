@@ -13,6 +13,6 @@ public class GameManager : MonoBehaviour
         gridManager.CreateMap();
 
         snake.Initialize(gridManager.minPositions, gridManager.maxPositions, gridManager.arraySize);
-        snake.CreateSnake(10, Vector2.right, gridManager.SpawnTile);
+        snake.CreateSnake(20, Vector2.right, gridManager.SpawnTile);
     }
 }
