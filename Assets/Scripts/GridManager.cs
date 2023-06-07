@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 public class GridManager : MonoBehaviour
 {
@@ -43,10 +39,7 @@ public class GridManager : MonoBehaviour
         Vector2 gridSize = Collider.size;
 
         // Get the size of a tile
-        Vector2 local_sprite_size = _tileSprite.rect.size / _tileSprite.pixelsPerUnit;
-        _tileSize = local_sprite_size;
-        _tileSize.x *= transform.lossyScale.x;
-        _tileSize.y *= transform.lossyScale.y;
+        _tileSize = (_tileSprite.rect.size / _tileSprite.pixelsPerUnit) * tilePrefab.transform.lossyScale;
 
         // Origin of the grid
         Vector2 origin = new Vector2(bounds.min.x, bounds.min.y);
@@ -68,7 +61,6 @@ public class GridManager : MonoBehaviour
         // Set the spawn tile
         Vector2 spawnIndex = new Vector2((int)arraySize.x / 2, (int)arraySize.y / 2);
         SpawnTile = Tiles[(int)spawnIndex.x, (int)spawnIndex.y];
-        SpawnTile.Index = spawnIndex;
 
         // -----------------------------------------------------------------------------------------
 
@@ -114,5 +106,10 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public Vector2 GetTileSize()
+    { 
+        return _tileSize; 
     }
 }

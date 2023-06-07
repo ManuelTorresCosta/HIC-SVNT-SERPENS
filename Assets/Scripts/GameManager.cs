@@ -8,11 +8,16 @@ public class GameManager : MonoBehaviour
     public Snake snake;
 
 
+
     private void Start()
     {
+        // Create the grid and border
         gridManager.CreateMap();
 
-        snake.Initialize(gridManager.minPositions, gridManager.maxPositions, gridManager.arraySize);
-        snake.CreateSnake(20, Vector2.right, gridManager.SpawnTile);
+        // Initializes snake properties
+        snake.Initialize(gridManager.GetTileSize(), gridManager.minPositions, gridManager.maxPositions, gridManager.arraySize);
+        
+        // Create the snake objects
+        snake.CreateSnake(Vector2.right, gridManager.SpawnTile);
     }
 }
