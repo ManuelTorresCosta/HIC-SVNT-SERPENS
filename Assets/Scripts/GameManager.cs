@@ -47,7 +47,10 @@ public class GameManager : MonoBehaviour
                     // Check collision with a point
                     if (snake.CheckCollisionWith(pointsGenerator.Point))
                     {
-                        //snake.Grow();
+                        // Make snake grow
+                        snake.Grow();
+
+                        // Remove point
                         pointsGenerator.DespawnPoint();
                     }
                 }

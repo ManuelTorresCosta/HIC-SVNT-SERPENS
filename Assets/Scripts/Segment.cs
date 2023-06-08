@@ -32,4 +32,13 @@ public class Segment : Tile
     {
         ChangeDirIndexes.Clear();
     }
+
+
+    public void InheritTailDirections(Segment tail)
+    {
+        foreach (Vector2 index in tail.ChangeDirIndexes.Keys)
+        {
+            ChangeDirIndexes.Add(index, tail.ChangeDirIndexes[index]);
+        }
+    }
 }

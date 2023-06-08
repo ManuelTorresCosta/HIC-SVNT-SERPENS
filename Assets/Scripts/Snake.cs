@@ -242,6 +242,27 @@ public class Snake : MonoBehaviour
             return false;
     }
 
+    public void Grow()
+    {
+        // Create a new segment
+        Segment newSegment = Instantiate(segmentPrefab, transform);
+
+        // Set the position at the end of the body
+        Segment tail = Segments[Segments.Count - 1];
+        Vector2 position = (Vector2)tail.transform.position + (newSegment.Size * -tail.Direction);
+        Vector2 index = tail.Index + (-tail.Direction);
+
+        // Initialize it
+        newSegment.Initialize(position, index, TileType.Type.Segment);
+        newSegment.Direction = tail.Direction;
+
+        // Copy all saved 'change directions' dictionary references
+        newSegment.InheritTailDirections(tail);
+
+        // Add segment to the list
+        Segments.Add(newSegment);
+    }
+
     // Despawn functions
     public void Die(Action callback)
     {
