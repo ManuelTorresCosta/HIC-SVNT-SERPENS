@@ -47,6 +47,9 @@ public class PointsGenerator : MonoBehaviour
     }
     public void DespawnPoint()
     {
+        if (Point == null)
+            return;
+
         // Remove gameobject from the scene
         Destroy(Point.gameObject);
 

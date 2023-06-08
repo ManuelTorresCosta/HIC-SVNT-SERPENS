@@ -66,6 +66,9 @@ public class GameManager : MonoBehaviour
                 // Despawn snake
                 snake.Die(() =>
                 {
+                    // Remove point
+                    pointsGenerator.DespawnPoint();
+
                     // Stop running gameplay code
                     isGameplay = false;
                 });
