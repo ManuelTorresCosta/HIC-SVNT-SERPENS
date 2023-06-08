@@ -14,11 +14,11 @@ public class Snake : MonoBehaviour
     public int initialSize = 3;
     public float snakeSpeed = 1;
     public float blinkSpeed = 20;
+    public bool isAlive;
 
     // Private variables
     private Vector2 _headDirection;
     private bool _changedDir;
-    private bool _isAlive;
     private float _timer;
 
     private Vector2 _minPositions;
@@ -32,81 +32,16 @@ public class Snake : MonoBehaviour
     {
         Segments = new List<Segment>();
     }
-    private void Update()
-    {
-        if (_isAlive)
-        {
-            // Input
-            HandleInput();
-
-            if (_timer >= 1)
-            {
-                // Move each segment
-                for (int i = Segments.Count - 1; i >= 0; i--)
-                {
-                    // Get the segment
-                    Segment segment = Segments[i];
-
-                    // Snake Body
-                    if (i != 0)
-                    {
-                        // Save the tile index to change the direction
-                        if (_changedDir && !segment.ChangeDirIndexes.ContainsKey(Segments[0].Index))
-                        {
-                            // Save direction of previous head position in the body segment dictionary
-                            segment.ChangeDirIndexes.Add(Segments[0].Index, _headDirection);
-                        }
-                    }
-                    // Snake head
-                    else
-                    {
-                        // Change head direction to the new direction
-                        segment.Direction = _headDirection;
-
-                        // Check collision
-                        bool collisionDetected = CheckCollisions(segment.Index + segment.Direction);
-                        if (collisionDetected)
-                        {
-                            // Change alive status
-                            _isAlive = false;
-
-                            // Reset timer for blinking
-                            _timer = 0;
-                            break;
-                        }
-                    }
-
-                    // Move segments
-                    Move(segment);
-
-                    // Handle the grid limits
-                    HandleGridLimits(segment);
-
-                    // Updated segment direction when on the correct tile index
-                    CheckSegmentChangeDir(segment);
-                }
-
-                // Reset timer
-                _timer = 0;
-                _changedDir = false;
-            }
-            else
-                _timer += snakeSpeed * Time.deltaTime;
-        }
-        else
-        {
-            Blink(30f);
-        }
-    }
 
     
+
     // Initialization
     public void Initialize()
     {
         // Set starting properties
         _headDirection = Vector2.right;
         _changedDir = false;
-        _isAlive = true;
+        isAlive = true;
         _timer = 0f;
     }
     public void SetMapLimits(Vector2 minPositions, Vector2 maxPositions, Vector2 minIndexes, Vector2 maxIndexes)
@@ -137,9 +72,70 @@ public class Snake : MonoBehaviour
             // Add to a list
             Segments.Add(segment);
         }
+
+        isAlive = true;
     }
 
     // Movement functions
+    public void HandleMovement()
+    {
+        // Input
+        HandleInput();
+
+        if (_timer >= 1)
+        {
+            // Move each segment
+            for (int i = Segments.Count - 1; i >= 0; i--)
+            {
+                // Get the segment
+                Segment segment = Segments[i];
+
+                // Snake Body
+                if (i != 0)
+                {
+                    // Save the tile index to change the direction
+                    if (_changedDir && !segment.ChangeDirIndexes.ContainsKey(Segments[0].Index))
+                    {
+                        // Save direction of previous head position in the body segment dictionary
+                        segment.ChangeDirIndexes.Add(Segments[0].Index, _headDirection);
+                    }
+                }
+                // Snake head
+                else
+                {
+                    // Change head direction to the new direction
+                    segment.Direction = _headDirection;
+
+                    // Check collision
+                    bool collisionDetected = CheckCollisions(segment.Index + segment.Direction);
+                    if (collisionDetected)
+                    {
+                        // Change alive status
+                        isAlive = false;
+
+                        // Reset timer for blinking
+                        _timer = 0;
+                        break;
+                    }
+                }
+
+                // Move segments
+                Move(segment);
+
+                // Handle the grid limits
+                HandleGridLimits(segment);
+
+                // Updated segment direction when on the correct tile index
+                CheckSegmentChangeDir(segment);
+            }
+
+            // Reset timer
+            _timer = 0;
+            _changedDir = false;
+        }
+        else
+            _timer += snakeSpeed * Time.deltaTime;
+    }
     private void HandleInput()
     {
         // Right
@@ -227,8 +223,6 @@ public class Snake : MonoBehaviour
             }
         }
     }
-
-
     private bool CheckCollisions(Vector2 nextIndex)
     {
         for (int i = 1; i < Segments.Count; i++)
@@ -238,7 +232,12 @@ public class Snake : MonoBehaviour
         }
         return false;
     }
-    private void Blink(float time)
+
+    public void Die(Action callback)
+    {
+        Blink(30f, callback);
+    }
+    private void Blink(float time, Action callback)
     {
         if (_timer < time)
         {
@@ -260,18 +259,26 @@ public class Snake : MonoBehaviour
             // Stop timer
             _timer = time;
 
-            // Reset each snake segment
-            foreach (Segment segment in Segments)
-            {
-                // Clear segment dictionary
-                segment.Reset();
+            // Reset and remove snake
+            Despawn();
 
-                // Destroy segment objects
-                Destroy(segment.gameObject);
-            }
-
-            // Clear segments list
-            Segments.Clear();
+            // Calls the callback function
+            callback();
         }
+    }
+    private void Despawn()
+    {
+        // Reset each snake segment
+        foreach (Segment segment in Segments)
+        {
+            // Clear segment dictionary
+            segment.Reset();
+
+            // Destroy segment objects
+            Destroy(segment.gameObject);
+        }
+
+        // Clear segments list
+        Segments.Clear();
     }
 }

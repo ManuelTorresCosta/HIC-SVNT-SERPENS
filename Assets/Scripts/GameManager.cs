@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public GridManager gridManager;
     public Snake snake;
 
+    public bool isGameplay;
 
 
     private void Start()
@@ -22,9 +23,40 @@ public class GameManager : MonoBehaviour
         
         // Create the snake objects
         snake.CreateSnake(Vector2.right, gridManager.SpawnTile);
+
+        // Starts gameplay on Update()
+        isGameplay = true;
     }
     private void Update()
     {
-        
+        if (isGameplay)
+        {
+            if (snake.isAlive)
+            {
+                // Move snake
+                snake.HandleMovement();
+            }
+            else
+            {
+                // Despawn snake
+                snake.Die(() =>
+                {
+                    // Stop running gameplay code
+                    isGameplay = false;
+                });
+            }
+        }
+        else
+        {
+            // Press key to restart
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // Recreates the snake
+                snake.CreateSnake(Vector2.right, gridManager.SpawnTile);
+
+                // Turn gameplay back on
+                isGameplay = true;
+            }
+        }
     }
 }
