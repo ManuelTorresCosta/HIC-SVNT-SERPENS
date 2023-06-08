@@ -22,7 +22,7 @@ public class ImageSlide : MonoBehaviour
     {
         // Align sprites
         sprites[0].transform.position = Vector3.zero;
-        sprites[1].transform.position = sprites[0].transform.position - new Vector3(0, _spriteSize.y, 0);
+        sprites[1].transform.position = sprites[0].transform.position - new Vector3(0, _spriteSize.y + (0.1f), 0);
     }
     private void Update()
     {

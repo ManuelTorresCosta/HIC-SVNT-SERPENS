@@ -8,6 +8,7 @@ public class TileType
     {
         Grid,
         Border,
-        Segment
+        Segment,
+        Point
     }
 }

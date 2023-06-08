@@ -61,16 +61,16 @@ MonoBehaviour:
     value: {x: 0.5, y: 0.5}
   intensity:
     overrideState: 1
-    value: 0.575
+    value: 0.487
   smoothness:
     overrideState: 1
-    value: 0.6
+    value: 0.261
   roundness:
     overrideState: 1
-    value: 0.25
+    value: 0.33
   rounded:
     overrideState: 1
-    value: 0
+    value: 1
   mask:
     overrideState: 0
     value: {fileID: 0}

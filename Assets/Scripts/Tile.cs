@@ -42,6 +42,11 @@ public class Tile : MonoBehaviour
                 SpriteRenderer.color = Color.black;
                 name = "Segment";
                 break;
+
+            case TileType.Type.Point:
+                SpriteRenderer.color = Color.black;
+                name = "Point";
+                break;
         }
 
         SetPosition(position, index);
