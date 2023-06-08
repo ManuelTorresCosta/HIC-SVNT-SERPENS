@@ -916,6 +916,7 @@ MonoBehaviour:
   segmentPrefab: {fileID: 7953154519337117953, guid: 3d59a5adb52c5a24e9429278ad31182d, type: 3}
   initialSize: 25
   snakeSpeed: 15
+  blinkSpeed: 15
 --- !u!1 &2047894826
 GameObject:
   m_ObjectHideFlags: 0

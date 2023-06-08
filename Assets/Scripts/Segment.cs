@@ -28,4 +28,8 @@ public class Segment : Tile
         // Set direction
         Direction = Vector2.right;
     }
+    public void Reset()
+    {
+        ChangeDirIndexes.Clear();
+    }
 }

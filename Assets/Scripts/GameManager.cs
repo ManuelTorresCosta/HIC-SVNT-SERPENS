@@ -23,4 +23,8 @@ public class GameManager : MonoBehaviour
         // Create the snake objects
         snake.CreateSnake(Vector2.right, gridManager.SpawnTile);
     }
+    private void Update()
+    {
+        
+    }
 }
