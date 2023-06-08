@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GridManager : MonoBehaviour
+public class TileGenerator : MonoBehaviour
 {
     // Protected references
     public BoxCollider2D Collider { get; private set; }

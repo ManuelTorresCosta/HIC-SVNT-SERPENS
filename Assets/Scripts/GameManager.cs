@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GridManager gridManager;
+    public TileGenerator gridManager;
     public Snake snake;
     public PointsGenerator pointsGenerator;
 
