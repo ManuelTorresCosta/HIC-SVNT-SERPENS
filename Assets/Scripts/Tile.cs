@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
@@ -13,7 +14,7 @@ public class Tile : MonoBehaviour
 
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         SpriteRenderer = GetComponent<SpriteRenderer>();
 
@@ -23,22 +24,27 @@ public class Tile : MonoBehaviour
 
     
 
-    public void Initialize(int x, int y, TileType.Type tileType)
+    public virtual void Initialize(Vector2 position, Vector2 index, TileType.Type tileType)
     {
-        Index = new Vector2(x, y);
-
         switch (tileType)
         {
             case TileType.Type.Grid:
-                SpriteRenderer.color = new Color(1, 1, 1, 0);
-                name = "Tile (" + x + ", " + y + ")";
+                SpriteRenderer.enabled = false;
+                name = "Tile (" + index.x + ", " + index.y + ")";
                 break;
 
             case TileType.Type.Border:
                 SpriteRenderer.color = Color.black;
                 name = "Border";                
                 break;
+
+            case TileType.Type.Segment:
+                SpriteRenderer.color = Color.black;
+                name = "Segment";
+                break;
         }
+
+        SetPosition(position, index);
     }
 
 

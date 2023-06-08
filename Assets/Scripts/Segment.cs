@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Segment : Tile
 {
@@ -9,18 +11,21 @@ public class Segment : Tile
 
 
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         ChangeDirIndexes = new Dictionary<Vector2, Vector2>();
     }
 
 
 
-    public void Initialize(Vector2 position, Vector2 index)
+    public override void Initialize(Vector2 position, Vector2 index, TileType.Type tileType)
     {
-        name = "Segment";
+        // Initialize from parent
+        base.Initialize(position, index, tileType);
 
-        SetPosition(position, index);
+        // Set direction
         Direction = Vector2.right;
     }
 }

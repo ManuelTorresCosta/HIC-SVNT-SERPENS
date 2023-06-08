@@ -15,7 +15,10 @@ public class GameManager : MonoBehaviour
         gridManager.CreateMap();
 
         // Initializes snake properties
-        snake.Initialize(gridManager.GetTileSize(), gridManager.minPositions, gridManager.maxPositions, gridManager.arraySize);
+        snake.Initialize();
+
+        // Set map limits
+        snake.SetMapLimits(gridManager.minPositions, gridManager.maxPositions, Vector2.zero, gridManager.arraySize);
         
         // Create the snake objects
         snake.CreateSnake(Vector2.right, gridManager.SpawnTile);

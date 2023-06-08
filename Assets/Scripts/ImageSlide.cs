@@ -20,6 +20,7 @@ public class ImageSlide : MonoBehaviour
     }
     private void Start()
     {
+        // Align sprites
         sprites[0].transform.position = Vector3.zero;
         sprites[1].transform.position = sprites[0].transform.position - new Vector3(0, _spriteSize.y, 0);
     }
@@ -27,10 +28,13 @@ public class ImageSlide : MonoBehaviour
     {
         for (int i = 0; i < sprites.Length; i++)
         {
+            // Get the sprite
             GameObject sprite = sprites[i];
 
+            // Move the sprite vertically
             sprite.transform.position += new Vector3(0, slideSpeed * Time.deltaTime, 0);
 
+            // Reset position when reaching a treshold
             if (sprite.transform.position.y > _spriteSize.y)
             {
                 sprite.transform.position = new Vector3(0, -_spriteSize.y, 0);

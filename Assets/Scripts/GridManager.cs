@@ -17,8 +17,6 @@ public class GridManager : MonoBehaviour
 
     // Private variables
     private Sprite _tileSprite;
-    private Vector2 _tileSize;
-
 
 
 
@@ -39,16 +37,16 @@ public class GridManager : MonoBehaviour
         Vector2 gridSize = Collider.size;
 
         // Get the size of a tile
-        _tileSize = (_tileSprite.rect.size / _tileSprite.pixelsPerUnit) * tilePrefab.transform.lossyScale;
+        Vector2 tileSize = (_tileSprite.rect.size / _tileSprite.pixelsPerUnit) * tilePrefab.transform.lossyScale;
 
         // Origin of the grid
         Vector2 origin = new Vector2(bounds.min.x, bounds.min.y);
 
         // Offset to apply to tiles spawn
-        Vector2 offset = _tileSize / 2;
+        Vector2 offset = tileSize / 2;
 
         //  Calculate array size
-        arraySize = new Vector2((int)(gridSize.x / _tileSize.x), (int)(gridSize.y / _tileSize.y));
+        arraySize = new Vector2((int)(gridSize.x / tileSize.x), (int)(gridSize.y / tileSize.y));
         Tiles = new Tile[(int)arraySize.x, (int)arraySize.y];
 
         // Create the grid
@@ -62,10 +60,10 @@ public class GridManager : MonoBehaviour
         Vector2 spawnIndex = new Vector2((int)arraySize.x / 2, (int)arraySize.y / 2);
         SpawnTile = Tiles[(int)spawnIndex.x, (int)spawnIndex.y];
 
-        // -----------------------------------------------------------------------------------------
+        // Create borders around the grid -------------------------------------------------------
 
-        // Create borders around the grid
-        origin = new Vector2(bounds.min.x - _tileSize.x, bounds.min.y - _tileSize.y);
+        // Set origin with an offset (outside the grid)
+        origin = new Vector2(bounds.min.x - tileSize.x, bounds.min.y - tileSize.y);
 
         // Create border
         CreateBorders(origin, offset);
@@ -76,12 +74,15 @@ public class GridManager : MonoBehaviour
         {
             for (int x = 0; x < (int)arraySize.x; x++)
             {
-                // Set the position
-                Vector2 position = origin + offset + new Vector2(x * _tileSize.x, y * _tileSize.y);
-
                 // Instantiate the tile
-                Tile tile = Instantiate(tilePrefab, position, Quaternion.identity, gridParent);
-                tile.Initialize(x, y, TileType.Type.Grid);
+                Tile tile = Instantiate(tilePrefab, gridParent);
+
+                // Calculate position
+                Vector2 position = origin + offset + new Vector2(x * tile.Size.x, y * tile.Size.y);
+                Vector2 index = new Vector2(x, y);
+
+                // Initialize tile
+                tile.Initialize(position, index, TileType.Type.Grid);
 
                 // Add tile to the array
                 Tiles[x, y] = tile;
@@ -97,19 +98,17 @@ public class GridManager : MonoBehaviour
                 // Only instantiate tiles on the outside of the grid
                 if (x == 0 || y == 0 || x == (int)arraySize.x + 1 || y == (int)arraySize.y + 1)
                 {
-                    //  Set the position
-                    Vector2 position = origin + offset + new Vector2(x * _tileSize.x, y * _tileSize.y);
-
                     // Instantiate tile border
-                    Tile tile = Instantiate(tilePrefab, position, Quaternion.identity, borderParent);
-                    tile.Initialize(x, y, TileType.Type.Border);
+                    Tile tile = Instantiate(tilePrefab, borderParent);
+
+                    // Calculate position
+                    Vector2 position = origin + offset + new Vector2(x * tile.Size.x, y * tile.Size.y);
+                    Vector2 index = new Vector2(x, y);
+
+                    // Initialize
+                    tile.Initialize(position, index, TileType.Type.Border);
                 }
             }
         }
-    }
-
-    public Vector2 GetTileSize()
-    { 
-        return _tileSize; 
     }
 }

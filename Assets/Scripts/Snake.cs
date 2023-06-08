@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using UnityEngine;
 
 public class Snake : MonoBehaviour
@@ -10,12 +8,13 @@ public class Snake : MonoBehaviour
     public Segment segmentPrefab;
     public List<Segment> Segments { get; private set; }
 
+    [Header("Properties")]
+
     // Public variables
     public int initialSize = 3;
     public float snakeSpeed = 1;
 
     // Private variables
-    private Vector2 _segmentSize;
     private Vector2 _headDirection;
     private bool _changedDir;
     private float _timer;
@@ -41,6 +40,7 @@ public class Snake : MonoBehaviour
             // Move each segment
             for (int i = Segments.Count - 1; i >= 0; i--)
             {
+                // Get the segment
                 Segment segment = Segments[i];
 
                 // Snake Body
@@ -78,23 +78,24 @@ public class Snake : MonoBehaviour
             _timer += snakeSpeed * Time.deltaTime;
     }
 
+    
 
-
-    public void Initialize(Vector2 tileSize, Vector2 minPositions, Vector2 maxPositions, Vector2 maxIndexes)
+    public void Initialize()
     {
-        // Segment properties
-        _segmentSize = tileSize;
-        _headDirection = new Vector2(1, 0);
+        // Set starting properties
+        _headDirection = Vector2.right;
         _changedDir = false;
         _timer = 0f;
-
+    }
+    public void SetMapLimits(Vector2 minPositions, Vector2 maxPositions, Vector2 minIndexes, Vector2 maxIndexes)
+    {
         // Map limits
         _minPositions = minPositions;
         _maxPositions = maxPositions;
-        _minIndexes = Vector2.zero;
+        _minIndexes = minIndexes;
         _maxIndexes = maxIndexes;
     }
-    public void CreateSnake(Vector2 direction, Tile spawnTile)
+    public void CreateSnake(Vector2 direction, Tile spawnTile)  
     {
         _headDirection = direction;
 
@@ -105,11 +106,11 @@ public class Snake : MonoBehaviour
             Segment segment = Instantiate(segmentPrefab, transform);
 
             // Calculate position
-            Vector2 position = new Vector2(spawnTile.transform.position.x - (i * _segmentSize.x), spawnTile.transform.position.y);
+            Vector2 position = new Vector2(spawnTile.transform.position.x - (i * segment.Size.x), spawnTile.transform.position.y);
             Vector2 index = new Vector2(spawnTile.Index.x - i, spawnTile.Index.y);
 
             // Initialize
-            segment.Initialize(position, index);
+            segment.Initialize(position, index, TileType.Type.Segment);
             
             // Add to a list
             Segments.Add(segment);
@@ -149,7 +150,7 @@ public class Snake : MonoBehaviour
     }
     private void Move(Segment segment)
     {
-        Vector2 position = segment.transform.position + (Vector3)(segment.Direction * _segmentSize);
+        Vector2 position = segment.transform.position + (Vector3)(segment.Direction * segment.Size);
         Vector2 index = segment.Index + segment.Direction;
 
         segment.SetPosition(position, index);
@@ -168,7 +169,7 @@ public class Snake : MonoBehaviour
         else if (segment.Index.x > _maxIndexes.x - 1)
         {
             Vector2 position = new Vector2(_minPositions.x, segment.transform.position.y);
-            Vector2 index = new Vector2(0, segment.Index.y);
+            Vector2 index = new Vector2(_minIndexes.x, segment.Index.y);
 
             segment.SetPosition(position, index);
         }
@@ -182,7 +183,7 @@ public class Snake : MonoBehaviour
         else if (segment.Index.y > _maxIndexes.y - 1)
         {
             Vector2 position = new Vector2(segment.transform.position.x, _minPositions.y);
-            Vector2 index = new Vector2(segment.Index.x, 0);
+            Vector2 index = new Vector2(segment.Index.x, _minIndexes.y);
 
             segment.SetPosition(position, index);
         }

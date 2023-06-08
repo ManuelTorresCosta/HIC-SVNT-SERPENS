@@ -7,6 +7,7 @@ public class TileType
     public enum Type
     {
         Grid,
-        Border
+        Border,
+        Segment
     }
 }
