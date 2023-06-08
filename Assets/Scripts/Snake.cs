@@ -132,28 +132,28 @@ public class Snake : MonoBehaviour
     private void HandleInput()
     {
         // Right
-        if (Input.GetKeyDown(KeyCode.RightArrow) && _headDirection != -Vector2.right)
+        if (Input.GetKeyDown(KeyCode.RightArrow) && GetHead().Direction != -Vector2.right)
         {
             _headDirection = Vector2.right;
             _changedDir = true;
         }
 
         // Left
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && _headDirection != Vector2.right)
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && GetHead().Direction != Vector2.right)
         {
             _headDirection = -Vector2.right;
             _changedDir = true;
         }
 
         // Up
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && _headDirection != -Vector2.up)
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && GetHead().Direction != -Vector2.up)
         {
             _headDirection = Vector2.up;
             _changedDir = true;
         }
 
         //Down
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && _headDirection != Vector2.up)
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && GetHead().Direction != Vector2.up)
         {
             _headDirection = -Vector2.up;
             _changedDir = true;
