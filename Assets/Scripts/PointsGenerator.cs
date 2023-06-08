@@ -6,7 +6,7 @@ public class PointsGenerator : MonoBehaviour
 {
     public Point pointPrefab;
 
-    public int activePoints = 0;
+    public Point Point { get; private set; }
 
 
     public void GenerateRandomPoint(Tile[,] tiles, List<Segment> segments)
@@ -36,16 +36,21 @@ public class PointsGenerator : MonoBehaviour
         if (!recursive)
         {
             // Instantiate object
-            Point point = Instantiate(pointPrefab, transform);
+            Point = Instantiate(pointPrefab, transform);
 
             // Initialize it at the random position
-            point.Initialize(randomTile.transform.position, randomTile.Index, TileType.Type.Point);
-
-            activePoints++;
+            Point.Initialize(randomTile.transform.position, randomTile.Index, TileType.Type.Point);
         }
         // Try again
         else
             GenerateRandomPoint(tiles, segments);
     }
-    
+    public void DespawnPoint()
+    {
+        // Remove gameobject from the scene
+        Destroy(Point.gameObject);
+
+        // Turn the point null in order to respawn another
+        Point = null;
+    }
 }

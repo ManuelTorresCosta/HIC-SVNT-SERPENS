@@ -7,6 +7,7 @@ public class Snake : MonoBehaviour
 {
     public Segment segmentPrefab;
     public List<Segment> Segments { get; private set; }
+    public Segment GetHead() { return Segments[0]; }
 
     [Header("Properties")]
 
@@ -19,7 +20,8 @@ public class Snake : MonoBehaviour
     // Private variables
     private Vector2 _headDirection;
     private bool _changedDir;
-    private float _timer;
+    private float _movementTimer;
+    private float _blinkTimer;
 
     private Vector2 _minPositions;
     private Vector2 _maxPositions;
@@ -40,9 +42,12 @@ public class Snake : MonoBehaviour
     {
         // Set starting properties
         _headDirection = Vector2.right;
+
         _changedDir = false;
         isAlive = true;
-        _timer = 0f;
+
+        _movementTimer = 0f;
+        _blinkTimer = 0f;
     }
     public void SetMapLimits(Vector2 minPositions, Vector2 maxPositions, Vector2 minIndexes, Vector2 maxIndexes)
     {
@@ -82,7 +87,7 @@ public class Snake : MonoBehaviour
         // Input
         HandleInput();
 
-        if (_timer >= 1)
+        if (_movementTimer >= 1)
         {
             // Move each segment
             for (int i = Segments.Count - 1; i >= 0; i--)
@@ -105,18 +110,6 @@ public class Snake : MonoBehaviour
                 {
                     // Change head direction to the new direction
                     segment.Direction = _headDirection;
-
-                    // Check collision
-                    bool collisionDetected = CheckCollisions(segment.Index + segment.Direction);
-                    if (collisionDetected)
-                    {
-                        // Change alive status
-                        isAlive = false;
-
-                        // Reset timer for blinking
-                        _timer = 0;
-                        break;
-                    }
                 }
 
                 // Move segments
@@ -130,11 +123,11 @@ public class Snake : MonoBehaviour
             }
 
             // Reset timer
-            _timer = 0;
+            _movementTimer = 0;
             _changedDir = false;
         }
         else
-            _timer += snakeSpeed * Time.deltaTime;
+            _movementTimer += snakeSpeed * Time.deltaTime;
     }
     private void HandleInput()
     {
@@ -223,32 +216,45 @@ public class Snake : MonoBehaviour
             }
         }
     }
-    private bool CheckCollisions(Vector2 nextIndex)
+
+    // Collision functions
+    public bool CheckSelfCollision()
     {
+        // Get the next position of the head
+        Vector2 nextHeadPos = GetHead().Index + GetHead().Direction;
+
+        // Go through all the segments (excluding the head)
         for (int i = 1; i < Segments.Count; i++)
         {
-            if (nextIndex == Segments[i].Index)
+            // If the next position collides with the body
+            if (nextHeadPos == Segments[i].Index)
                 return true;
         }
+
         return false;
     }
+    public bool CheckCollisionWith(Point point)
+    {
+        // Check if head index is the same as the point
+        if (Segments[0].Index == point.Index)
+            return true;
+        else
+            return false;
+    }
 
+    // Despawn functions
     public void Die(Action callback)
     {
-        Blink(30f, callback);
-    }
-    private void Blink(float time, Action callback)
-    {
-        if (_timer < time)
+        if (_blinkTimer < 30f)
         {
             // Increase timer
-            _timer += blinkSpeed * Time.deltaTime;
+            _blinkTimer += blinkSpeed * Time.deltaTime;
 
             // Blink all the segments
             foreach (Segment segment in Segments)
             {
                 // Change sprite visibility for each segment
-                if ((int)_timer % 2 == 0)
+                if ((int)_blinkTimer % 2 == 0)
                     segment.SpriteRenderer.enabled = false;
                 else
                     segment.SpriteRenderer.enabled = true;
@@ -256,9 +262,6 @@ public class Snake : MonoBehaviour
         }
         else
         {
-            // Stop timer
-            _timer = time;
-
             // Reset and remove snake
             Despawn();
 

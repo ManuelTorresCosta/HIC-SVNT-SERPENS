@@ -34,11 +34,29 @@ public class GameManager : MonoBehaviour
         {
             if (snake.isAlive)
             {
-                // Move snake
-                snake.HandleMovement();
-
-                if (pointsGenerator.activePoints == 0)
+                // Generate a point if no points are on the grid
+                if (pointsGenerator.Point == null)
                     pointsGenerator.GenerateRandomPoint(gridManager.Tiles, snake.Segments);
+
+                // Check if snake is going to collide with self
+                if (!snake.CheckSelfCollision())
+                {
+                    // Move snake
+                    snake.HandleMovement();
+
+                    // Check collision with a point
+                    if (snake.CheckCollisionWith(pointsGenerator.Point))
+                    {
+                        //snake.Grow();
+                        pointsGenerator.DespawnPoint();
+                    }
+                }
+                // Snake collided with self
+                else
+                {
+                    // Change snake alive state 
+                    snake.isAlive = false;
+                }
             }
             else
             {
@@ -55,6 +73,9 @@ public class GameManager : MonoBehaviour
             // Press key to restart
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                // Initializes the snake variables
+                snake.Initialize();
+
                 // Recreates the snake
                 snake.CreateSnake(Vector2.right, gridManager.SpawnTile);
 

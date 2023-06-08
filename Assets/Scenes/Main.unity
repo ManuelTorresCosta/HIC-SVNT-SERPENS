@@ -691,7 +691,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointPrefab: {fileID: 280229816746403738, guid: c73e4b608eba4544f8dff41afcbcc5d9, type: 3}
-  activePoints: 0
 --- !u!1 &837340636
 GameObject:
   m_ObjectHideFlags: 0
@@ -998,7 +997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 7953154519337117953, guid: 3d59a5adb52c5a24e9429278ad31182d, type: 3}
   initialSize: 25
-  snakeSpeed: 15
+  snakeSpeed: 20
   blinkSpeed: 15
   isAlive: 0
 --- !u!1 &1785713686
