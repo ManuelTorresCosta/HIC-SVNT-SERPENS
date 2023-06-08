@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public GridManager gridManager;
     public Snake snake;
+    public PointsGenerator pointsGenerator;
 
     public bool isGameplay;
 
@@ -35,6 +36,9 @@ public class GameManager : MonoBehaviour
             {
                 // Move snake
                 snake.HandleMovement();
+
+                if (pointsGenerator.activePoints == 0)
+                    pointsGenerator.GenerateRandomPoint(gridManager.Tiles, snake.Segments);
             }
             else
             {

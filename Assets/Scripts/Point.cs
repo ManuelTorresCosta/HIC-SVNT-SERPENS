@@ -14,6 +14,7 @@ public class Point : Tile
     }
 
 
+
     public override void Initialize(Vector2 position, Vector2 index, TileType.Type tileType)
     {
         base.Initialize(position, index, tileType);

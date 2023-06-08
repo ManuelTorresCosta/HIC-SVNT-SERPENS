@@ -6,7 +6,46 @@ public class PointsGenerator : MonoBehaviour
 {
     public Point pointPrefab;
 
+    public int activePoints = 0;
 
 
+    public void GenerateRandomPoint(Tile[,] tiles, List<Segment> segments)
+    {
+        // Get a random index from the tile array
+        int randomX = Random.Range(0, tiles.GetLength(0) - 1);
+        int randomY = Random.Range(0, tiles.GetLength(1) - 1);
+
+        // Get the tile from the random index
+        Tile randomTile = tiles[randomX, randomY];
+
+        // Create a bool in case of the point being in the same index as the snake
+        bool recursive = false;
+
+        // Check if the snake is on the random tile
+        foreach (Segment segment in segments)
+        {
+            // If the index is the same
+            if (segment.Index == randomTile.Index)
+            {
+                recursive = true;
+                break;
+            }
+        }
+
+        // Create a point
+        if (!recursive)
+        {
+            // Instantiate object
+            Point point = Instantiate(pointPrefab, transform);
+
+            // Initialize it at the random position
+            point.Initialize(randomTile.transform.position, randomTile.Index, TileType.Type.Point);
+
+            activePoints++;
+        }
+        // Try again
+        else
+            GenerateRandomPoint(tiles, segments);
+    }
     
 }
