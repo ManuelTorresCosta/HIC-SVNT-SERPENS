@@ -997,7 +997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 7953154519337117953, guid: 3d59a5adb52c5a24e9429278ad31182d, type: 3}
   initialSize: 5
-  snakeSpeed: 15
+  snakeSpeed: 12
   blinkSpeed: 15
   isAlive: 0
 --- !u!1 &1785713686

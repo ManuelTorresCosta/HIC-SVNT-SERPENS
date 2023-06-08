@@ -43,8 +43,8 @@ public class Snake : MonoBehaviour
         // Set starting properties
         _headDirection = Vector2.right;
 
-        _changedDir = false;
         isAlive = true;
+        _changedDir = false;
 
         _movementTimer = 0f;
         _blinkTimer = 0f;
@@ -220,15 +220,18 @@ public class Snake : MonoBehaviour
     // Collision functions
     public bool CheckSelfCollision()
     {
-        // Get the next position of the head
-        Vector2 nextHeadPos = GetHead().Index + GetHead().Direction;
-
-        // Go through all the segments (excluding the head)
-        for (int i = 1; i < Segments.Count; i++)
+        if (_movementTimer >= 1)
         {
-            // If the next position collides with the body
-            if (nextHeadPos == Segments[i].Index)
-                return true;
+            // Get the next position of the head
+            Vector2 nextHeadPos = GetHead().Index + _headDirection;
+
+            // Go through all the segments (excluding the head)
+            for (int i = 1; i < Segments.Count; i++)
+            {
+                // If the next position collides with the body
+                if (nextHeadPos == Segments[i].Index)
+                    return true;
+            }
         }
 
         return false;
@@ -241,6 +244,7 @@ public class Snake : MonoBehaviour
         else
             return false;
     }
+    
 
     public void Grow()
     {
