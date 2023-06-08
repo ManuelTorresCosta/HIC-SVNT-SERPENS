@@ -63,10 +63,10 @@ public class GridManager : MonoBehaviour
         // Create borders around the grid -------------------------------------------------------
 
         // Set origin with an offset (outside the grid)
-        origin = new Vector2(bounds.min.x - tileSize.x, bounds.min.y - tileSize.y);
+        //origin = new Vector2(bounds.min.x - (tileSize.x * 2), bounds.min.y - (tileSize.y * 2));
 
         // Create border
-        CreateBorders(origin, offset);
+        //CreateBorders(origin, offset);
     }
     private void CreateGrid(Vector2 origin, Vector2 offset)
     {
@@ -91,12 +91,12 @@ public class GridManager : MonoBehaviour
     }
     private void CreateBorders(Vector2 origin, Vector2 offset)
     {
-        for (int y = 0; y < (int)arraySize.y + 2; y++)
+        for (int y = 0; y < (int)arraySize.y + 4; y++)
         {
-            for (int x = 0; x < (int)arraySize.x + 2; x++)
+            for (int x = 0; x < (int)arraySize.x + 4; x++)
             {
                 // Only instantiate tiles on the outside of the grid
-                if (x == 0 || y == 0 || x == (int)arraySize.x + 1 || y == (int)arraySize.y + 1)
+                if (x == 0 || y == 0 || x == (int)arraySize.x + 3 || y == (int)arraySize.y + 3)
                 {
                     // Instantiate tile border
                     Tile tile = Instantiate(tilePrefab, borderParent);
