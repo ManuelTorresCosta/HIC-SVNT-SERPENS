@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
-    public Segment segmentPrefab;
     public List<Segment> Segments { get; private set; }
     public Segment GetHead() { return Segments[0]; }
 
+    [Header("References")]    
+    
+    public Segment segmentPrefab;
+    public Sprite[] sprites;
+
     [Header("Properties")]
 
-    // Public variables
     public int initialSize = 3;
     public float snakeSpeed = 1;
-    public float blinkSpeed = 20;
     public bool isAlive;
 
     // Private variables
@@ -22,6 +24,7 @@ public class Snake : MonoBehaviour
     private bool _changedDir;
     private float _movementTimer;
     private float _blinkTimer;
+    private float _blinkSpeed;
 
     private Vector2 _minPositions;
     private Vector2 _maxPositions;
@@ -48,6 +51,7 @@ public class Snake : MonoBehaviour
 
         _movementTimer = 0f;
         _blinkTimer = 0f;
+        _blinkSpeed = 15;
     }
     public void SetMapLimits(Vector2 minPositions, Vector2 maxPositions, Vector2 minIndexes, Vector2 maxIndexes)
     {
@@ -78,7 +82,37 @@ public class Snake : MonoBehaviour
             Segments.Add(segment);
         }
 
+        // Set the sprites according to the snake composition
+        //UpdateSprites();
+
         isAlive = true;
+    }
+    private void UpdateSprites()
+    {
+        // Go though all the segments
+        for (int i = 0; i < Segments.Count; i++)
+        {
+            // Get the segment from list
+            Segment segment = Segments[i];
+
+            // The first segment is the sprites[0]
+            if (i == 0)
+                segment.SpriteRenderer.sprite = sprites[0];
+            // The last segment is the sprites[1]
+            else if (i == Segments.Count - 1)
+                segment.SpriteRenderer.sprite = sprites[1];
+            // The second and before last segments are sprites[2]
+            else if (i == 1 || i == Segments.Count - 2)
+                segment.SpriteRenderer.sprite = sprites[2];
+            // The rest of the body starts with sprites[3] and alternate with [4]
+            else
+            {
+                if (i % 2 == 0)
+                    segment.SpriteRenderer.sprite = sprites[3];
+                else
+                    segment.SpriteRenderer.sprite = sprites[4];
+            }
+        }
     }
 
     // Movement functions
@@ -244,8 +278,6 @@ public class Snake : MonoBehaviour
         else
             return false;
     }
-    
-
     public void Grow()
     {
         // Create a new segment
@@ -265,6 +297,9 @@ public class Snake : MonoBehaviour
 
         // Add segment to the list
         Segments.Add(newSegment);
+
+        // Update the tail sprites
+        //UpdateSprites();
     }
 
     // Despawn functions
@@ -273,7 +308,7 @@ public class Snake : MonoBehaviour
         if (_blinkTimer < 30f)
         {
             // Increase timer
-            _blinkTimer += blinkSpeed * Time.deltaTime;
+            _blinkTimer += _blinkSpeed * Time.deltaTime;
 
             // Blink all the segments
             foreach (Segment segment in Segments)
