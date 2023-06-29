@@ -997,10 +997,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 7953154519337117953, guid: 3d59a5adb52c5a24e9429278ad31182d, type: 3}
   sprites:
-  - {fileID: 21300000, guid: 2cfb86026d641fb49bb98bf11cbe35b1, type: 3}
-  - {fileID: 21300000, guid: 8f8724012dee4a14ca67ddf66733cf56, type: 3}
-  - {fileID: 21300000, guid: 021cd8958665cba4ea9cd784f8c390c4, type: 3}
-  initialSize: 5
+  - {fileID: -1516004200, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
+  - {fileID: 1854202268, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
+  - {fileID: 949898410, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
+  - {fileID: -263162319, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
+  initialSize: 12
   snakeSpeed: 12
   isAlive: 0
 --- !u!1 &1785713686

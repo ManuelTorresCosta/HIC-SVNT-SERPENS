@@ -8,6 +8,17 @@ public class Segment : Tile
 {
     public Vector2 Direction;
     public Dictionary<Vector2, Vector2> ChangeDirIndexes { get; private set; }
+    private float GetRotationFromDirection()
+    {
+        if (Direction == Vector2.right)
+            return 0;
+        else if (Direction == Vector2.up)
+            return 90;
+        else if (Direction == Vector2.left)
+            return 180;
+        else
+            return -90;
+    }
 
 
 
@@ -40,5 +51,20 @@ public class Segment : Tile
         {
             ChangeDirIndexes.Add(index, tail.ChangeDirIndexes[index]);
         }
+    }
+    public void SetBodySprite(Sprite sprite, int flipX = 1, int flipY = 1)
+    {
+        // If the prite needs to be updated
+        if (SpriteRenderer.sprite != sprite)
+            SpriteRenderer.sprite = sprite;
+
+        // Flip sprite for tail
+        transform.localScale = new Vector3(flipX, flipY, 1);
+    }
+    public void UpdateSpriteDirection(int x = 1, int y = 1) 
+    {
+        // Update the rotation
+        float rotation = GetRotationFromDirection();
+        transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 }

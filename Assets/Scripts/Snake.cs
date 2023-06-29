@@ -12,6 +12,22 @@ public class Snake : MonoBehaviour
     
     public Segment segmentPrefab;
     public Sprite[] sprites;
+    private Sprite GetBody1Sprite()
+    {
+        return sprites[0];
+    }
+    private Sprite GetBody2Sprite()
+    {
+        return sprites[1];
+    }
+    private Sprite GetNeckTailSprite()
+    {
+        return sprites[2];
+    }
+    private Sprite GetEndSprite()
+    {
+        return sprites[3];
+    }
 
     [Header("Properties")]
 
@@ -83,7 +99,7 @@ public class Snake : MonoBehaviour
         }
 
         // Set the sprites according to the snake composition
-        //UpdateSprites();
+        UpdateSprites();
 
         isAlive = true;
     }
@@ -95,23 +111,27 @@ public class Snake : MonoBehaviour
             // Get the segment from list
             Segment segment = Segments[i];
 
-            // The first segment is the sprites[0]
+            // The first segment
             if (i == 0)
-                segment.SpriteRenderer.sprite = sprites[0];
-            // The last segment is the sprites[1]
+                segment.SetBodySprite(GetBody1Sprite());
+            // The second and before last segments
+            else if (i == 1)
+                segment.SetBodySprite(GetNeckTailSprite());
+            else if (i == Segments.Count - 2)
+                segment.SetBodySprite(GetNeckTailSprite(), -1, -1);
+            // The last segment
             else if (i == Segments.Count - 1)
-                segment.SpriteRenderer.sprite = sprites[1];
-            // The second and before last segments are sprites[2]
-            else if (i == 1 || i == Segments.Count - 2)
-                segment.SpriteRenderer.sprite = sprites[2];
-            // The rest of the body starts with sprites[3] and alternate with [4]
+                segment.SetBodySprite(GetEndSprite());
+            // The rest of the body alternates
             else
             {
-                if (i % 2 == 0)
-                    segment.SpriteRenderer.sprite = sprites[3];
+                if (i % 2 != 0)
+                    segment.SetBodySprite(GetBody1Sprite());
                 else
-                    segment.SpriteRenderer.sprite = sprites[4];
+                    segment.SetBodySprite(GetBody2Sprite());
             }
+
+            segment.UpdateSpriteDirection();
         }
     }
 
@@ -199,6 +219,7 @@ public class Snake : MonoBehaviour
         Vector2 index = segment.Index + segment.Direction;
 
         segment.SetPosition(position, index);
+        segment.UpdateSpriteDirection();
     }
     private void HandleGridLimits(Segment segment)
     {
@@ -299,7 +320,7 @@ public class Snake : MonoBehaviour
         Segments.Add(newSegment);
 
         // Update the tail sprites
-        //UpdateSprites();
+        UpdateSprites();
     }
 
     // Despawn functions
