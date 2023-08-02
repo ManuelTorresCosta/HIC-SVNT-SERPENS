@@ -77,6 +77,23 @@ public class TileGenerator : MonoBehaviour
         // Create border
         CreateBorders(origin, offset);
     }
+    public void DeleteMap()
+    {
+        // Delete Grid
+        foreach (Transform transform in gridParent)
+            Destroy(transform.gameObject);
+
+        // Delete Border
+        foreach (Transform transform in borderParent)
+            Destroy(transform.gameObject);
+
+        // Reset tiles array
+        for (int y = 0; y < (int)arraySize.y; y++)
+            for (int x = 0; x < (int)arraySize.x; x++)
+                Tiles[x, y] = null;
+
+    }
+
     private void CreateGrid(Vector2 origin, Vector2 offset)
     {
         for (int y = 0; y < (int)arraySize.y; y++)
