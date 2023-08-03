@@ -75,7 +75,7 @@ public class TileGenerator : MonoBehaviour
         offset = borderSize / 2;
 
         // Create border
-        CreateBorders(origin, offset);
+        //CreateBorders(origin, offset);
     }
     public void DeleteMap()
     {
