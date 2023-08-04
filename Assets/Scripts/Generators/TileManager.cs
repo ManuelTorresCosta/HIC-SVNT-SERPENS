@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class TileGenerator : MonoBehaviour
+public class TileManager : MonoBehaviour
 {
     // Protected references
     public BoxCollider2D Collider { get; private set; }
-    public Tile[,] Tiles { get; private set; }
-    public Tile SpawnTile { get; private set; }
+    public Tile[,] List { get; private set; }
+    public Tile Spawn { get; private set; }
 
     // Public variables
     public Transform gridParent;
@@ -13,9 +13,9 @@ public class TileGenerator : MonoBehaviour
     public Tile tilePrefab;
     public Tile borderPrefab;
 
-    public Vector2 arraySize;
-    public Vector2 minPositions;
-    public Vector2 maxPositions;
+    public Vector2 ArraySize { get; private set; }
+    public Vector2 minPositions { get; private set; }
+    public Vector2 maxPositions { get; private set; }
 
     // Private variables
     private Sprite _tileSprite;
@@ -51,19 +51,19 @@ public class TileGenerator : MonoBehaviour
         Vector2 offset = tileSize / 2;
 
         //  Calculate array size
-        arraySize = new Vector2((int)(gridSize.x / tileSize.x), (int)(gridSize.y / tileSize.y));
-        Tiles = new Tile[(int)arraySize.x, (int)arraySize.y];
+        ArraySize = new Vector2((int)(gridSize.x / tileSize.x), (int)(gridSize.y / tileSize.y));
+        List = new Tile[(int)ArraySize.x, (int)ArraySize.y];
 
         // Create the grid
         CreateGrid(origin, offset);
 
         // Save min and max positions
-        minPositions = Tiles[0, 0].transform.position;
-        maxPositions = Tiles[(int)arraySize.x - 1, (int)arraySize.y - 1].transform.position;
+        minPositions = List[0, 0].transform.position;
+        maxPositions = List[(int)ArraySize.x - 1, (int)ArraySize.y - 1].transform.position;
 
         // Set the spawn tile
-        Vector2 spawnIndex = new Vector2((int)arraySize.x / 2, (int)arraySize.y / 2);
-        SpawnTile = Tiles[(int)spawnIndex.x, (int)spawnIndex.y];
+        Vector2 spawnIndex = new Vector2((int)ArraySize.x / 2, (int)ArraySize.y / 2);
+        Spawn = List[(int)spawnIndex.x, (int)spawnIndex.y];
 
         // Create borders around the grid -------------------------------------------------------
 
@@ -71,11 +71,12 @@ public class TileGenerator : MonoBehaviour
         Vector2 borderSize = (_borderSprite.rect.size / _borderSprite.pixelsPerUnit) * borderPrefab.transform.lossyScale;
 
         // Set origin with an offset (outside the grid)
-        origin = new Vector2(bounds.min.x - tileSize.x, bounds.min.y - tileSize.y);
-        offset = borderSize / 2;
+        origin = new Vector2(bounds.min.x - (tileSize.x / 2), bounds.min.y - (tileSize.y / 2));
+        //offset = borderSize / 2;
+        
 
         // Create border
-        //CreateBorders(origin, offset);
+        CreateBorders(origin, offset);
     }
     public void DeleteMap()
     {
@@ -88,17 +89,17 @@ public class TileGenerator : MonoBehaviour
             Destroy(transform.gameObject);
 
         // Reset tiles array
-        for (int y = 0; y < (int)arraySize.y; y++)
-            for (int x = 0; x < (int)arraySize.x; x++)
-                Tiles[x, y] = null;
+        for (int y = 0; y < (int)ArraySize.y; y++)
+            for (int x = 0; x < (int)ArraySize.x; x++)
+                List[x, y] = null;
 
     }
 
     private void CreateGrid(Vector2 origin, Vector2 offset)
     {
-        for (int y = 0; y < (int)arraySize.y; y++)
+        for (int y = 0; y < (int)ArraySize.y; y++)
         {
-            for (int x = 0; x < (int)arraySize.x; x++)
+            for (int x = 0; x < (int)ArraySize.x; x++)
             {
                 // Instantiate the tile
                 Tile tile = Instantiate(tilePrefab, gridParent);
@@ -111,14 +112,14 @@ public class TileGenerator : MonoBehaviour
                 tile.Initialize(position, index, TileType.Type.Grid);
 
                 // Add tile to the array
-                Tiles[x, y] = tile;
+                List[x, y] = tile;
             }
         }
     }
     private void CreateBorders(Vector2 origin, Vector2 offset)
     {
         // The array size is bigger than the original array (because of the offset origin and the border tile size is half the size  of the grid tile)
-        Vector2 size = new Vector2((arraySize.x * 2) + 4, (arraySize.y * 2) + 4);
+        Vector2 size = new Vector2((ArraySize.x * 2) + 1, (ArraySize.y * 2) + 1);
 
         for (int y = 0; y < (int)size.y; y++)
         {

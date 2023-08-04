@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public TileGenerator gridManager;
-    public Snake snake;
-    public PointsGenerator pointsGenerator;
-    public Transition Transition { get; private set; }
+    public TileManager Tiles { get; private set; }
+    public Snake Snake { get; private set; }
+    public PointsGenerator PointsGenerator { get; private set; }
+    public Transition Transition;
 
     public bool isGameplay;
 
@@ -16,21 +16,23 @@ public class GameManager : MonoBehaviour
     // Unity functions
     private void Awake()
     {
-        Transition = GetComponentInChildren<Transition>();
+        Tiles = GetComponentInChildren<TileManager>();
+        Snake = GetComponentInChildren<Snake>();
+        PointsGenerator = GetComponentInChildren<PointsGenerator>();
     }
     private void Start()
     {
         // Create the grid and border
-        gridManager.CreateMap();
+        Tiles.CreateMap();
 
         // Initializes snake properties
-        snake.Initialize();
+        Snake.Initialize();
 
         // Set map limits
-        snake.SetMapLimits(gridManager.minPositions, gridManager.maxPositions, Vector2.zero, gridManager.arraySize);
+        Snake.SetMapLimits(Tiles.minPositions, Tiles.maxPositions, Vector2.zero, Tiles.ArraySize);
         
         // Create the snake objects
-        snake.CreateSnake(Vector2.right, gridManager.SpawnTile);
+        Snake.CreateSnake(Vector2.right, Tiles.Spawn);
 
         // Starts gameplay on Update()
         isGameplay = true;
@@ -39,39 +41,39 @@ public class GameManager : MonoBehaviour
     {
         if (isGameplay)
         {
-            if (snake.isAlive)
+            if (Snake.isAlive)
             {
                 // Generate a point if no points are on the grid
-                if (pointsGenerator.Point == null)
-                    pointsGenerator.GenerateRandomPoint(gridManager.Tiles, snake.Segments);
+                if (PointsGenerator.Point == null)
+                    PointsGenerator.GenerateRandomPoint(Tiles.List, Snake.Segments);
 
                 // Check if snake is going to collide with self
-                if (!snake.CheckSelfCollision())
+                if (!Snake.CheckSelfCollision())
                 {
                     // Move snake
-                    snake.HandleMovement();
+                    Snake.HandleMovement();
 
                     // Check collision with a point
-                    if (snake.CheckCollisionWith(pointsGenerator.Point))
+                    if (Snake.CheckCollisionWith(PointsGenerator.Point))
                     {
                         // Make snake grow
-                        snake.Grow();
+                        Snake.Grow();
 
                         // Remove point
-                        pointsGenerator.DespawnPoint();
+                        PointsGenerator.DespawnPoint();
                     }
                 }
                 // Snake collided with self
                 else
                 {
                     // Change snake alive state 
-                    snake.isAlive = false;
+                    Snake.isAlive = false;
                 }
             }
             else
             {
                 // Despawn snake
-                snake.Die(() =>
+                Snake.Die(() =>
                 {
                     StopGameplay();
                 });
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             StopGameplay();
-            gridManager.DeleteMap();
+            Tiles.DeleteMap();
 
             // Runs the end game transition
             StartCoroutine(Transition.RunTransition());
@@ -98,14 +100,15 @@ public class GameManager : MonoBehaviour
     }
 
 
+
     // Actions
     private void StopGameplay()
     {
-        snake.isAlive = false;
-        snake.Die(() =>
+        Snake.isAlive = false;
+        Snake.Die(() =>
         {
             // Remove point
-            pointsGenerator.DespawnPoint();
+            PointsGenerator.DespawnPoint();
 
             // Stop running gameplay code
             isGameplay = false;
@@ -114,10 +117,10 @@ public class GameManager : MonoBehaviour
     private void Restart()
     {
         // Initializes the snake variables
-        snake.Initialize();
+        Snake.Initialize();
 
         // Recreates the snake
-        snake.CreateSnake(Vector2.right, gridManager.SpawnTile);
+        Snake.CreateSnake(Vector2.right, Tiles.Spawn);
 
         // Turn gameplay back on
         isGameplay = true;
