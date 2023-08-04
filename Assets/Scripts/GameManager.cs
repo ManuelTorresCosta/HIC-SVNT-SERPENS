@@ -72,48 +72,23 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                // Despawn snake
-                Snake.Die(() =>
-                {
-                    StopGameplay();
-                });
-            }
-        }
-        else
-        {
-            // Press key to restart
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                Restart();
-            }
-        }
+                // Removes map and points
+                Tiles.DeleteMap();
+                PointsGenerator.DespawnPoint();
+                
+                // Blink and despawn
+                Snake.Die();
 
-        // Key to trigger end game transition
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            StopGameplay();
-            Tiles.DeleteMap();
-
-            // Runs the end game transition
-            StartCoroutine(Transition.RunTransition());
+                //Transition.Run();
+                StartCoroutine(Transition.RunTransition());
+                isGameplay = false;
+            }
         }
     }
 
 
 
     // Actions
-    private void StopGameplay()
-    {
-        Snake.isAlive = false;
-        Snake.Die(() =>
-        {
-            // Remove point
-            PointsGenerator.DespawnPoint();
-
-            // Stop running gameplay code
-            isGameplay = false;
-        });
-    }
     private void Restart()
     {
         // Initializes the snake variables

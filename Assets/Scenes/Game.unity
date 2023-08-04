@@ -231,7 +231,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182858178}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: -0.31834653, y: -0.3761417, z: -61.908318}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -240,7 +240,7 @@ Transform:
   - {fileID: 348324752}
   - {fileID: 245792180}
   - {fileID: 560862436}
-  m_Father: {fileID: 519420032}
+  m_Father: {fileID: 734369155}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &245792179
@@ -667,8 +667,7 @@ Transform:
   m_LocalPosition: {x: -0.31834653, y: -0.3761417, z: -71.90832}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 182858179}
+  m_Children: []
   m_Father: {fileID: 734369155}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -832,7 +831,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &560862436
 Transform:
   m_ObjectHideFlags: 0
@@ -862,6 +861,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 4552683099656443630, guid: 19b798f00069ed740a100bd630d4ebe4, type: 3}
+  timer: 0
+  maxTimer: 1
+  speed: 200
+  x: 0
+  y: 0
 --- !u!1 &643509244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,6 +1068,7 @@ Transform:
   - {fileID: 519420032}
   - {fileID: 643509248}
   - {fileID: 1166387206}
+  - {fileID: 182858179}
   - {fileID: 1235237341}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1221,7 +1226,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &964962781
 Transform:
   m_ObjectHideFlags: 0
@@ -1553,7 +1558,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.075, y: 0.075}
+  m_Offset: {x: -0.019375086, y: 0.021849632}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1564,7 +1569,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 13.6, y: 10.2}
+  m_Size: {x: 10.622957, y: 10.0936985}
   m_EdgeRadius: 0
 --- !u!1 &1629626049
 GameObject:
@@ -1723,7 +1728,6 @@ MonoBehaviour:
   - {fileID: -1516004200, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
   - {fileID: 1854202268, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
   - {fileID: 949898410, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
-  - {fileID: -263162319, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
   initialSize: 12
   snakeSpeed: 12
   isAlive: 0
@@ -1743,7 +1747,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1705193010
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1966,7 +1970,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: PRESS TO PLAY
+  m_Text: PRESS TO START
 --- !u!222 &1815787369
 CanvasRenderer:
   m_ObjectHideFlags: 0

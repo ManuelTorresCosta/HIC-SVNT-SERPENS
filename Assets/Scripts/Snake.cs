@@ -113,22 +113,22 @@ public class Snake : MonoBehaviour
 
             // The first segment
             if (i == 0)
-                segment.SetBodySprite(GetBody1Sprite());
-            // The second and before last segments
-            else if (i == 1)
-                segment.SetBodySprite(GetNeckTailSprite());
-            else if (i == Segments.Count - 2)
-                segment.SetBodySprite(GetNeckTailSprite(), -1, -1);
+                segment.SetBodySprite(sprites[0]);
             // The last segment
             else if (i == Segments.Count - 1)
-                segment.SetBodySprite(GetEndSprite());
+                segment.SetBodySprite(sprites[1]);
+            // The second and before last segments
+            else if (i == 1)
+                segment.SetBodySprite(sprites[2]);
+            else if (i == Segments.Count - 2)
+                segment.SetBodySprite(sprites[2], -1, -1);
             // The rest of the body alternates
             else
             {
                 if (i % 2 != 0)
-                    segment.SetBodySprite(GetBody1Sprite());
+                    segment.SetBodySprite(sprites[0]);
                 else
-                    segment.SetBodySprite(GetBody2Sprite());
+                    segment.SetBodySprite(sprites[1]);
             }
 
             segment.UpdateSpriteDirection();
@@ -324,7 +324,7 @@ public class Snake : MonoBehaviour
     }
 
     // Despawn functions
-    public void Die(Action callback)
+    public void Die()
     {
         if (_blinkTimer < 30f)
         {
@@ -345,9 +345,6 @@ public class Snake : MonoBehaviour
         {
             // Reset and remove snake
             Despawn();
-
-            // Calls the callback function
-            callback();
         }
     }
     private void Despawn()

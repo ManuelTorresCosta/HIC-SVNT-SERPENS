@@ -28,23 +28,35 @@ public class Tile : MonoBehaviour
         switch (tileType)
         {
             case TileType.Type.Grid:
+                SpriteRenderer.sortingOrder = 0;
                 SpriteRenderer.enabled = false;
                 name = "Tile (" + index.x + ", " + index.y + ")";
                 break;
 
             case TileType.Type.Border:
+                SpriteRenderer.sortingOrder = 1;
                 SpriteRenderer.color = Color.black;
                 name = "Border";                
                 break;
 
+            case TileType.Type.Point:
+                SpriteRenderer.sortingOrder = 2;
+                SpriteRenderer.color = Color.black;
+                name = "Point";
+                break;
+
             case TileType.Type.Segment:
+                SpriteRenderer.sortingOrder = 3;
                 SpriteRenderer.color = Color.black;
                 name = "Segment";
                 break;
 
-            case TileType.Type.Point:
+            case TileType.Type.Overlay:
+                SpriteRenderer.sortingOrder = 5;
                 SpriteRenderer.color = Color.black;
-                name = "Point";
+                SpriteRenderer.sortingOrder = 25;
+                SpriteRenderer.enabled = false;
+                name = "Overlay";
                 break;
         }
 

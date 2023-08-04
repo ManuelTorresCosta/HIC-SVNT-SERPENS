@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
         // ----------------------------------
 
         // Fade menu ------------------------------------------
-        if (Input.GetKeyDown(KeyCode.F) && !startLerp)
+        if (Input.GetKeyDown(KeyCode.Space) && !startLerp)
         {
             startLerp = true;
             _color = blackColor;

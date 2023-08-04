@@ -9,6 +9,7 @@ public class TileType
         Grid,
         Border,
         Segment,
-        Point
+        Point,
+        Overlay,
     }
 }
