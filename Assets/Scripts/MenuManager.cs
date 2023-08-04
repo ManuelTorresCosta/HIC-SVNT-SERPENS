@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
+    public Animator CameraFx { get; private set; }
     public Image background;
 
     public Text descText;
@@ -25,6 +26,10 @@ public class MenuManager : MonoBehaviour
 
 
 
+    private void Awake()
+    {
+        CameraFx = transform.parent.GetComponentInChildren<Animator>();
+    }
     private void Update()
     {
         // Blink description text
@@ -42,6 +47,8 @@ public class MenuManager : MonoBehaviour
         {
             startLerp = true;
             _color = blackColor;
+
+            CameraFx.SetTrigger("glitch");
         }
 
         if (startLerp)

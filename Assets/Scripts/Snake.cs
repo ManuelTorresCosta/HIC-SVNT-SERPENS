@@ -324,7 +324,7 @@ public class Snake : MonoBehaviour
     }
 
     // Despawn functions
-    public void Die()
+    public void Die(Action despawn)
     {
         if (_blinkTimer < 30f)
         {
@@ -343,11 +343,10 @@ public class Snake : MonoBehaviour
         }
         else
         {
-            // Reset and remove snake
-            Despawn();
+            despawn();
         }
     }
-    private void Despawn()
+    public void Despawn()
     {
         // Reset each snake segment
         foreach (Segment segment in Segments)

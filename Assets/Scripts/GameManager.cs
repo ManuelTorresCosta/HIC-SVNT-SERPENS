@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public PointsGenerator PointsGenerator { get; private set; }
     public Transition Transition;
 
+    public Animator CameraFx { get; private set; }
+
     public bool isGameplay;
 
 
@@ -19,6 +21,8 @@ public class GameManager : MonoBehaviour
         Tiles = GetComponentInChildren<TileManager>();
         Snake = GetComponentInChildren<Snake>();
         PointsGenerator = GetComponentInChildren<PointsGenerator>();
+
+        CameraFx = transform.parent.GetComponentInChildren<Animator>();
     }
     private void Start()
     {
@@ -66,23 +70,28 @@ public class GameManager : MonoBehaviour
                 // Snake collided with self
                 else
                 {
-                    // Change snake alive state 
-                    Snake.isAlive = false;
+                    // Removes map and points
+                    Tiles.DeleteMap();
+                    PointsGenerator.DespawnPoint();
+
+                    //Transition.Run();
+                    StartCoroutine(Transition.RunTransition());
+                    isGameplay = false;
                 }
             }
             else
             {
-                // Removes map and points
-                Tiles.DeleteMap();
-                PointsGenerator.DespawnPoint();
                 
-                // Blink and despawn
-                Snake.Die();
-
-                //Transition.Run();
-                StartCoroutine(Transition.RunTransition());
-                isGameplay = false;
             }
+        }
+        else
+        {
+            // Blink and despawn
+            Snake.Die(() =>
+            {
+                Snake.Despawn();
+                Snake.isAlive = false;
+            });
         }
     }
 
