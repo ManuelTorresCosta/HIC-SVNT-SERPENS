@@ -7,7 +7,7 @@ using Kino;
 
 public class MenuManager : MonoBehaviour
 {
-    public Animator CameraFx { get; private set; }
+    public EffectsManager Effects;
     public Image background;
 
     // Press play text
@@ -18,7 +18,6 @@ public class MenuManager : MonoBehaviour
     public float blinkSpeed = 1;
 
     // Glitch effect
-    public DigitalGlitch glitchFX { get; private set; }
     private float _fxTimer = 30;
     private float _fxMaxTimer = 30;
 
@@ -33,12 +32,6 @@ public class MenuManager : MonoBehaviour
 
 
 
-
-    private void Awake()
-    {
-        CameraFx = transform.parent.GetComponentInChildren<Animator>();
-        glitchFX = Camera.main.GetComponent<DigitalGlitch>();
-    }
     private void Update()
     {
         // Blink description text
@@ -57,7 +50,7 @@ public class MenuManager : MonoBehaviour
             _fxTimer += Time.deltaTime;
         else
         {
-            CameraFx.SetTrigger("glitch");
+            Effects.GlitchEffect();
             _fxTimer = Random.Range(0, 15);
         }
         // ----------------------------------
@@ -68,8 +61,6 @@ public class MenuManager : MonoBehaviour
         {
             startLerp = true;
             _color = blackColor;
-
-            
         }
 
         if (startLerp)

@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     public Snake Snake { get; private set; }
     public PointsGenerator Points { get; private set; }
     public ScoreManager Score { get; private set; }
+
+    public EffectsManager Effects;
     public Transition Transition;
 
     public Animator CameraFx { get; private set; }
@@ -70,6 +72,8 @@ public class GameManager : MonoBehaviour
 
                         // Remove point
                         Points.DespawnPoint();
+
+                        Effects.ColorFadeEffect();
                     }
                 }
                 // Snake collided with self
@@ -84,10 +88,6 @@ public class GameManager : MonoBehaviour
                     StartCoroutine(Transition.RunTransition());
                     isGameplay = false;
                 }
-            }
-            else
-            {
-                
             }
         }
         else
