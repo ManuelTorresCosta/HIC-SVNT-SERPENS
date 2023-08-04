@@ -6,22 +6,28 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    public Text pressPlayText;
+    public Image background;
 
+    public Text descText;
+    public Text titleText;
     private float _timer = 0;
     private float _maxTimer = 1;
     public float blinkSpeed = 1;
 
+
     private bool startLerp = false;
+    public float lerpSpeed = 1;
     public Color blackColor;
     public Color greenColor;
-    private Color _myColor;
-    public float lerpSpeed = 1;
+    private Color _color;
+    private float _alpha = 1;
 
 
-    
+
+
     private void Update()
     {
+        // Blink description text
         if (_timer < _maxTimer)
             _timer += blinkSpeed * Time.deltaTime;
         else
@@ -29,34 +35,41 @@ public class MenuManager : MonoBehaviour
             Blink();
             _timer = 0;
         }
+        // ----------------------------------
 
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            int currScene = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(currScene + 1);
-        }    
-
-        else if (Input.GetKeyDown(KeyCode.F) && !startLerp)
+        // Fade menu ------------------------------------------
+        if (Input.GetKeyDown(KeyCode.F) && !startLerp)
         {
             startLerp = true;
-            _myColor = blackColor;
+            _color = blackColor;
         }
 
         if (startLerp)
         {
-            _myColor = Color.Lerp(_myColor, greenColor, lerpSpeed * Time.deltaTime);
-            Camera.main.backgroundColor = _myColor;
+            _color = Color.Lerp(_color, greenColor, lerpSpeed * Time.deltaTime);            
+            background.color = new Color(_color.r, _color.g, _color.b, _alpha);
+            if (_color.g > 0.76f)
+            {
+                _alpha = Mathf.Lerp(_alpha, 0, (lerpSpeed / 2) * Time.deltaTime);
+                Color rgba = new Color(titleText.color.r, titleText.color.g, titleText.color.b, _alpha);
+                titleText.color = rgba;
+                descText.color = rgba;
 
-            //if (_myColor == greenColor)
-            //    startLerp = false;
+                if (rgba.a <= 0.1f)
+                {
+                    descText.gameObject.SetActive(false);
+                    titleText.gameObject.SetActive(false);
+                }
+            }
         }
+        // ---------------------------------------------------
     }
+
 
 
 
     private void Blink()
     {
-        pressPlayText.enabled = pressPlayText.enabled ? false : true;
+        descText.enabled = descText.enabled ? false : true;
     }
 }
