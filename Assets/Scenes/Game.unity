@@ -5509,7 +5509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &964962781
 Transform:
   m_ObjectHideFlags: 0
@@ -10766,8 +10766,11 @@ MonoBehaviour:
   - {fileID: -1516004200, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
   - {fileID: 1854202268, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
   - {fileID: 949898410, guid: 037523c5253de1646ade2c2dfb4eb22c, type: 3}
+  headSprites:
+  - {fileID: -1353177742, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
+  - {fileID: 1154250466, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
   initialSize: 12
-  snakeSpeed: 12
+  snakeSpeed: 2
   isAlive: 0
 --- !u!1 &1700343320
 GameObject:

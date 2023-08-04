@@ -12,22 +12,7 @@ public class Snake : MonoBehaviour
     
     public Segment segmentPrefab;
     public Sprite[] sprites;
-    private Sprite GetBody1Sprite()
-    {
-        return sprites[0];
-    }
-    private Sprite GetBody2Sprite()
-    {
-        return sprites[1];
-    }
-    private Sprite GetNeckTailSprite()
-    {
-        return sprites[2];
-    }
-    private Sprite GetEndSprite()
-    {
-        return sprites[3];
-    }
+    public Sprite[] headSprites;
 
     [Header("Properties")]
 
@@ -111,14 +96,17 @@ public class Snake : MonoBehaviour
             // Get the segment from list
             Segment segment = Segments[i];
 
-            // The first segment
+            // Head
             if (i == 0)
+                segment.SetBodySprite(headSprites[0]);
+            // The first body segment
+            if (i == 1)
                 segment.SetBodySprite(sprites[0]);
             // The last segment
             else if (i == Segments.Count - 1)
                 segment.SetBodySprite(sprites[1]);
             // The second and before last segments
-            else if (i == 1)
+            else if (i == 2)
                 segment.SetBodySprite(sprites[2]);
             else if (i == Segments.Count - 2)
                 segment.SetBodySprite(sprites[2], -1, -1);
@@ -293,8 +281,16 @@ public class Snake : MonoBehaviour
     }
     public bool CheckCollisionWith(Point point)
     {
+        Segment head = Segments[0];
+
+        // Animate head when eating
+        if (head.Index + 1 * head.Direction == point.Index || head.Index == point.Index)
+            head.SetBodySprite(headSprites[1]);
+        else
+            head.SetBodySprite(headSprites[0]);
+
         // Check if head index is the same as the point
-        if (Segments[0].Index == point.Index)
+        if (head.Index == point.Index)
             return true;
         else
             return false;
