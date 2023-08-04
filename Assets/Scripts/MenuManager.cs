@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Kino;
 
 public class MenuManager : MonoBehaviour
 {
     public Animator CameraFx { get; private set; }
     public Image background;
 
+    // Press play text
     public Text descText;
     public Text titleText;
     private float _timer = 0;
     private float _maxTimer = 1;
     public float blinkSpeed = 1;
 
+    // Glitch effect
+    public DigitalGlitch glitchFX { get; private set; }
+    private float _fxTimer = 30;
+    private float _fxMaxTimer = 30;
 
+
+    // Menu fade
     private bool startLerp = false;
     public float lerpSpeed = 1;
     public Color blackColor;
@@ -29,6 +37,7 @@ public class MenuManager : MonoBehaviour
     private void Awake()
     {
         CameraFx = transform.parent.GetComponentInChildren<Animator>();
+        glitchFX = Camera.main.GetComponent<DigitalGlitch>();
     }
     private void Update()
     {
@@ -42,13 +51,25 @@ public class MenuManager : MonoBehaviour
         }
         // ----------------------------------
 
+
+        // Glitch effects
+        if (_fxTimer < _fxMaxTimer)
+            _fxTimer += Time.deltaTime;
+        else
+        {
+            CameraFx.SetTrigger("glitch");
+            _fxTimer = Random.Range(0, 15);
+        }
+        // ----------------------------------
+
+
         // Fade menu ------------------------------------------
         if (Input.GetKeyDown(KeyCode.Space) && !startLerp)
         {
             startLerp = true;
             _color = blackColor;
 
-            CameraFx.SetTrigger("glitch");
+            
         }
 
         if (startLerp)

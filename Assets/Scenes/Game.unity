@@ -3429,7 +3429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3a070408aa941ab83ae10be1708848, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _intensity: 0.0001
+  _intensity: 0
   _shader: {fileID: 4800000, guid: ba40dc630e1d9417cb9ea22586ece1e1, type: 3}
 --- !u!95 &519420036
 Animator:
@@ -3439,7 +3439,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 82a645ab8e48eba46b38fedb497c9ba1, type: 2}
   m_CullingMode: 0
