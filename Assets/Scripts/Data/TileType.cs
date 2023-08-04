@@ -10,6 +10,7 @@ public class TileType
         Border,
         Segment,
         Point,
-        Overlay,
+        BonusPoint,
+        Overlay
     }
 }

@@ -71,8 +71,8 @@ public class TileManager : MonoBehaviour
         Vector2 borderSize = (_borderSprite.rect.size / _borderSprite.pixelsPerUnit) * borderPrefab.transform.lossyScale;
 
         // Set origin with an offset (outside the grid)
-        origin = new Vector2(bounds.min.x - (tileSize.x), bounds.min.y - (tileSize.y));         // With offset
-        //origin = new Vector2(bounds.min.x - (tileSize.x / 2), bounds.min.y - (tileSize.y / 2)); // Without offset
+        //origin = new Vector2(bounds.min.x - (tileSize.x), bounds.min.y - (tileSize.y));         // With offset
+        origin = new Vector2(bounds.min.x - (tileSize.x / 2), bounds.min.y - (tileSize.y / 2)); // Without offset
 
         // Create border
         CreateBorders(origin, offset);
@@ -118,8 +118,8 @@ public class TileManager : MonoBehaviour
     private void CreateBorders(Vector2 origin, Vector2 offset)
     {
         // The array size is bigger than the original array (because of the offset origin and the border tile size is half the size  of the grid tile)
-        Vector2 size = new Vector2((ArraySize.x * 2) + 4, (ArraySize.y * 2) + 4);   // with offset
-        //Vector2 size = new Vector2((ArraySize.x * 2) + 1, (ArraySize.y * 2) + 1);   // Without offset
+        //Vector2 size = new Vector2((ArraySize.x * 2) + 4, (ArraySize.y * 2) + 4);   // with offset
+        Vector2 size = new Vector2((ArraySize.x * 2) + 1, (ArraySize.y * 2) + 1);   // Without offset
 
         for (int y = 0; y < (int)size.y; y++)
         {

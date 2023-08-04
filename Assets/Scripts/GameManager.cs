@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public TileManager Tiles { get; private set; }
     public Snake Snake { get; private set; }
-    public PointsGenerator PointsGenerator { get; private set; }
+    public PointsGenerator Points { get; private set; }
+    public ScoreManager Score { get; private set; }
     public Transition Transition;
 
     public Animator CameraFx { get; private set; }
@@ -20,7 +21,8 @@ public class GameManager : MonoBehaviour
     {
         Tiles = GetComponentInChildren<TileManager>();
         Snake = GetComponentInChildren<Snake>();
-        PointsGenerator = GetComponentInChildren<PointsGenerator>();
+        Points = GetComponentInChildren<PointsGenerator>();
+        Score = GetComponentInChildren<ScoreManager>();
 
         CameraFx = transform.parent.GetComponentInChildren<Animator>();
     }
@@ -48,8 +50,8 @@ public class GameManager : MonoBehaviour
             if (Snake.isAlive)
             {
                 // Generate a point if no points are on the grid
-                if (PointsGenerator.Point == null)
-                    PointsGenerator.GenerateRandomPoint(Tiles.List, Snake.Segments);
+                if (Points.Point == null)
+                    Points.GenerateRandomPoint(Tiles.List, Snake.Segments);
 
                 // Check if snake is going to collide with self
                 if (!Snake.CheckSelfCollision())
@@ -58,13 +60,16 @@ public class GameManager : MonoBehaviour
                     Snake.HandleMovement();
 
                     // Check collision with a point
-                    if (Snake.CheckCollisionWith(PointsGenerator.Point))
+                    if (Snake.CheckCollisionWith(Points.Point))
                     {
                         // Make snake grow
                         Snake.Grow();
 
+                        // Add point value to score
+                        Score.AddPoint(Points.Point.Value);
+
                         // Remove point
-                        PointsGenerator.DespawnPoint();
+                        Points.DespawnPoint();
                     }
                 }
                 // Snake collided with self
@@ -72,7 +77,8 @@ public class GameManager : MonoBehaviour
                 {
                     // Removes map and points
                     Tiles.DeleteMap();
-                    PointsGenerator.DespawnPoint();
+                    Score.SetActive(false);
+                    Points.DespawnPoint();
 
                     //Transition.Run();
                     StartCoroutine(Transition.RunTransition());

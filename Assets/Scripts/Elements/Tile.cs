@@ -45,6 +45,12 @@ public class Tile : MonoBehaviour
                 name = "Point";
                 break;
 
+            case TileType.Type.BonusPoint:
+                SpriteRenderer.sortingOrder = 2;
+                SpriteRenderer.color = Color.black;
+                name = "BonusPoint";
+                break;
+
             case TileType.Type.Segment:
                 SpriteRenderer.sortingOrder = 3;
                 SpriteRenderer.color = Color.black;

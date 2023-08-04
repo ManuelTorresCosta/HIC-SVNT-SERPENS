@@ -55,8 +55,8 @@ public class MenuManager : MonoBehaviour
         {
             _color = Color.Lerp(_color, greenColor, lerpSpeed * Time.deltaTime);            
             background.color = new Color(_color.r, _color.g, _color.b, _alpha);
-            if (_color.g > 0.76f)
-            {
+            //if (_color.g > 0.76f)
+            //{
                 _alpha = Mathf.Lerp(_alpha, 0, (lerpSpeed / 2) * Time.deltaTime);
                 Color rgba = new Color(titleText.color.r, titleText.color.g, titleText.color.b, _alpha);
                 titleText.color = rgba;
@@ -67,7 +67,7 @@ public class MenuManager : MonoBehaviour
                     descText.gameObject.SetActive(false);
                     titleText.gameObject.SetActive(false);
                 }
-            }
+            //}
         }
         // ---------------------------------------------------
     }
