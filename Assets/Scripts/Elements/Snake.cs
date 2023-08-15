@@ -74,11 +74,12 @@ public class Snake : MonoBehaviour
 
             // Calculate position
             Vector2 position = new Vector2(spawnTile.transform.position.x - (i * segment.Size.x), spawnTile.transform.position.y);
-            Vector2 index = new Vector2(spawnTile.Index.x - i, spawnTile.Index.y);
+            Vector2 tileIndex = new Vector2(spawnTile.Index.x - i, spawnTile.Index.y);
 
             // Initialize
-            segment.Initialize(position, index, TileType.Type.Segment);
-            
+            segment.Initialize(position, tileIndex, TileType.Type.Segment);
+            segment.i = i;
+
             // Add to a list
             Segments.Add(segment);
         }
@@ -98,7 +99,7 @@ public class Snake : MonoBehaviour
 
             // Head
             if (i == 0)
-                segment.SetBodySprite(headSprites[0]);
+                segment.SetBodySprite(headSprites[0]);              
             // The first body segment
             if (i == 1)
                 segment.SetBodySprite(sprites[0]);

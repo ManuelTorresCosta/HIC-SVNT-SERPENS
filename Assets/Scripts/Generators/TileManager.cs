@@ -75,7 +75,7 @@ public class TileManager : MonoBehaviour
         //origin = new Vector2(bounds.min.x - (tileSize.x / 2), bounds.min.y - (tileSize.y / 2)); // Without offset
 
         // Create border
-        CreateBorders(origin, offset);
+        //CreateBorders(origin, offset);
     }
     public void DeleteMap()
     {

@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class Segment : Tile
 {
     public Vector2 Direction;
+    public int i;
     public Dictionary<Vector2, Vector2> ChangeDirIndexes { get; private set; }
     private float GetRotationFromDirection()
     {
@@ -26,15 +27,16 @@ public class Segment : Tile
     {
         base.Awake();
 
+        i = 0;
         ChangeDirIndexes = new Dictionary<Vector2, Vector2>();
     }
 
 
 
-    public override void Initialize(Vector2 position, Vector2 index, TileType.Type tileType)
+    public override void Initialize(Vector2 position, Vector2 tileIndex, TileType.Type tileType)
     {
         // Initialize from parent
-        base.Initialize(position, index, tileType);
+        base.Initialize(position, tileIndex, tileType);
 
         // Set direction
         Direction = Vector2.right;
@@ -66,5 +68,12 @@ public class Segment : Tile
         // Update the rotation
         float rotation = GetRotationFromDirection();
         transform.rotation = Quaternion.Euler(0, 0, rotation);
+
+        // Flip head when direction is left (Head only)
+        if (i == 0)
+        {
+            bool flipY = Direction.x == -1;
+            SpriteRenderer.flipY = flipY;
+        }
     }
 }

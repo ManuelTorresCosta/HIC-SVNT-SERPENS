@@ -35,12 +35,15 @@ public class MenuManager : MonoBehaviour
     private void Update()
     {
         // Blink description text
-        if (_timer < _maxTimer)
-            _timer += blinkSpeed * Time.deltaTime;
-        else
+        if (descText.gameObject.activeSelf)
         {
-            Blink();
-            _timer = 0;
+            if (_timer < _maxTimer)
+                _timer += blinkSpeed * Time.deltaTime;
+            else
+            {
+                Blink();
+                _timer = 0;
+            }
         }
         // ----------------------------------
 
@@ -61,6 +64,8 @@ public class MenuManager : MonoBehaviour
         {
             startLerp = true;
             _color = blackColor;
+
+            descText.gameObject.SetActive(false);
         }
 
         if (startLerp)
@@ -72,7 +77,6 @@ public class MenuManager : MonoBehaviour
                 _alpha = Mathf.Lerp(_alpha, 0, (lerpSpeed / 2) * Time.deltaTime);
                 Color rgba = new Color(titleText.color.r, titleText.color.g, titleText.color.b, _alpha);
                 titleText.color = rgba;
-                descText.color = rgba;
 
                 if (rgba.a <= 0.1f)
                 {
