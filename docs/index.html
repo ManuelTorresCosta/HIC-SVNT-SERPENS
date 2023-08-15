@@ -20,7 +20,7 @@
   </head>
   <body>
     <canvas id="unity-canvas"></canvas>
-    <script src="Build/WebGL.loader.js"></script>
+    <script src="Build/docs.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -31,9 +31,9 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/WebGL.data.unityweb",
-        frameworkUrl: "Build/WebGL.framework.js.unityweb",
-        codeUrl: "Build/WebGL.wasm.unityweb",
+        dataUrl: "Build/docs.data.unityweb",
+        frameworkUrl: "Build/docs.framework.js.unityweb",
+        codeUrl: "Build/docs.wasm.unityweb",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "SERPENS",
