@@ -291,7 +291,7 @@ public class Snake : MonoBehaviour
             head.SetBodySprite(headSprites[0]);
 
         // Check if head index is the same as the point
-        if (head.Index == point.Index)
+        if (head.Index == point.Index || head.Index == point.Index + Vector2.up || head.Index == point.Index - Vector2.up)
             return true;
         else
             return false;

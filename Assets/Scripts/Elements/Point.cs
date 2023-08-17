@@ -5,7 +5,6 @@ using UnityEngine;
 public class Point : Tile
 {
     public int Value { get; private set; }
-    public int X, Y;
 
 
 
@@ -20,11 +19,11 @@ public class Point : Tile
     {
         switch (tileType)
         {
-            case TileType.Type.Point:
+            case TileType.Type.CommonPoint:
                 Value = 10;
                 break;
 
-            case TileType.Type.BonusPoint:
+            case TileType.Type.RarePoint:
                 Value = 25;
                 break;
 
@@ -33,6 +32,6 @@ public class Point : Tile
         }
         
         // Initialize tile
-        base.Initialize(position, new Vector2(X, Y), tileType);
+        base.Initialize(position, index, tileType);
     }
 }

@@ -56,8 +56,12 @@ public class GameManager : MonoBehaviour
             if (Snake.isAlive)
             {
                 // Generate a point if no points are on the grid
-                if (Points.Point == null)
-                    Points.SpawnRandomPoint(Snake.Segments);
+                if (Points.CanSpawnCommonPoint())
+                    Points.SpawnRandomCommonPoint(Snake.Segments);
+
+                // Generate a legend if no legends are active
+                //if (Points.CanSpawnLegend())
+                //    Points.SpawnRandomLegend(Snake.Segments);
 
                 // Check if snake is going to collide with self
                 if (!Snake.CheckSelfCollision())
@@ -66,16 +70,16 @@ public class GameManager : MonoBehaviour
                     Snake.HandleMovement();
 
                     // Check collision with a point
-                    if (Snake.CheckCollisionWith(Points.Point))
+                    if (Snake.CheckCollisionWith(Points.commonPoint))
                     {
                         // Make snake grow
                         Snake.Grow();
 
                         // Add point value to score
-                        Score.AddPoint(Points.Point.Value);
+                        Score.AddPoint(Points.commonPoint.Value);
 
                         // Remove point
-                        Points.DespawnPoint();
+                        Points.DespawnCommonPoint();
 
                         Effects.ColorFadeEffect();
                     }
@@ -86,7 +90,7 @@ public class GameManager : MonoBehaviour
                     // Removes map and points
                     Tiles.DeleteMap();
                     Score.SetActive(false);
-                    Points.DespawnPoint();
+                    Points.DespawnCommonPoint();
 
                     //Transition.Run();
                     StartCoroutine(Transition.RunTransition());

@@ -333,7 +333,7 @@ TextureImporter:
         width: 10
         height: 10
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -341,6 +341,48 @@ TextureImporter:
       bones: []
       spriteID: ade8bacc81d6d194ba88eb1db0e72b1b
       internalID: 372369822
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone (small)
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 376
+        width: 24
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee416deceb89d7a4ea0eb75f145f24ca
+      internalID: -387467601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Stone (big)
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 340
+        width: 48
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 493949a2f38622a4e8003887e3c30330
+      internalID: 943754243
       vertices: []
       indices: 
       edges: []
@@ -366,6 +408,8 @@ TextureImporter:
       Square: 372369822
       Square 12x12: -285309627
       Square 24x24: -1233815251
+      Stone (big): 943754243
+      Stone (small): -387467601
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

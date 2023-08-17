@@ -9,8 +9,8 @@ public class TileType
         Grid,
         Border,
         Segment,
-        Point,
-        BonusPoint,
+        CommonPoint,
+        RarePoint,
         Overlay
     }
 }

@@ -6,32 +6,63 @@ public class PointsGenerator : MonoBehaviour
 {
     public Point pointPrefab;
 
-    public List<Point> List { get; private set; }
-    public Point Point { get; private set; }
+    public Transform commonPointsParent;
+    public List<Point> commonPoints { get; private set; }
+    public Point commonPoint { get; private set; }
+    public bool CanSpawnCommonPoint()
+    {
+        return commonPoint == null;
+    }
+    private int _totalCommonPoints;
+
+    public Transform rarePointsParent;
+    public List<Point> rarePoints { get; private set; }
+    public Point rarePoint { get; private set; }
+    public bool CanSpawnRarePoint()
+    {
+        if (rarePoint == null)
+        {
+            if (_totalCommonPoints - commonPoints.Count == 3)
+            {
+                _totalCommonPoints = commonPoints.Count;
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     // Unity functions
     private void Awake()
     {
-        List = new List<Point>();
+        commonPoints = new List<Point>();
+        rarePoints = new List<Point>();
     }
     private void Start()
     {
-        // Get the points to the array
-        for (int i = 0; i < transform.childCount; i++)
+        // Get the points to the list
+        for (int i = 0; i < commonPointsParent.childCount; i++)
         {
-            Point point = transform.GetChild(i).GetComponent<Point>();
-            List.Add(point);
+            Point point = commonPointsParent.GetChild(i).GetComponent<Point>();
+            commonPoints.Add(point);
+        }
+        _totalCommonPoints = commonPoints.Count;
+
+        // Get the legends to the list
+        for (int i = 0; i < rarePointsParent.childCount; i++)
+        {
+            Point point = rarePointsParent.GetChild(i).GetComponent<Point>();
+            rarePoints.Add(point);
         }
     }
 
 
     // Functions
-    public void SpawnRandomPoint(List<Segment> segments)
+    public void SpawnRandomCommonPoint(List<Segment> segments)
     {
         // Generate a random index from the list
-        int randomIndex = Random.Range(0, List.Count);
-        Point = List[randomIndex];
+        int randomIndex = Random.Range(0, commonPoints.Count);
+        commonPoint = commonPoints[randomIndex];
 
         // Create a bool in case of the point being in the same index as the snake
         bool recursive = false;
@@ -40,7 +71,7 @@ public class PointsGenerator : MonoBehaviour
         foreach (Segment segment in segments)
         {
             // If the index is the same
-            if (segment.Index == new Vector2(Point.X, Point.Y))
+            if (segment.Index == commonPoint.Index)
             {
                 recursive = true;
                 break;
@@ -51,16 +82,82 @@ public class PointsGenerator : MonoBehaviour
         if (!recursive)
         {
             // Enable object
-            Point.gameObject.SetActive(true);
+            commonPoint.gameObject.SetActive(true);
 
             // Initialize it at the random position
-            Point.Initialize(Point.transform.position, new Vector2(Point.X, Point.Y), TileType.Type.Point);
+            commonPoint.Initialize(commonPoint.transform.position, commonPoint.Index, TileType.Type.CommonPoint);
         }
         // Try again
         else
-            SpawnRandomPoint(segments);
+            SpawnRandomCommonPoint(segments);
 
     }
+    public void DespawnCommonPoint()
+    {
+        if (commonPoint == null)
+            return;
+
+        // Remove point from the list
+        commonPoints.Remove(commonPoint);
+
+        // Remove gameobject from the scene
+        Destroy(commonPoint.gameObject);
+
+        // Turn the point null in order to respawn another
+        commonPoint = null;
+    }
+
+    public void SpawnRandomRarePoint(List<Segment> segments)
+    {
+        // Generate a random index from the list
+        int randomIndex = Random.Range(0, commonPoints.Count);
+        rarePoint = commonPoints[randomIndex];
+
+        // Create a bool in case of the point being in the same index as the snake
+        bool recursive = false;
+
+        // Check if the snake is on the random tile
+        foreach (Segment segment in segments)
+        {
+            // If the index is the same
+            if (segment.Index == commonPoint.Index)
+            {
+                recursive = true;
+                break;
+            }
+        }
+
+        // Create a point
+        if (!recursive)
+        {
+            // Enable object
+            rarePoint.gameObject.SetActive(true);
+
+            // Initialize it at the random position
+            rarePoint.Initialize(commonPoint.transform.position, rarePoint.Index, TileType.Type.RarePoint);
+        }
+        // Try again
+        else
+            SpawnRandomRarePoint(segments);
+
+    }
+    public void DespawnRarePoint()
+    {
+        if (rarePoint == null)
+            return;
+
+        // Remove point from the list
+        rarePoints.Remove(commonPoint);
+
+        // Remove gameobject from the scene
+        Destroy(rarePoint.gameObject);
+
+        // Turn the point null in order to respawn another
+        rarePoint = null;
+    }
+
+
+    // Old
     public void GenerateRandomPoint(Tile[,] tiles, List<Segment> segments)
     {
         // Get a random index from the tile array
@@ -88,27 +185,13 @@ public class PointsGenerator : MonoBehaviour
         if (!recursive)
         {
             // Instantiate object
-            Point = Instantiate(pointPrefab, transform);
+            commonPoint = Instantiate(pointPrefab, transform);
 
             // Initialize it at the random position
-            Point.Initialize(randomTile.transform.position, randomTile.Index, TileType.Type.Point);
+            commonPoint.Initialize(randomTile.transform.position, randomTile.Index, TileType.Type.CommonPoint);
         }
         // Try again
         else
             GenerateRandomPoint(tiles, segments);
-    }
-    public void DespawnPoint()
-    {
-        if (Point == null)
-            return;
-
-        // Remove point from the list
-        List.Remove(Point);
-
-        // Remove gameobject from the scene
-        Destroy(Point.gameObject);
-
-        // Turn the point null in order to respawn another
-        Point = null;
     }
 }

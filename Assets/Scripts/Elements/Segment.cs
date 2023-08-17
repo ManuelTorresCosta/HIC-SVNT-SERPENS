@@ -33,10 +33,10 @@ public class Segment : Tile
 
 
 
-    public override void Initialize(Vector2 position, Vector2 tileIndex, TileType.Type tileType)
+    public override void Initialize(Vector2 position, Vector2 index, TileType.Type tileType)
     {
         // Initialize from parent
-        base.Initialize(position, tileIndex, tileType);
+        base.Initialize(position, index, tileType);
 
         // Set direction
         Direction = Vector2.right;
