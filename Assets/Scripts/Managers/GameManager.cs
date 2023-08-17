@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
             {
                 // Generate a point if no points are on the grid
                 if (Points.Point == null)
-                    Points.GenerateRandomPoint(Tiles.List, Snake.Segments);
+                    Points.SpawnRandomPoint(Snake.Segments);
 
                 // Check if snake is going to collide with self
                 if (!Snake.CheckSelfCollision())

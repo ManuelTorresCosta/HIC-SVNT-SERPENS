@@ -5,6 +5,7 @@ using UnityEngine;
 public class Point : Tile
 {
     public int Value { get; private set; }
+    public int X, Y;
 
 
 
@@ -32,6 +33,6 @@ public class Point : Tile
         }
         
         // Initialize tile
-        base.Initialize(position, index, tileType);
+        base.Initialize(position, new Vector2(X, Y), tileType);
     }
 }
