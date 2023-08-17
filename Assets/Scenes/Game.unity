@@ -15641,6 +15641,7 @@ GameObject:
   - component: {fileID: 643509246}
   - component: {fileID: 643509245}
   - component: {fileID: 643509249}
+  - component: {fileID: 643509250}
   m_Layer: 5
   m_Name: MenuManager
   m_TagString: Untagged
@@ -15747,13 +15748,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Effects: {fileID: 182858180}
-  background: {fileID: 928423002}
-  descText: {fileID: 1815787368}
-  titleText: {fileID: 1151441937}
-  blinkSpeed: 2
-  lerpSpeed: 0.5
-  blackColor: {r: 0, g: 0, b: 0, a: 1}
-  greenColor: {r: 0.5686275, g: 0.79607844, b: 0.28235295, a: 1}
+--- !u!95 &643509250
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 643509244}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9efb3088a4bad0f4ca454726e6a6bdab, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &643881869
 GameObject:
   m_ObjectHideFlags: 0

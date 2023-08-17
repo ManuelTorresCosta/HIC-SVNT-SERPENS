@@ -45,7 +45,11 @@ public class GameManager : MonoBehaviour
         // Starts gameplay on Update()
         isGameplay = true;
     }
-    private void Update()
+
+
+
+    // Functions
+    public void Run()
     {
         if (isGameplay)
         {
@@ -100,10 +104,6 @@ public class GameManager : MonoBehaviour
             });
         }
     }
-
-
-
-    // Actions
     private void Restart()
     {
         // Initializes the snake variables
