@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,9 +11,6 @@ public class GameManager : MonoBehaviour
     public ScoreManager Score { get; private set; }
 
     public EffectsManager Effects;
-    public Transition Transition;
-
-    public Animator CameraFx { get; private set; }
 
     public bool isGameplay;
 
@@ -25,8 +23,6 @@ public class GameManager : MonoBehaviour
         Snake = GetComponentInChildren<Snake>();
         Points = GetComponentInChildren<PointsManager>();
         Score = GetComponentInChildren<ScoreManager>();
-
-        CameraFx = transform.parent.GetComponentInChildren<Animator>();
     }
     private void Start()
     {
@@ -104,9 +100,13 @@ public class GameManager : MonoBehaviour
                     Tiles.DeleteMap();
                     Score.SetActive(false);
                     Points.DespawnCommonPoint();
-
-                    //Transition.Run();
-                    StartCoroutine(Transition.RunTransition());
+                    
+                    // Run the transition effect
+                    Effects.RunTransition(() =>
+                    {
+                        // Load the end scene
+                        SceneManager.LoadScene(1);
+                    });
                     isGameplay = false;
                 }
             }

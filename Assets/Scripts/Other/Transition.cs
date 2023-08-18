@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -69,53 +70,7 @@ public class Transition : MonoBehaviour
         }
     }
 
-    public void Run()
-    {
-
-
-        if (timer < maxTimer)
-            timer += speed * Time.deltaTime;
-        else
-        {
-            // get the tile
-            Tile tile = Tiles[x, y];
-
-            // Turn on renderer except this indexes
-            if (tile.Index == new Vector2(26, 15) && tile.Index == new Vector2(27, 15) && tile.Index == new Vector2(28, 15) &&
-                tile.Index == new Vector2(28, 15) && tile.Index == new Vector2(30, 17) && tile.Index == new Vector2(23, 18) &&
-                tile.Index == new Vector2(30, 18) && tile.Index == new Vector2(23, 19) && tile.Index == new Vector2(24, 20) &&
-                tile.Index == new Vector2(31, 20) && tile.Index == new Vector2(25, 21) && tile.Index == new Vector2(26, 21) &&
-                tile.Index == new Vector2(27, 21) && tile.Index == new Vector2(31, 21) && tile.Index == new Vector2(28, 22) &&
-                tile.Index == new Vector2(29, 23) && tile.Index == new Vector2(31, 22) && tile.Index == new Vector2(29, 33) &&
-                tile.Index == new Vector2(31, 23) && tile.Index == new Vector2(29, 24) && tile.Index == new Vector2(31, 24) &&
-                tile.Index == new Vector2(32, 25) && tile.Index == new Vector2(25, 26) && tile.Index == new Vector2(26, 26) &&
-                tile.Index == new Vector2(27, 26) && tile.Index == new Vector2(32, 26) && tile.Index == new Vector2(24, 27) &&
-                tile.Index == new Vector2(28, 27) && tile.Index == new Vector2(29, 27) && tile.Index == new Vector2(31, 27) &&
-                tile.Index == new Vector2(24, 28) && tile.Index == new Vector2(30, 28) && tile.Index == new Vector2(25, 29) &&
-                tile.Index == new Vector2(26, 29) && tile.Index == new Vector2(27, 30) && tile.Index == new Vector2(28, 30) &&
-                tile.Index == new Vector2(31, 19) && tile.Index == new Vector2(29, 31) && tile.Index == new Vector2(29, 32) &&
-                tile.Index == new Vector2(28, 33) && tile.Index == new Vector2(25, 34) && tile.Index == new Vector2(26, 34) &&
-                tile.Index == new Vector2(27, 34) && tile.Index == new Vector2(25, 35) && tile.Index == new Vector2(26, 35))
-            {
-                // Turn renderer on
-                tile.SpriteRenderer.enabled = false;
-            }
-            else
-                tile.SpriteRenderer.enabled = true;
-
-            // Ping pong effect
-            if (x < _arraySize.x || x > - 1)
-                x += dir;
-            else
-            {
-                y++;
-                dir *= -1;
-            }
-
-            timer = 0;
-        }
-    }
-    public IEnumerator RunTransition()
+    public IEnumerator RunTransition(Action callback)
     {
         for (int y = 0; y < (int)_arraySize.y; y++)
         {
@@ -132,22 +87,22 @@ public class Transition : MonoBehaviour
                 Tile tile = Tiles[_x, _y];
 
                 // Turn on renderer except this indexes
-                if (tile.Index != new Vector2(22, 15) && tile.Index != new Vector2(23, 15) && tile.Index != new Vector2(24, 15) &&
-                    tile.Index != new Vector2(21, 16) && tile.Index != new Vector2(25, 16) && tile.Index != new Vector2(20, 17) &&
-                    tile.Index != new Vector2(24, 15) && tile.Index != new Vector2(26, 17) && tile.Index != new Vector2(19, 18) &&
-                    tile.Index != new Vector2(26, 18) && tile.Index != new Vector2(19, 19) && tile.Index != new Vector2(20, 20) &&
-                    tile.Index != new Vector2(27, 20) && tile.Index != new Vector2(21, 21) && tile.Index != new Vector2(22, 21) &&
-                    tile.Index != new Vector2(23, 21) && tile.Index != new Vector2(27, 21) && tile.Index != new Vector2(24, 22) &&
-                    tile.Index != new Vector2(25, 23) && tile.Index != new Vector2(27, 22) && tile.Index != new Vector2(25, 33) &&
-                    tile.Index != new Vector2(27, 23) && tile.Index != new Vector2(25, 24) && tile.Index != new Vector2(27, 24) &&
-                    tile.Index != new Vector2(28, 25) && tile.Index != new Vector2(21, 26) && tile.Index != new Vector2(22, 26) &&
-                    tile.Index != new Vector2(23, 26) && tile.Index != new Vector2(28, 26) && tile.Index != new Vector2(20, 27) &&
-                    tile.Index != new Vector2(24, 27) && tile.Index != new Vector2(25, 27) && tile.Index != new Vector2(27, 27) &&
-                    tile.Index != new Vector2(20, 28) && tile.Index != new Vector2(26, 28) && tile.Index != new Vector2(21, 29) &&
-                    tile.Index != new Vector2(22, 29) && tile.Index != new Vector2(23, 30) && tile.Index != new Vector2(24, 30) &&
-                    tile.Index != new Vector2(27, 19) && tile.Index != new Vector2(25, 31) && tile.Index != new Vector2(25, 32) &&
-                    tile.Index != new Vector2(24, 33) && tile.Index != new Vector2(21, 34) && tile.Index != new Vector2(22, 34) && 
-                    tile.Index != new Vector2(23, 34) && tile.Index != new Vector2(21, 35) && tile.Index != new Vector2(22, 35))
+                if (tile.Index != new Vector2(20, 15) && tile.Index != new Vector2(21, 15) && tile.Index != new Vector2(22, 15) &&
+                    tile.Index != new Vector2(19, 16) && tile.Index != new Vector2(23, 16) && tile.Index != new Vector2(18, 17) &&
+                    tile.Index != new Vector2(22, 15) && tile.Index != new Vector2(24, 17) && tile.Index != new Vector2(17, 18) &&
+                    tile.Index != new Vector2(24, 18) && tile.Index != new Vector2(17, 19) && tile.Index != new Vector2(18, 20) &&
+                    tile.Index != new Vector2(25, 20) && tile.Index != new Vector2(19, 21) && tile.Index != new Vector2(20, 21) &&
+                    tile.Index != new Vector2(21, 21) && tile.Index != new Vector2(25, 21) && tile.Index != new Vector2(22, 22) &&
+                    tile.Index != new Vector2(23, 23) && tile.Index != new Vector2(25, 22) && tile.Index != new Vector2(23, 33) &&
+                    tile.Index != new Vector2(25, 23) && tile.Index != new Vector2(23, 24) && tile.Index != new Vector2(25, 24) &&
+                    tile.Index != new Vector2(26, 25) && tile.Index != new Vector2(19, 26) && tile.Index != new Vector2(20, 26) &&
+                    tile.Index != new Vector2(21, 26) && tile.Index != new Vector2(26, 26) && tile.Index != new Vector2(18, 27) &&
+                    tile.Index != new Vector2(22, 27) && tile.Index != new Vector2(23, 27) && tile.Index != new Vector2(25, 27) &&
+                    tile.Index != new Vector2(18, 28) && tile.Index != new Vector2(24, 28) && tile.Index != new Vector2(19, 29) &&
+                    tile.Index != new Vector2(20, 29) && tile.Index != new Vector2(21, 30) && tile.Index != new Vector2(22, 30) &&
+                    tile.Index != new Vector2(25, 19) && tile.Index != new Vector2(23, 31) && tile.Index != new Vector2(23, 32) &&
+                    tile.Index != new Vector2(22, 33) && tile.Index != new Vector2(19, 34) && tile.Index != new Vector2(20, 34) && 
+                    tile.Index != new Vector2(21, 34) && tile.Index != new Vector2(19, 35) && tile.Index != new Vector2(20, 35))
                 {
                     // Turn renderer on
                     tile.SpriteRenderer.enabled = true;
@@ -156,5 +111,9 @@ public class Transition : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
+
+        yield return new WaitForSeconds(3f);
+
+        callback();
     }
 }
