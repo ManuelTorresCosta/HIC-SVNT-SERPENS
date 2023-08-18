@@ -6,6 +6,9 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
     public Text scoreText;
+    public Image[] scoreImages;
+    public Sprite[] fonts;
+
     public GameObject scoreBar;
     public int score = 0;
     
@@ -30,6 +33,21 @@ public class ScoreManager : MonoBehaviour
             "0" :
             "";
 
-        scoreText.text = prefix + score.ToString();
+        // Set score text
+        //scoreText.text = prefix + score.ToString();
+
+        // Set score string
+        string scoreString = prefix + score.ToString();
+
+        // Translate string to image
+        for (int i = 0; i < scoreString.Length; i++)
+        {
+            // Get the index of the char in the string
+            int index = (int)char.GetNumericValue(scoreString[i]);
+
+            // Get the image from the array
+            scoreImages[i].sprite = fonts[index];
+        }
+
     }
 }
