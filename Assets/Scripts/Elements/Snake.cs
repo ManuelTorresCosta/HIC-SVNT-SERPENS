@@ -282,19 +282,26 @@ public class Snake : MonoBehaviour
     }
     public bool CheckCollisionWith(Point point)
     {
+        if (point == null)
+            return false;
+
         Segment head = Segments[0];
 
-        // Animate head when eating
-        if (head.Index + 1 * head.Direction == point.Index || head.Index == point.Index)
-            head.SetBodySprite(headSprites[1]);
-        else
-            head.SetBodySprite(headSprites[0]);
+        // Check for all collision index of the point
+        for (int i = 0; i < point.collisionIndices.Length; i++)
+        {
+            // Animate head when eating
+            if (head.Index + 1 * head.Direction == point.collisionIndices[i] || head.Index == point.collisionIndices[i])
+                head.SetBodySprite(headSprites[1]);
+            else
+                head.SetBodySprite(headSprites[0]);
 
-        // Check if head index is the same as the point
-        if (head.Index == point.Index || head.Index == point.Index + Vector2.up || head.Index == point.Index - Vector2.up)
-            return true;
-        else
-            return false;
+            // Check if head index is the same as the point
+            if (head.Index == point.collisionIndices[i])
+                return true;
+        }
+
+        return false;
     }
     public void Grow()
     {

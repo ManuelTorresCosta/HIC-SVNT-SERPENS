@@ -42,13 +42,13 @@ public class Tile : MonoBehaviour
             case TileType.Type.CommonPoint:
                 SpriteRenderer.sortingOrder = 2;
                 SpriteRenderer.color = Color.black;
-                name = "Point";
+                //name = "Point";
                 break;
 
             case TileType.Type.RarePoint:
                 SpriteRenderer.sortingOrder = 2;
                 SpriteRenderer.color = Color.black;
-                name = "BonusPoint";
+                //name = "BonusPoint";
                 break;
 
             case TileType.Type.Segment:

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Point : Tile
 {
     public int Value { get; private set; }
-
+    public Vector2[] collisionIndices;
 
 
     protected override void Awake()

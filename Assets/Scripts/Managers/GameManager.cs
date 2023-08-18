@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public TileManager Tiles { get; private set; }
     public Snake Snake { get; private set; }
-    public PointsGenerator Points { get; private set; }
+    public PointsManager Points { get; private set; }
     public ScoreManager Score { get; private set; }
 
     public EffectsManager Effects;
@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     {
         Tiles = GetComponentInChildren<TileManager>();
         Snake = GetComponentInChildren<Snake>();
-        Points = GetComponentInChildren<PointsGenerator>();
+        Points = GetComponentInChildren<PointsManager>();
         Score = GetComponentInChildren<ScoreManager>();
 
         CameraFx = transform.parent.GetComponentInChildren<Animator>();
@@ -55,13 +55,13 @@ public class GameManager : MonoBehaviour
         {
             if (Snake.isAlive)
             {
-                // Generate a point if no points are on the grid
+                // Spawn a point if no points are on the grid
                 if (Points.CanSpawnCommonPoint())
                     Points.SpawnRandomCommonPoint(Snake.Segments);
 
-                // Generate a legend if no legends are active
-                //if (Points.CanSpawnLegend())
-                //    Points.SpawnRandomLegend(Snake.Segments);
+                // Spawn a legend if no legends are active
+                if (Points.CanSpawnRarePoint())
+                    Points.SpawnRandomRarePoint(Snake.Segments);
 
                 // Check if snake is going to collide with self
                 if (!Snake.CheckSelfCollision())
@@ -81,7 +81,20 @@ public class GameManager : MonoBehaviour
                         // Remove point
                         Points.DespawnCommonPoint();
 
-                        Effects.ColorFadeEffect();
+                        //Effects.ColorFadeEffect();
+                    }
+                    else if (Snake.CheckCollisionWith(Points.rarePoint))
+                    {
+                        // Make snake grow
+                        Snake.Grow();
+
+                        // Add point value to score
+                        Score.AddPoint(Points.rarePoint.Value);
+
+                        // Remove point
+                        Points.DespawnRarePoint();
+
+                        //Effects.ColorFadeEffect();
                     }
                 }
                 // Snake collided with self

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PointsGenerator : MonoBehaviour
+public class PointsManager : MonoBehaviour
 {
     public Point pointPrefab;
 
@@ -71,7 +71,7 @@ public class PointsGenerator : MonoBehaviour
         foreach (Segment segment in segments)
         {
             // If the index is the same
-            if (segment.Index == commonPoint.Index)
+            if (segment.Index == commonPoint.collisionIndices[0])
             {
                 recursive = true;
                 break;
@@ -110,36 +110,41 @@ public class PointsGenerator : MonoBehaviour
     public void SpawnRandomRarePoint(List<Segment> segments)
     {
         // Generate a random index from the list
-        int randomIndex = Random.Range(0, commonPoints.Count);
-        rarePoint = commonPoints[randomIndex];
+        int randomIndex = Random.Range(0, rarePoints.Count);
+        rarePoint = rarePoints[randomIndex];
 
-        // Create a bool in case of the point being in the same index as the snake
-        bool recursive = false;
-
-        // Check if the snake is on the random tile
-        foreach (Segment segment in segments)
+        if (rarePoint != null)
         {
-            // If the index is the same
-            if (segment.Index == commonPoint.Index)
+            // Create a bool in case of the point being in the same index as the snake
+            bool recursive = false;
+
+            // Check if the snake is on the random tile
+            foreach (Segment segment in segments)
             {
-                recursive = true;
-                break;
+                for (int i = 0; i < rarePoint.collisionIndices.Length; i++)
+                {
+                    // If the index is the same
+                    if (segment.Index == rarePoint.collisionIndices[i] || commonPoint.collisionIndices[0] == rarePoint.collisionIndices[i])
+                    {
+                        recursive = true;
+                        break;
+                    }
+                }
             }
+            
+            // Create a point
+            if (!recursive)
+            {
+                // Enable object
+                rarePoint.gameObject.SetActive(true);
+
+                // Initialize it at the random position
+                rarePoint.Initialize(rarePoint.transform.position, rarePoint.Index, TileType.Type.RarePoint);
+            }
+            // Try again
+            else
+                SpawnRandomRarePoint(segments);
         }
-
-        // Create a point
-        if (!recursive)
-        {
-            // Enable object
-            rarePoint.gameObject.SetActive(true);
-
-            // Initialize it at the random position
-            rarePoint.Initialize(commonPoint.transform.position, rarePoint.Index, TileType.Type.RarePoint);
-        }
-        // Try again
-        else
-            SpawnRandomRarePoint(segments);
-
     }
     public void DespawnRarePoint()
     {
