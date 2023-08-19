@@ -61,6 +61,10 @@ public class GameManager : MonoBehaviour
                 if (Points.CanSpawnRarePoint())
                     Points.SpawnRandomRarePoint(Snake.Segments);
 
+                // Sets despawn timer for rare point
+                if (Points.IsRarePointTimeEnded())
+                    Points.DespawnRarePoint();
+
                 // Check if snake is going to collide with self
                 if (!Snake.CheckSelfCollision())
                 {

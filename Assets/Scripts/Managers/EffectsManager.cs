@@ -11,6 +11,10 @@ public class EffectsManager : MonoBehaviour
     public DigitalGlitch Digital { get; private set; }
     public Transition Transition { get; private set; }
 
+    // Glitch effect
+    private float _fxTimer = 30;
+    private float _fxMaxTimer = 30;
+
 
 
     private void Awake()
@@ -26,7 +30,13 @@ public class EffectsManager : MonoBehaviour
 
     public void GlitchEffect()
     {
-        CamAnimation.SetTrigger("glitch");
+        if (_fxTimer < _fxMaxTimer)
+            _fxTimer += Time.deltaTime;
+        else
+        {
+            CamAnimation.SetTrigger("glitch");
+            _fxTimer = UnityEngine.Random.Range(0, 15);
+        }
     }
     public void ColorFadeEffect()
     {

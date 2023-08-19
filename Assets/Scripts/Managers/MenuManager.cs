@@ -18,9 +18,7 @@ public class MenuManager : MonoBehaviour
     public Animator Animator { get; private set; }
     public EffectsManager Effects;
 
-    // Glitch effect
-    private float _fxTimer = 30;
-    private float _fxMaxTimer = 30;
+    
     
 
     
@@ -39,13 +37,14 @@ public class MenuManager : MonoBehaviour
         switch (_state)
         {
             case State.MENU:
-                GlitchEffect();
+                Effects.GlitchEffect();
                 break;
 
             case State.TRANSITION:
                 break;
         }
     }
+
     public void StartTransition()
     {
         if (_state == State.MENU)
@@ -57,16 +56,5 @@ public class MenuManager : MonoBehaviour
     public void EndTransition()
     {
         gameObject.SetActive(false);
-    }
-
-    private void GlitchEffect()
-    {
-        if (_fxTimer < _fxMaxTimer)
-            _fxTimer += Time.deltaTime;
-        else
-        {
-            Effects.GlitchEffect();
-            _fxTimer = UnityEngine.Random.Range(0, 15);
-        }
     }
 }

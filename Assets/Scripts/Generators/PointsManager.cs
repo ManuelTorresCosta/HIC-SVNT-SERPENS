@@ -31,6 +31,27 @@ public class PointsManager : MonoBehaviour
         return false;
     }
 
+    public float rarePoointDespawnTimer = 10f;
+    private float _rarePointTimer = 0f;
+    public bool IsRarePointTimeEnded()
+    {
+        if (rarePoint != null)
+        {
+            if (_rarePointTimer < rarePoointDespawnTimer)
+            {
+                _rarePointTimer += Time.deltaTime;
+                return false;
+            }
+            else
+            {
+                _rarePointTimer = rarePoointDespawnTimer;
+                _totalCommonPoints = commonPoints.Count;
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     // Unity functions
     private void Awake()
@@ -159,8 +180,11 @@ public class PointsManager : MonoBehaviour
 
         // Turn the point null in order to respawn another
         rarePoint = null;
+
+        _rarePointTimer = 0f;
     }
 
+    
 
     // Old
     public void GenerateRandomPoint(Tile[,] tiles, List<Segment> segments)

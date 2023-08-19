@@ -47,10 +47,11 @@ public class SERPENS : MonoBehaviour
         switch (gameState)
         {
             case GameState.MENU:
-
+                // Run menu
                 Menu.Run();
 
-                if (Input.GetKeyDown(KeyCode.Space))
+                // Trigger transition on any key pressed
+                if (Input.anyKey)
                 {
                     Menu.StartTransition();
                     StartGame();
@@ -58,7 +59,7 @@ public class SERPENS : MonoBehaviour
                 break;
 
             case GameState.GAMEPLAY:
-
+                // Start gameplay
                 Game.Run();
 
                 break;

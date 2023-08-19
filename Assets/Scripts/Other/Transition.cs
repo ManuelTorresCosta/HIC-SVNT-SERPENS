@@ -15,14 +15,7 @@ public class Transition : MonoBehaviour
     private Sprite _tileSprite;
     private Vector2 _arraySize;
     private int _x, _y;
-    private int dir = 1;
 
-    // Debug (non coroutine function)
-    public float timer = 0;
-    public float maxTimer = 100;
-    public int speed = 10;
-    public int x = 0;
-    public int y = 0;
 
 
     // Unity funtions
