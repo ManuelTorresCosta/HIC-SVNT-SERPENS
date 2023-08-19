@@ -89,7 +89,7 @@ public class Snake : MonoBehaviour
 
         isAlive = true;
     }
-    private void UpdateSprites()
+    private void UpdateSprites(bool eating = false)
     {
         // Go though all the segments
         for (int i = 0; i < Segments.Count; i++)
@@ -99,7 +99,7 @@ public class Snake : MonoBehaviour
 
             // Head
             if (i == 0)
-                segment.SetBodySprite(headSprites[0]);              
+                segment.SetBodySprite(!eating ? headSprites[0] : headSprites[1]);              
             // The first body segment
             if (i == 1)
                 segment.SetBodySprite(sprites[0]);
@@ -113,12 +113,7 @@ public class Snake : MonoBehaviour
                 segment.SetBodySprite(sprites[2], -1, -1);
             // The rest of the body alternates
             else
-            {
-                if (i % 2 != 0)
-                    segment.SetBodySprite(sprites[0]);
-                else
-                    segment.SetBodySprite(sprites[1]);
-            }
+                segment.SetBodySprite(i % 2 != 0 ? sprites[0] : sprites[1]);
 
             segment.UpdateSpriteDirection();
         }
@@ -324,7 +319,7 @@ public class Snake : MonoBehaviour
         Segments.Add(newSegment);
 
         // Update the tail sprites
-        UpdateSprites();
+        UpdateSprites(true);
     }
 
     // Despawn functions

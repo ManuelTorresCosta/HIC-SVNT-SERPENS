@@ -34,6 +34,9 @@ public class EffectsManager : MonoBehaviour
     }
     public void RunTransition(Action callback)
     {
-        StartCoroutine(Transition.RunTransition(callback));
+        StartCoroutine(Transition.RunTransition(() =>
+        {
+            callback();
+        }));
     }
 }

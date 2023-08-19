@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
         // Create the snake objects
         Snake.CreateSnake(Vector2.right, Tiles.Spawn);
 
+        Score.SetRarePointValue(25);
+
         // Starts gameplay on Update()
         isGameplay = true;
     }
@@ -96,11 +98,16 @@ public class GameManager : MonoBehaviour
                 // Snake collided with self
                 else
                 {
-                    // Removes map and points
+                    // Removes map borders (and grid)
                     Tiles.DeleteMap();
-                    Score.SetActive(false);
-                    Points.DespawnCommonPoint();
                     
+                    // Despawn points
+                    Points.DespawnCommonPoint();
+                    Points.DespawnRarePoint();
+
+                    // Disable score UI
+                    Score.SetActive(false);
+
                     // Run the transition effect
                     Effects.RunTransition(() =>
                     {

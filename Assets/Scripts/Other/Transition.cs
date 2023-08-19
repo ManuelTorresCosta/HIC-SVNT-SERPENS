@@ -7,6 +7,7 @@ using static UnityEngine.UI.Image;
 public class Transition : MonoBehaviour
 {
     public BoxCollider2D Collider { get; private set; }
+    public Animation Animation { get; private set; }
 
     public Tile tilePrefab;
     public Tile[,] Tiles { get; private set; }
@@ -28,6 +29,7 @@ public class Transition : MonoBehaviour
     private void Awake()
     {
         Collider = GetComponentInChildren<BoxCollider2D>();
+        Animation = GetComponent<Animation>();
 
         _tileSprite = tilePrefab.GetComponent<SpriteRenderer>().sprite;
     }
@@ -112,8 +114,12 @@ public class Transition : MonoBehaviour
             }
         }
 
+        // Fade in black overlay
+        Animation.Play();
+
         yield return new WaitForSeconds(3f);
 
+        // Callback to change scene
         callback();
     }
 }

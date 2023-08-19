@@ -5,21 +5,33 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    public Text scoreText;
-    public Image[] scoreImages;
     public Sprite[] fonts;
+
+    [Header("Score UI")]
+    public Image[] scoreDigits;
+
+    [Header("Rare point")]
+    public Image rarePoint;
+    public Image[] rarePointDigits;
 
     public GameObject scoreBar;
     public int score = 0;
     
 
-
-
     public void SetActive(bool value)
     {
-        scoreText.gameObject.SetActive(value);
+        foreach (Image image in scoreDigits)
+            image.gameObject.SetActive(value);
+
+        rarePoint.gameObject.SetActive(false);
+
+        foreach (Image image in rarePointDigits)
+            image.gameObject.SetActive(value);
+
         scoreBar.SetActive(value);
     }
+
+
     public void AddPoint(int value)
     {
         score += value;
@@ -46,8 +58,17 @@ public class ScoreManager : MonoBehaviour
             int index = (int)char.GetNumericValue(scoreString[i]);
 
             // Get the image from the array
-            scoreImages[i].sprite = fonts[index];
+            scoreDigits[i].sprite = fonts[index];
         }
 
+    }
+    public void SetRarePointValue(int value)
+    {
+        string valueStr = value.ToString();
+        for (int i = 0; i < valueStr.Length; i++)
+        {
+            int index = (int)char.GetNumericValue(valueStr[i]);
+            rarePointDigits[i].sprite = fonts[index];
+        }
     }
 }
