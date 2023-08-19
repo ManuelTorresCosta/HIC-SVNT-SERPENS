@@ -17212,11 +17212,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 4552683099656443630, guid: 19b798f00069ed740a100bd630d4ebe4, type: 3}
-  timer: 0
-  maxTimer: 1
-  speed: 200
-  x: 0
-  y: 0
 --- !u!111 &560862438
 Animation:
   m_ObjectHideFlags: 0
@@ -20856,6 +20851,7 @@ MonoBehaviour:
   pointPrefab: {fileID: 280229816746403738, guid: c73e4b608eba4544f8dff41afcbcc5d9, type: 3}
   commonPointsParent: {fileID: 1686796208}
   rarePointsParent: {fileID: 607471927}
+  rarePoointDespawnTimer: 10
 --- !u!1 &669712290
 GameObject:
   m_ObjectHideFlags: 0
@@ -28067,7 +28063,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &964962781
 Transform:
   m_ObjectHideFlags: 0
@@ -48641,7 +48637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1705193010
 SpriteRenderer:
   m_ObjectHideFlags: 0

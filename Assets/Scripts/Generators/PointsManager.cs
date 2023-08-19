@@ -51,6 +51,11 @@ public class PointsManager : MonoBehaviour
         }
         return false;
     }
+    private int _rarePointsCapturedCounter = 0;
+    public bool MaxRarePointsCaptured()
+    {
+        return _rarePointsCapturedCounter > 3;
+    }
 
 
     // Unity functions
@@ -72,8 +77,12 @@ public class PointsManager : MonoBehaviour
         // Get the legends to the list
         for (int i = 0; i < rarePointsParent.childCount; i++)
         {
-            Point point = rarePointsParent.GetChild(i).GetComponent<Point>();
-            rarePoints.Add(point);
+            // ignore the last rarePoint to trigger the endGame
+            if (i != 13)
+            {
+                Point point = rarePointsParent.GetChild(i).GetComponent<Point>();
+                rarePoints.Add(point);
+            }
         }
     }
 
@@ -130,9 +139,15 @@ public class PointsManager : MonoBehaviour
 
     public void SpawnRandomRarePoint(List<Segment> segments)
     {
-        // Generate a random index from the list
-        int randomIndex = Random.Range(0, rarePoints.Count);
-        rarePoint = rarePoints[randomIndex];
+        if (_rarePointsCapturedCounter < 3)
+        {
+            // Generate a random index from the list
+            int randomIndex = Random.Range(0, rarePoints.Count);
+            rarePoint = rarePoints[randomIndex];
+        }
+        // Spawns the last rarePoint
+        else
+            rarePoint = rarePoints[13];
 
         if (rarePoint != null)
         {
@@ -167,7 +182,7 @@ public class PointsManager : MonoBehaviour
                 SpawnRandomRarePoint(segments);
         }
     }
-    public void DespawnRarePoint()
+    public void DespawnRarePoint(bool captured = true)
     {
         if (rarePoint == null)
             return;
@@ -182,6 +197,9 @@ public class PointsManager : MonoBehaviour
         rarePoint = null;
 
         _rarePointTimer = 0f;
+
+        if (captured)
+            _rarePointsCapturedCounter++;
     }
 
     

@@ -65,8 +65,31 @@ public class GameManager : MonoBehaviour
                 if (Points.IsRarePointTimeEnded())
                     Points.DespawnRarePoint();
 
-                // Check if snake is going to collide with self
-                if (!Snake.CheckSelfCollision())
+                // Check end game conditions
+                if (Snake.CheckSelfCollision() || Points.MaxRarePointsCaptured())
+                {
+                    // Removes map borders (and grid)
+                    Tiles.DeleteMap();
+
+                    // Despawn points
+                    Points.DespawnCommonPoint();
+                    Points.DespawnRarePoint();
+
+                    // Disable score UI
+                    Score.SetActive(false);
+
+                    // Run the transition effect
+                    Effects.RunTransition(() =>
+                    {
+                        // Load the end scene
+                        SceneManager.LoadScene(1);
+                    });
+                    isGameplay = false;
+
+                    
+                }
+                // Snake movement
+                else
                 {
                     // Move snake
                     Snake.HandleMovement();
@@ -99,27 +122,7 @@ public class GameManager : MonoBehaviour
                         //Effects.ColorFadeEffect();
                     }
                 }
-                // Snake collided with self
-                else
-                {
-                    // Removes map borders (and grid)
-                    Tiles.DeleteMap();
-                    
-                    // Despawn points
-                    Points.DespawnCommonPoint();
-                    Points.DespawnRarePoint();
 
-                    // Disable score UI
-                    Score.SetActive(false);
-
-                    // Run the transition effect
-                    Effects.RunTransition(() =>
-                    {
-                        // Load the end scene
-                        SceneManager.LoadScene(1);
-                    });
-                    isGameplay = false;
-                }
             }
         }
         else
