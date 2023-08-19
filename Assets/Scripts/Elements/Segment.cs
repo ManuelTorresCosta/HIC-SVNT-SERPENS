@@ -8,6 +8,7 @@ public class Segment : Tile
 {
     public Vector2 Direction;
     public int i;
+
     public Dictionary<Vector2, Vector2> ChangeDirIndexes { get; private set; }
     private float GetRotationFromDirection()
     {
@@ -20,6 +21,8 @@ public class Segment : Tile
         else
             return -90;
     }
+
+    
 
 
 

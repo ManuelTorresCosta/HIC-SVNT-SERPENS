@@ -77,12 +77,8 @@ public class PointsManager : MonoBehaviour
         // Get the legends to the list
         for (int i = 0; i < rarePointsParent.childCount; i++)
         {
-            // ignore the last rarePoint to trigger the endGame
-            if (i != 13)
-            {
-                Point point = rarePointsParent.GetChild(i).GetComponent<Point>();
-                rarePoints.Add(point);
-            }
+            Point point = rarePointsParent.GetChild(i).GetComponent<Point>();
+            rarePoints.Add(point);
         }
     }
 
@@ -139,7 +135,9 @@ public class PointsManager : MonoBehaviour
 
     public void SpawnRandomRarePoint(List<Segment> segments)
     {
-        if (_rarePointsCapturedCounter < 3)
+        bool lastPoint = _rarePointsCapturedCounter >= 3;
+
+        if (!lastPoint)
         {
             // Generate a random index from the list
             int randomIndex = Random.Range(0, rarePoints.Count);
@@ -147,7 +145,11 @@ public class PointsManager : MonoBehaviour
         }
         // Spawns the last rarePoint
         else
-            rarePoint = rarePoints[13];
+        {
+            foreach (Point point in rarePoints)
+                if (point.collisionIndices[0] == new Vector2(5, 30))
+                    rarePoint = point;
+        }
 
         if (rarePoint != null)
         {
@@ -169,7 +171,7 @@ public class PointsManager : MonoBehaviour
             }
             
             // Create a point
-            if (!recursive)
+            if (!recursive || (lastPoint && rarePoint.collisionIndices[0] != new Vector2(5, 30)))
             {
                 // Enable object
                 rarePoint.gameObject.SetActive(true);
@@ -182,13 +184,13 @@ public class PointsManager : MonoBehaviour
                 SpawnRandomRarePoint(segments);
         }
     }
-    public void DespawnRarePoint(bool captured = true)
+    public void DespawnRarePoint(bool captured)
     {
         if (rarePoint == null)
             return;
 
         // Remove point from the list
-        rarePoints.Remove(commonPoint);
+        rarePoints.Remove(rarePoint);
 
         // Remove gameobject from the scene
         Destroy(rarePoint.gameObject);

@@ -7,6 +7,8 @@ public class Snake : MonoBehaviour
 {
     public List<Segment> Segments { get; private set; }
     public Segment GetHead() { return Segments[0]; }
+    
+    private List<Vector2> _eatenIndexes;
 
     [Header("References")]    
     
@@ -37,6 +39,7 @@ public class Snake : MonoBehaviour
     private void Awake()
     {
         Segments = new List<Segment>();
+        _eatenIndexes = new List<Vector2>();
     }
 
     
@@ -95,7 +98,7 @@ public class Snake : MonoBehaviour
         for (int i = 0; i < Segments.Count; i++)
         {
             // Get the segment from list
-            Segment segment = Segments[i];
+            Segment segment = Segments[i];  
 
             // Head
             if (i == 0)
@@ -114,6 +117,24 @@ public class Snake : MonoBehaviour
             // The rest of the body alternates
             else
                 segment.SetBodySprite(i % 2 != 0 ? sprites[0] : sprites[1]);
+
+            // Set fat snake (when snake eats points)
+            //for (int j = 0; j < _eatenIndexes.Count; j++)
+            //{
+            //    // Dont change head
+            //    if (i == 0)
+            //        continue;
+
+            //    // Change sprite when the body passes in the eaten point
+            //    if (segment.Index == _eatenIndexes[j])
+            //    {
+            //        segment.SetBodySprite(sprites[3]);
+
+            //        // Remove eaten point when it reaches the tail
+            //        if (i == Segments.Count - 1)
+            //            _eatenIndexes.Remove(segment.Index);
+            //    }
+            //}
 
             segment.UpdateSpriteDirection();
         }
@@ -293,7 +314,10 @@ public class Snake : MonoBehaviour
 
             // Check if head index is the same as the point
             if (head.Index == point.collisionIndices[i])
+            {
+                _eatenIndexes.Add(head.Index);
                 return true;
+            }
         }
 
         return false;

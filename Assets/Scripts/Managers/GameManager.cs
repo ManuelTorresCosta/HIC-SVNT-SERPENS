@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
 
                 // Sets despawn timer for rare point
                 if (Points.IsRarePointTimeEnded())
-                    Points.DespawnRarePoint();
+                    Points.DespawnRarePoint(false);
 
                 // Check end game conditions
                 if (Snake.CheckSelfCollision() || Points.MaxRarePointsCaptured())
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
 
                     // Despawn points
                     Points.DespawnCommonPoint();
-                    Points.DespawnRarePoint();
+                    Points.DespawnRarePoint(true);
 
                     // Disable score UI
                     Score.SetActive(false);
@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
                         Score.AddPoint(Points.rarePoint.Value);
 
                         // Remove point
-                        Points.DespawnRarePoint();
+                        Points.DespawnRarePoint(true);
 
                         //Effects.ColorFadeEffect();
                     }
