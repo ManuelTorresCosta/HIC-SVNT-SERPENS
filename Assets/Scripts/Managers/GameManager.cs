@@ -121,6 +121,10 @@ public class GameManager : MonoBehaviour
 
                         //Effects.ColorFadeEffect();
                     }
+
+                    // Update snake sprites when it eats
+                    if (Snake.IsCollidingWithEatenPoint())
+                        Snake.UpdateEatenPoints();
                 }
 
             }
@@ -135,6 +139,7 @@ public class GameManager : MonoBehaviour
             });
         }
     }
+
     private void Restart()
     {
         // Initializes the snake variables

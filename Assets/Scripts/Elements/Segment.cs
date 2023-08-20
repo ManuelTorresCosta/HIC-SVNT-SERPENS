@@ -23,9 +23,7 @@ public class Segment : Tile
     }
 
     
-
-
-
+    // Unity functions
     protected override void Awake()
     {
         base.Awake();
@@ -35,7 +33,7 @@ public class Segment : Tile
     }
 
 
-
+    // Functions
     public override void Initialize(Vector2 position, Vector2 index, TileType.Type tileType)
     {
         // Initialize from parent
@@ -59,7 +57,7 @@ public class Segment : Tile
     }
     public void SetBodySprite(Sprite sprite, int flipX = 1, int flipY = 1)
     {
-        // If the prite needs to be updated
+        // If the sprite needs to be updated
         if (SpriteRenderer.sprite != sprite)
             SpriteRenderer.sprite = sprite;
 

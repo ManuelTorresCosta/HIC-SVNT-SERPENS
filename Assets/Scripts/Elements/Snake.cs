@@ -7,8 +7,6 @@ public class Snake : MonoBehaviour
 {
     public List<Segment> Segments { get; private set; }
     public Segment GetHead() { return Segments[0]; }
-    
-    private List<Vector2> _eatenIndexes;
 
     [Header("References")]    
     
@@ -34,12 +32,15 @@ public class Snake : MonoBehaviour
     private Vector2 _minIndexes;
     private Vector2 _maxIndexes;
 
+    public List<Vector2> _eatenIndices;
 
 
+    // Unity functions
     private void Awake()
     {
         Segments = new List<Segment>();
-        _eatenIndexes = new List<Vector2>();
+
+        _eatenIndices = new List<Vector2>();
     }
 
     
@@ -98,13 +99,13 @@ public class Snake : MonoBehaviour
         for (int i = 0; i < Segments.Count; i++)
         {
             // Get the segment from list
-            Segment segment = Segments[i];  
+            Segment segment = Segments[i];
 
             // Head
             if (i == 0)
-                segment.SetBodySprite(!eating ? headSprites[0] : headSprites[1]);              
-            // The first body segment
-            if (i == 1)
+                segment.SetBodySprite(!eating ? headSprites[0] : headSprites[1]);
+            else // The first body segment
+                if (i == 1)
                 segment.SetBodySprite(sprites[0]);
             // The last segment
             else if (i == Segments.Count - 1)
@@ -118,23 +119,59 @@ public class Snake : MonoBehaviour
             else
                 segment.SetBodySprite(i % 2 != 0 ? sprites[0] : sprites[1]);
 
-            // Set fat snake (when snake eats points)
-            //for (int j = 0; j < _eatenIndexes.Count; j++)
-            //{
-            //    // Dont change head
-            //    if (i == 0)
-            //        continue;
+            segment.UpdateSpriteDirection();
+        }
+    }
+    
+    public void UpdateEatenPoints()
+    {
+        // Go though all the segments
+        for (int i = 1; i < Segments.Count; i++)
+        {
+            // Get the segment from list
+            Segment segment = Segments[i];
 
-            //    // Change sprite when the body passes in the eaten point
-            //    if (segment.Index == _eatenIndexes[j])
-            //    {
-            //        segment.SetBodySprite(sprites[3]);
+            // Go trough all eaten locations
+            bool isFat = false;
+            for (int j = 0; j < _eatenIndices.Count; j++)
+            {
+                // The segment is at the same index than the eaten position
+                if (segment.Index == _eatenIndices[j])
+                {
+                    // Is the last segment 
+                    if (i == Segments.Count - 1)
+                    {
+                        // Remove the index from the list
+                        _eatenIndices.RemoveAt(0);
+                    }
+                    else
+                    {
+                        // Set the 'fat' body sprite
+                        segment.SetBodySprite(sprites[3]);
+                        isFat = true;
+                    }
+                    break;
+                }
+            }
 
-            //        // Remove eaten point when it reaches the tail
-            //        if (i == Segments.Count - 1)
-            //            _eatenIndexes.Remove(segment.Index);
-            //    }
-            //}
+            // Update the other segments 
+            if (!isFat)
+            {
+                // The first body segment
+                if (i == 1)
+                    segment.SetBodySprite(sprites[0]);
+                // The last segment
+                else if (i == Segments.Count - 1)
+                    segment.SetBodySprite(sprites[1]);
+                // The second and before last segments
+                else if (i == 2)
+                    segment.SetBodySprite(sprites[2]);
+                else if (i == Segments.Count - 2)
+                    segment.SetBodySprite(sprites[2], -1, -1);
+                // The rest of the body alternates
+                else
+                    segment.SetBodySprite(i % 2 != 0 ? sprites[0] : sprites[1]);
+            }
 
             segment.UpdateSpriteDirection();
         }
@@ -315,11 +352,29 @@ public class Snake : MonoBehaviour
             // Check if head index is the same as the point
             if (head.Index == point.collisionIndices[i])
             {
-                _eatenIndexes.Add(head.Index);
+                _eatenIndices.Add(point.collisionIndices[i]);
                 return true;
             }
         }
 
+        return false;
+    }
+    public bool IsCollidingWithEatenPoint()
+    {
+        if (_eatenIndices.Count > 0)
+        {
+            // Go though all the segments
+            for (int i = 0; i < Segments.Count; i++)
+            {
+                // Get the segment from list
+                Segment segment = Segments[i];
+
+                // Check if any segment is colliding with the point position
+                for (int j = 0; j < _eatenIndices.Count; j++)
+                    if (segment.Index == _eatenIndices[j])
+                        return true;
+            }
+        }
         return false;
     }
     public void Grow()
@@ -345,7 +400,7 @@ public class Snake : MonoBehaviour
         // Update the tail sprites
         UpdateSprites(true);
     }
-
+    
     // Despawn functions
     public void Die(Action despawn)
     {

@@ -47818,11 +47818,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451d3dadff337de4a924d583f373fd0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eatenPointPrefab: {fileID: 3537717891504588711, guid: bf086d1a354999c4a9c0afc9890966f1, type: 3}
+  _eatenPoints: []
   segmentPrefab: {fileID: 7953154519337117953, guid: 3d59a5adb52c5a24e9429278ad31182d, type: 3}
   sprites:
   - {fileID: -1512696892, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
   - {fileID: 471241789, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
   - {fileID: -387645038, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
+  - {fileID: -1181229231, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
   headSprites:
   - {fileID: -1353177742, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
   - {fileID: 1154250466, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
