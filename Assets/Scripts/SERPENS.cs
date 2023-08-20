@@ -51,7 +51,7 @@ public class SERPENS : MonoBehaviour
                 Menu.Run();
 
                 // Trigger transition on any key pressed
-                if (Input.anyKey)
+                if (Input.anyKeyDown)
                 {
                     Menu.StartTransition();
                     StartGame();

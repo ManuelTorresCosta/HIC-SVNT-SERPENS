@@ -8,7 +8,7 @@ public class EndGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.anyKey)
+        if (Input.anyKeyDown)
             SceneManager.LoadScene(0);
     }
 }
