@@ -6,6 +6,7 @@ using System;
 
 public class EffectsManager : MonoBehaviour
 {
+    public Animator Animator { get; private set; }
     public Animator CamAnimation { get; private set; }
     public AnalogGlitch Analog { get; private set; }
     public DigitalGlitch Digital { get; private set; }
@@ -19,6 +20,8 @@ public class EffectsManager : MonoBehaviour
 
     private void Awake()
     {
+        Animator = GetComponent<Animator>();
+
         CamAnimation = Camera.main.GetComponent<Animator>();
         Analog = CamAnimation.GetComponent<AnalogGlitch>();
         Digital = CamAnimation.GetComponent<DigitalGlitch>();
@@ -42,11 +45,20 @@ public class EffectsManager : MonoBehaviour
     {
         CamAnimation.SetTrigger("colorFade");
     }
-    public void RunTransition(Action callback)
+
+    public void RunTransition(Action changeSceneCallback)
     {
-        StartCoroutine(Transition.RunTransition(() =>
+        StartCoroutine(Transition.RunTransition(FadeInOverlay, () =>
         {
-            callback();
+            changeSceneCallback();
         }));
+    }
+    public void FadeInOverlay()
+    {
+        Animator.SetTrigger("FadeIn");
+    }
+    public void FadeOutOverlay()
+    {
+        Animator.SetTrigger("FadeOut");
     }
 }

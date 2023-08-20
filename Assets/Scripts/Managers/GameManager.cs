@@ -9,11 +9,11 @@ public class GameManager : MonoBehaviour
     public Snake Snake { get; private set; }
     public PointsManager Points { get; private set; }
     public ScoreManager Score { get; private set; }
-
     public EffectsManager Effects;
 
     public bool isGameplay;
-
+    private float _timer = 0f;
+    private float _maxTimer = 60f;
 
 
     // Unity functions
@@ -138,17 +138,41 @@ public class GameManager : MonoBehaviour
                 Snake.isAlive = false;
             });
         }
+
+        // Handles if the game goes back to the menu
+        HandleInputActivity();
     }
 
-    private void Restart()
+    private void HandleInputActivity()
     {
-        // Initializes the snake variables
-        Snake.Initialize();
+        // If the user does not interact with the game for some time...
+        if (_timer >= 0)
+        {
+            if (_timer < _maxTimer)
+                _timer += Time.deltaTime;
+            else
+            {
+                // Overlay effect kicks in (fade in)
+                Effects.FadeInOverlay();
+                _timer = -1;
+            }
+        }
+        else
+        {
+            // Loads the scene 0 at the end of the animation
+            if (_timer > -4)
+                _timer -= Time.deltaTime;
+            else
+                SceneManager.LoadScene(0);
+        }
 
-        // Recreates the snake
-        Snake.CreateSnake(Vector2.right, Tiles.Spawn);
+        // Reset timer
+        if (Input.anyKeyDown)
+        {
+            if (_timer < 0)
+                Effects.FadeOutOverlay();
 
-        // Turn gameplay back on
-        isGameplay = true;
+            _timer = 0;
+        }
     }
 }

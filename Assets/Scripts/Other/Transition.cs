@@ -65,7 +65,7 @@ public class Transition : MonoBehaviour
         }
     }
 
-    public IEnumerator RunTransition(Action callback)
+    public IEnumerator RunTransition(Action fadeCallback, Action changeScene)
     {
         for (int y = 0; y < (int)_arraySize.y; y++)
         {
@@ -108,11 +108,11 @@ public class Transition : MonoBehaviour
         }
 
         // Fade in black overlay
-        Animation.Play();
+        fadeCallback();
 
         yield return new WaitForSeconds(3f);
 
         // Callback to change scene
-        callback();
+        changeScene();
     }
 }

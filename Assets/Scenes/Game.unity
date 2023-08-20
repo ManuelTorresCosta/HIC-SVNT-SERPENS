@@ -6078,6 +6078,7 @@ GameObject:
   m_Component:
   - component: {fileID: 182858179}
   - component: {fileID: 182858180}
+  - component: {fileID: 182858181}
   m_Layer: 0
   m_Name: Effects
   m_TagString: Untagged
@@ -6117,6 +6118,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 459415ca6204eaf4ea191dd96dd1cd98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &182858181
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 182858178}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d710cc2a6fe7f1b41b030e03819d4f80, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &183236525
 GameObject:
   m_ObjectHideFlags: 0
@@ -17174,7 +17196,6 @@ GameObject:
   m_Component:
   - component: {fileID: 560862436}
   - component: {fileID: 560862437}
-  - component: {fileID: 560862438}
   m_Layer: 0
   m_Name: Transition
   m_TagString: Untagged
@@ -17212,22 +17233,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 4552683099656443630, guid: 19b798f00069ed740a100bd630d4ebe4, type: 3}
---- !u!111 &560862438
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 560862435}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 11f7e153ae1cc8649afbf5a5bcba4f43, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 11f7e153ae1cc8649afbf5a5bcba4f43, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!1 &566637549
 GameObject:
   m_ObjectHideFlags: 0
@@ -47818,8 +47823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451d3dadff337de4a924d583f373fd0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eatenPointPrefab: {fileID: 3537717891504588711, guid: bf086d1a354999c4a9c0afc9890966f1, type: 3}
-  _eatenPoints: []
   segmentPrefab: {fileID: 7953154519337117953, guid: 3d59a5adb52c5a24e9429278ad31182d, type: 3}
   sprites:
   - {fileID: -1512696892, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
@@ -47832,6 +47835,7 @@ MonoBehaviour:
   initialSize: 12
   snakeSpeed: 12
   isAlive: 0
+  _eatenIndices: []
 --- !u!1 &1686796207
 GameObject:
   m_ObjectHideFlags: 0
