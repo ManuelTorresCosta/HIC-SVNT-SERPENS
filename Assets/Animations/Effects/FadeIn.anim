@@ -43,7 +43,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path: Transition/Overlay
+    path: Overlay
     classID: 212
     script: {fileID: 0}
     flags: 0
@@ -56,7 +56,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 486133876
+      path: 1984038178
       attribute: 304273561
       script: {fileID: 0}
       typeID: 212
@@ -112,7 +112,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Color.a
-    path: Transition/Overlay
+    path: Overlay
     classID: 212
     script: {fileID: 0}
     flags: 0

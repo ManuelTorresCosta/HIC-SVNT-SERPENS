@@ -11,6 +11,6 @@ public class TileType
         Segment,
         CommonPoint,
         RarePoint,
-        Overlay
+        GameOver
     }
 }

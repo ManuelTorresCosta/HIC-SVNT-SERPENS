@@ -36,7 +36,7 @@ public class Tile : MonoBehaviour
             case TileType.Type.Border:
                 SpriteRenderer.sortingOrder = 1;
                 SpriteRenderer.color = Color.black;
-                name = "Border";                
+                name = "Border " + transform.parent.childCount;                
                 break;
 
             case TileType.Type.CommonPoint:
@@ -54,15 +54,15 @@ public class Tile : MonoBehaviour
             case TileType.Type.Segment:
                 SpriteRenderer.sortingOrder = 3;
                 SpriteRenderer.color = Color.black;
-                name = "Segment";
+                name = "Segment " + transform.parent.childCount;
                 break;
 
-            case TileType.Type.Overlay:
+            case TileType.Type.GameOver:
                 SpriteRenderer.sortingOrder = 5;
                 SpriteRenderer.color = Color.black;
                 SpriteRenderer.sortingOrder = 25;
                 SpriteRenderer.enabled = false;
-                name = "Overlay";
+                name = "GameOver " + transform.parent.childCount;
                 break;
         }
 

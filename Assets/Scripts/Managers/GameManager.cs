@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour
     {
         if (isGameplay)
         {
+            // Handles if the game goes back to the menu
+            HandleInputActivity();
+
             if (Snake.isAlive)
             {
                 // Spawn a point if no points are on the grid
@@ -78,15 +81,10 @@ public class GameManager : MonoBehaviour
                     // Disable score UI
                     Score.SetActive(false);
 
-                    // Run the transition effect
-                    Effects.RunTransition(() =>
-                    {
-                        // Load the end scene
-                        SceneManager.LoadScene(1);
-                    });
-                    isGameplay = false;
-
+                    // Run the gameover effect
+                    Effects.RunGameOver();
                     
+                    isGameplay = false;
                 }
                 // Snake movement
                 else
@@ -137,10 +135,13 @@ public class GameManager : MonoBehaviour
                 Snake.Despawn();
                 Snake.isAlive = false;
             });
+
+            // Checks if game over effect is finished
+            if (Effects.IsGameOverFinished())
+                SceneManager.LoadScene(1);
         }
 
-        // Handles if the game goes back to the menu
-        HandleInputActivity();
+        
     }
 
     private void HandleInputActivity()

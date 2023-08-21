@@ -10,7 +10,6 @@ public class EffectsManager : MonoBehaviour
     public Animator CamAnimation { get; private set; }
     public AnalogGlitch Analog { get; private set; }
     public DigitalGlitch Digital { get; private set; }
-    public Transition Transition { get; private set; }
 
     // Glitch effect
     private float _fxTimer = 30;
@@ -25,8 +24,6 @@ public class EffectsManager : MonoBehaviour
         CamAnimation = Camera.main.GetComponent<Animator>();
         Analog = CamAnimation.GetComponent<AnalogGlitch>();
         Digital = CamAnimation.GetComponent<DigitalGlitch>();
-
-        Transition = GetComponentInChildren<Transition>();
     }
 
 
@@ -46,13 +43,16 @@ public class EffectsManager : MonoBehaviour
         CamAnimation.SetTrigger("colorFade");
     }
 
-    public void RunTransition(Action changeSceneCallback)
+    public void RunGameOver()
     {
-        StartCoroutine(Transition.RunTransition(FadeInOverlay, () =>
-        {
-            changeSceneCallback();
-        }));
+        Animator.SetTrigger("GameOver");
     }
+    public bool IsGameOverFinished()
+    {
+        AnimatorStateInfo stateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+        return stateInfo.IsName("GameOver") && stateInfo.normalizedTime >= 1.0f;
+    }
+    
     public void FadeInOverlay()
     {
         Animator.SetTrigger("FadeIn");
