@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         // Create the snake objects
         Snake.CreateSnake(Vector2.right, Tiles.Spawn);
 
-        Score.SetRarePointValue(25);
+        Score.SetRarePointUIActive(false);
 
         // Starts gameplay on Update()
         isGameplay = true;
@@ -62,11 +62,21 @@ public class GameManager : MonoBehaviour
 
                 // Spawn a legend if no legends are active
                 if (Points.CanSpawnRarePoint())
+                {
                     Points.SpawnRandomRarePoint(Snake.Segments);
+                    Score.SetRarePointUIActive(true);
+                }
 
                 // Sets despawn timer for rare point
-                if (Points.IsRarePointTimeEnded())
+                if (Points.IsRarePointTimeEnded() || Points.rarePoint == null)
+                {
                     Points.DespawnRarePoint(false);
+                    Score.SetRarePointUIActive(false);
+                }
+                // Update the UI
+                else
+                    if (Points.rarePoint != null)
+                        Score.UpdateRarePointUI((int)Points.rarePointValue);
 
                 // Check end game conditions
                 if (Snake.CheckSelfCollision() || Points.MaxRarePointsCaptured())
@@ -79,11 +89,11 @@ public class GameManager : MonoBehaviour
                     Points.DespawnRarePoint(true);
 
                     // Disable score UI
-                    Score.SetActive(false);
+                    Score.SetUIActive(false);
 
                     // Run the gameover effect
                     Effects.RunGameOver();
-                    
+
                     isGameplay = false;
                 }
                 // Snake movement

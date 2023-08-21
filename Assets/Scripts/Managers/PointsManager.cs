@@ -9,53 +9,13 @@ public class PointsManager : MonoBehaviour
     public Transform commonPointsParent;
     public List<Point> commonPoints { get; private set; }
     public Point commonPoint { get; private set; }
-    public bool CanSpawnCommonPoint()
-    {
-        return commonPoint == null;
-    }
     private int _totalCommonPoints;
 
+    public Point rarePoint { get; private set; }
     public Transform rarePointsParent;
     public List<Point> rarePoints { get; private set; }
-    public Point rarePoint { get; private set; }
-    public bool CanSpawnRarePoint()
-    {
-        if (rarePoint == null)
-        {
-            if (_totalCommonPoints - commonPoints.Count == 3)
-            {
-                _totalCommonPoints = commonPoints.Count;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public float rarePoointDespawnTimer = 10f;
-    private float _rarePointTimer = 0f;
-    public bool IsRarePointTimeEnded()
-    {
-        if (rarePoint != null)
-        {
-            if (_rarePointTimer < rarePoointDespawnTimer)
-            {
-                _rarePointTimer += Time.deltaTime;
-                return false;
-            }
-            else
-            {
-                _rarePointTimer = rarePoointDespawnTimer;
-                _totalCommonPoints = commonPoints.Count;
-                return true;
-            }
-        }
-        return false;
-    }
     private int _rarePointsCapturedCounter = 0;
-    public bool MaxRarePointsCaptured()
-    {
-        return _rarePointsCapturedCounter > 3;
-    }
+    public float rarePointValue;
 
 
     // Unity functions
@@ -84,6 +44,10 @@ public class PointsManager : MonoBehaviour
 
 
     // Functions
+    public bool CanSpawnCommonPoint()
+    {
+        return commonPoint == null;
+    }
     public void SpawnRandomCommonPoint(List<Segment> segments)
     {
         // Generate a random index from the list
@@ -132,7 +96,19 @@ public class PointsManager : MonoBehaviour
         // Turn the point null in order to respawn another
         commonPoint = null;
     }
-
+    
+    public bool CanSpawnRarePoint()
+    {
+        if (rarePoint == null)
+        {
+            if (_totalCommonPoints - commonPoints.Count == 3)
+            {
+                _totalCommonPoints = commonPoints.Count;
+                return true;
+            }
+        }
+        return false;
+    }
     public void SpawnRandomRarePoint(List<Segment> segments)
     {
         bool lastPoint = _rarePointsCapturedCounter >= 3;
@@ -178,6 +154,8 @@ public class PointsManager : MonoBehaviour
 
                 // Initialize it at the random position
                 rarePoint.Initialize(rarePoint.transform.position, rarePoint.Index, TileType.Type.RarePoint);
+
+                rarePointValue = rarePoint.Value;
             }
             // Try again
             else
@@ -198,13 +176,33 @@ public class PointsManager : MonoBehaviour
         // Turn the point null in order to respawn another
         rarePoint = null;
 
-        _rarePointTimer = 0f;
-
         if (captured)
             _rarePointsCapturedCounter++;
     }
-
-    
+    public bool IsRarePointTimeEnded()
+    {
+        if (rarePoint != null)
+        {
+            if (rarePointValue > 0)
+            {
+                rarePointValue -= 20f * Time.deltaTime;
+                rarePoint.Value = (int)rarePointValue;
+                return false;
+            }
+            else
+            {
+                rarePointValue = 0;
+                rarePoint.Value = (int)rarePointValue;
+                _totalCommonPoints = commonPoints.Count;
+                return true;
+            }
+        }
+        return false;
+    }
+    public bool MaxRarePointsCaptured()
+    {
+        return _rarePointsCapturedCounter > 3;
+    }
 
     // Old
     public void GenerateRandomPoint(Tile[,] tiles, List<Segment> segments)

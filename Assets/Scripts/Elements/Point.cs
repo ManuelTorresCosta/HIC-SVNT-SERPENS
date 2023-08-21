@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Point : Tile
 {
-    public int Value { get; private set; }
+    public int Value { get; set; }
     public Vector2[] collisionIndices;
 
 
@@ -24,7 +24,7 @@ public class Point : Tile
                 break;
 
             case TileType.Type.RarePoint:
-                Value = 25;
+                Value = 99;
                 break;
 
             default:

@@ -18,7 +18,7 @@ public class ScoreManager : MonoBehaviour
     public int score = 0;
     
 
-    public void SetActive(bool value)
+    public void SetUIActive(bool value)
     {
         foreach (Image image in scoreDigits)
             image.gameObject.SetActive(value);
@@ -30,7 +30,6 @@ public class ScoreManager : MonoBehaviour
 
         scoreBar.SetActive(value);
     }
-
 
     public void AddPoint(int value)
     {
@@ -62,9 +61,18 @@ public class ScoreManager : MonoBehaviour
         }
 
     }
-    public void SetRarePointValue(int value)
+
+    public void SetRarePointUIActive(bool value)
     {
-        string valueStr = value.ToString();
+        rarePoint.gameObject.SetActive(value);
+
+        foreach (Image image in rarePointDigits)
+            image.gameObject.SetActive(value);
+
+    }
+    public void UpdateRarePointUI(int rarePointValue)
+    {
+        string valueStr = rarePointValue.ToString();
         for (int i = 0; i < valueStr.Length; i++)
         {
             int index = (int)char.GetNumericValue(valueStr[i]);
