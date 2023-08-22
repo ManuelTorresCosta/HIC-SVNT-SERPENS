@@ -97,10 +97,10 @@ public class Snake : MonoBehaviour
     }
 
     // Movement functions
-    public void HandleMovement()
+    public void HandleMovement(float inpuX, float inputY)
     {
         // Input
-        HandleInput();
+        HandleInput(inpuX, inputY);
 
         if (_movementTimer >= 1)
         {
@@ -151,17 +151,13 @@ public class Snake : MonoBehaviour
             _movementTimer += snakeSpeed * Time.deltaTime;
     }
 
-    private void HandleInput()
+    private void HandleInput(float inputX, float inputY)
     {
-        // Get joystick input
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-
         // Get head direction reference
         Vector2 currHeadDir = GetHead().Direction;
 
         // Right
-        if ((Input.GetKeyDown(KeyCode.RightArrow) || x > 0) && currHeadDir != -Vector2.right)
+        if ((Input.GetKeyDown(KeyCode.RightArrow) || inputX > 0) && currHeadDir != -Vector2.right)
         {
             if (currHeadDir == Vector2.right)
                 return;
@@ -171,7 +167,7 @@ public class Snake : MonoBehaviour
         }
 
         // Left
-        else if ((Input.GetKeyDown(KeyCode.LeftArrow) || x < 0) && currHeadDir != Vector2.right)
+        else if ((Input.GetKeyDown(KeyCode.LeftArrow) || inputX < 0) && currHeadDir != Vector2.right)
         {
             if (currHeadDir == -Vector2.right)
                 return;
@@ -181,7 +177,7 @@ public class Snake : MonoBehaviour
         }
 
         // Up
-        else if ((Input.GetKeyDown(KeyCode.UpArrow) || y > 0) && currHeadDir != -Vector2.up)
+        else if ((Input.GetKeyDown(KeyCode.UpArrow) || inputY > 0) && currHeadDir != -Vector2.up)
         {
             if (currHeadDir == Vector2.up)
                 return;
@@ -191,7 +187,7 @@ public class Snake : MonoBehaviour
         }
 
         //Down
-        else if ((Input.GetKeyDown(KeyCode.DownArrow) || y < 0) && currHeadDir != Vector2.up)
+        else if ((Input.GetKeyDown(KeyCode.DownArrow) || inputY < 0) && currHeadDir != Vector2.up)
         {
             if (currHeadDir == -Vector2.up)
                 return;

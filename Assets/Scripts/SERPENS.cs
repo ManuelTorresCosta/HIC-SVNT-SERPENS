@@ -59,8 +59,13 @@ public class SERPENS : MonoBehaviour
                 break;
 
             case GameState.GAMEPLAY:
+
+                // Get Joystick input
+                float inputX = Input.GetAxisRaw("Horizontal");
+                float inputY = Input.GetAxisRaw("Vertical");
+
                 // Start gameplay
-                Game.Run();
+                Game.Run(inputX, inputY);
 
                 break;
 

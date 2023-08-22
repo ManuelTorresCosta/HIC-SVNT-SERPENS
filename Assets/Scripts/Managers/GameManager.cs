@@ -47,12 +47,12 @@ public class GameManager : MonoBehaviour
 
 
     // Functions
-    public void Run()
+    public void Run(float inputX, float inputY)
     {
         if (isGameplay)
         {
             // Handles if the game goes back to the menu
-            HandleInputActivity();
+            HandleInputActivity(inputX, inputY);
 
             if (Snake.isAlive)
             {
@@ -100,7 +100,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     // Move snake
-                    Snake.HandleMovement();
+                    Snake.HandleMovement(inputX, inputY);
 
                     // Check collision with a point
                     if (Snake.CheckCollisionWith(Points.commonPoint))
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void HandleInputActivity()
+    private void HandleInputActivity(float inputX, float inputY)
     {
         // If the user does not interact with the game for some time...
         if (_timer >= 0)
@@ -172,7 +172,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Reset timer
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown || inputX != 0 || inputY != 0)
         {
             if (_timer < 0)
                 Effects.FadeOutOverlay();
