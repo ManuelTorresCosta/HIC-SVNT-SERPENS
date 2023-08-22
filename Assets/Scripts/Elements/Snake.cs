@@ -33,7 +33,8 @@ public class Snake : MonoBehaviour
     private Vector2 _minIndexes;
     private Vector2 _maxIndexes;
 
-    public List<Vector2> _eatenIndices;
+    private List<Vector2> _eatenIndices;
+
 
 
     // Unity functions
@@ -149,12 +150,18 @@ public class Snake : MonoBehaviour
         else
             _movementTimer += snakeSpeed * Time.deltaTime;
     }
+
     private void HandleInput()
     {
+        // Get joystick input
+        float x = Input.GetAxis("Horizontal");
+        float y = Input.GetAxis("Vertical");
+
+        // Get head direction reference
         Vector2 currHeadDir = GetHead().Direction;
 
         // Right
-        if (Input.GetKeyDown(KeyCode.RightArrow) && currHeadDir != -Vector2.right)
+        if ((Input.GetKeyDown(KeyCode.RightArrow) || x > 0) && currHeadDir != -Vector2.right)
         {
             if (currHeadDir == Vector2.right)
                 return;
@@ -164,7 +171,7 @@ public class Snake : MonoBehaviour
         }
 
         // Left
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && currHeadDir != Vector2.right)
+        else if ((Input.GetKeyDown(KeyCode.LeftArrow) || x < 0) && currHeadDir != Vector2.right)
         {
             if (currHeadDir == -Vector2.right)
                 return;
@@ -174,7 +181,7 @@ public class Snake : MonoBehaviour
         }
 
         // Up
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && currHeadDir != -Vector2.up)
+        else if ((Input.GetKeyDown(KeyCode.UpArrow) || y > 0) && currHeadDir != -Vector2.up)
         {
             if (currHeadDir == Vector2.up)
                 return;
@@ -184,7 +191,7 @@ public class Snake : MonoBehaviour
         }
 
         //Down
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && currHeadDir != Vector2.up)
+        else if ((Input.GetKeyDown(KeyCode.DownArrow) || y < 0) && currHeadDir != Vector2.up)
         {
             if (currHeadDir == -Vector2.up)
                 return;
@@ -285,6 +292,7 @@ public class Snake : MonoBehaviour
         }
     }
 
+    // Sprites
     private void SetSprite(Segment segment, int i)
     {
         // Head
@@ -335,7 +343,6 @@ public class Snake : MonoBehaviour
             segment.SpriteRenderer.flipY = flipY;
         }
     }
-
 
     // Collision functions
     public bool CheckSelfCollision()
@@ -404,82 +411,6 @@ public class Snake : MonoBehaviour
         // Add segment to the list
         Segments.Add(newSegment);
     }
-
-    // To remove ------------------------------------------------
-    public bool IsCollidingWithEatenPoint()
-    {
-        if (_eatenIndices.Count > 0)
-        {
-            // Go though all the segments
-            for (int i = 0; i < Segments.Count; i++)
-            {
-                // Get the segment from list
-                Segment segment = Segments[i];
-
-                // Check if any segment is colliding with the point position
-                for (int j = 0; j < _eatenIndices.Count; j++)
-                {
-                    if (segment.Index == _eatenIndices[j])
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-    public void UpdateEatenPoints()
-    {
-        // Go though all the segments
-        for (int i = 1; i < Segments.Count; i++)
-        {
-            // Get the segment from list
-            Segment segment = Segments[i];
-
-            // Go trough all eaten locations
-            bool isFat = false;
-            for (int j = 0; j < _eatenIndices.Count; j++)
-            {
-                // The segment is at the same index than the eaten position
-                if (segment.Index == _eatenIndices[j])
-                {
-                    // Is the last segment 
-                    if (i == Segments.Count - 1)
-                    {
-                        // Remove the index from the list
-                        _eatenIndices.RemoveAt(0);
-                    }
-                    else
-                    {
-                        // Set the 'fat' body sprite
-                        segment.SetBodySprite(sprites[3]);
-                        isFat = true;
-                    }
-                    break;
-                }
-            }
-
-            // Update the other segments 
-            if (!isFat)
-            {
-                // The first body segment
-                if (i == 1)
-                    segment.SetBodySprite(sprites[0]);
-                // The last segment
-                else if (i == Segments.Count - 1)
-                    segment.SetBodySprite(sprites[1]);
-                // The second and before last segments
-                else if (i == 2)
-                    segment.SetBodySprite(sprites[2]);
-                else if (i == Segments.Count - 2)
-                    segment.SetBodySprite(sprites[2], -1, -1);
-                // The rest of the body alternates
-                else
-                    segment.SetBodySprite(i % 2 != 0 ? sprites[0] : sprites[1]);
-            }
-        }
-    }
-    // To remove ------------------------------------------------
     
 
     // Despawn functions
