@@ -136,48 +136,6 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Head_1
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 413
-        width: 36
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8a26660418d20e24c83e45af7d3982ee
-      internalID: -1353177742
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Head_2
-      rect:
-        serializedVersion: 2
-        x: 37
-        y: 413
-        width: 36
-        height: 48
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 83efac2633a8d5a44b445b15d7f1712d
-      internalID: 1154250466
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Body 1
       rect:
         serializedVersion: 2
@@ -199,7 +157,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Body 2
+      name: Body 3
       rect:
         serializedVersion: 2
         x: 25
@@ -220,32 +178,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Body 3
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 463
-        width: 24
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b993736b56f318041944367e51d0f55d
-      internalID: -387645038
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Square 12x12
       rect:
         serializedVersion: 2
         x: 37
-        y: 463
+        y: 439
         width: 12
         height: 12
       alignment: 0
@@ -262,10 +199,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Point
+      name: Head
       rect:
         serializedVersion: 2
-        x: 50
+        x: 49
         y: 487
         width: 24
         height: 24
@@ -307,8 +244,8 @@ TextureImporter:
       name: Square 24x24
       rect:
         serializedVersion: 2
-        x: 50
-        y: 462
+        x: 49
+        y: 439
         width: 24
         height: 24
       alignment: 0
@@ -329,7 +266,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 38
-        y: 464
+        y: 440
         width: 10
         height: 10
       alignment: 0
@@ -341,48 +278,6 @@ TextureImporter:
       bones: []
       spriteID: ade8bacc81d6d194ba88eb1db0e72b1b
       internalID: 372369822
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stone (small)
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 376
-        width: 24
-        height: 36
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ee416deceb89d7a4ea0eb75f145f24ca
-      internalID: -387467601
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Stone (big)
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 340
-        width: 48
-        height: 72
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 493949a2f38622a4e8003887e3c30330
-      internalID: 943754243
       vertices: []
       indices: 
       edges: []
@@ -598,13 +493,55 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
+      name: Body 2
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 463
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0af0999297a0504585d9bb5ad854916
+      internalID: -1869384094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Head 2
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 463
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3273c7e71ddb19445b77f7de1a3bda60
+      internalID: 796449294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
       name: Body 4
       rect:
         serializedVersion: 2
         x: 1
-        y: 291
+        y: 463
         width: 24
-        height: 48
+        height: 24
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -612,7 +549,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e6fe6106d10e46d4aa799e5503bd0562
+      spriteID: 3f219b3e55701a74db2096341e93ea4d
       internalID: -1181229231
       vertices: []
       indices: 
@@ -630,8 +567,8 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       Body 1: -1512696892
-      Body 2: 471241789
-      Body 3: -387645038
+      Body 2: -1869384094
+      Body 3: 471241789
       Body 4: -1181229231
       Font 0: 158423704
       Font 1: -1015362604
@@ -643,10 +580,11 @@ TextureImporter:
       Font 7: 127328769
       Font 8: -1777075317
       Font 9: 263060898
+      Head: -1610755490
+      Head 2: 796449294
       Head_1: -1353177742
       Head_2: 1154250466
       Horizontal Lines: 448533946
-      Point: -1610755490
       Square: 372369822
       Square 12x12: -285309627
       Square 24x24: -1233815251

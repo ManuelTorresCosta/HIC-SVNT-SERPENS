@@ -7,10 +7,7 @@ using UnityEngine.UIElements;
 public class Segment : Tile
 {
     public Vector2 Direction;
-    public int i;
-
-    public Dictionary<Vector2, Vector2> ChangeDirIndexes { get; private set; }
-    private float GetRotationFromDirection()
+    public float GetRotationFromDirection()
     {
         if (Direction == Vector2.right)
             return 0;
@@ -22,7 +19,20 @@ public class Segment : Tile
             return -90;
     }
 
-    
+    public int i;
+    public bool changeDir = false;
+    public bool clockwise = false;
+
+    public Dictionary<Vector2, Vector2> ChangeDirIndexes { get; private set; }
+    public void InheritChangeDirectionIndices(Segment tail)
+    {
+        foreach (Vector2 index in tail.ChangeDirIndexes.Keys)
+        {
+            ChangeDirIndexes.Add(index, tail.ChangeDirIndexes[index]);
+        }
+    }
+
+
     // Unity functions
     protected override void Awake()
     {
@@ -46,15 +56,7 @@ public class Segment : Tile
     {
         ChangeDirIndexes.Clear();
     }
-
-
-    public void InheritTailDirections(Segment tail)
-    {
-        foreach (Vector2 index in tail.ChangeDirIndexes.Keys)
-        {
-            ChangeDirIndexes.Add(index, tail.ChangeDirIndexes[index]);
-        }
-    }
+    
     public void SetBodySprite(Sprite sprite, int flipX = 1, int flipY = 1)
     {
         // If the sprite needs to be updated
@@ -63,18 +65,5 @@ public class Segment : Tile
 
         // Flip sprite for tail
         transform.localScale = new Vector3(flipX, flipY, 1);
-    }
-    public void UpdateSpriteDirection(int x = 1, int y = 1) 
-    {
-        // Update the rotation
-        float rotation = GetRotationFromDirection();
-        transform.rotation = Quaternion.Euler(0, 0, rotation);
-
-        // Flip head when direction is left (Head only)
-        if (i == 0)
-        {
-            bool flipY = Direction.x == -1;
-            SpriteRenderer.flipY = flipY;
-        }
     }
 }

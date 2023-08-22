@@ -147,7 +147,7 @@ public class PointsManager : MonoBehaviour
             }
             
             // Create a point
-            if (!recursive || (lastPoint && rarePoint.collisionIndices[0] != new Vector2(5, 30)))
+            if (!recursive || lastPoint)
             {
                 // Enable object
                 rarePoint.gameObject.SetActive(true);

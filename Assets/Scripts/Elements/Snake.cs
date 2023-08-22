@@ -8,8 +8,8 @@ public class Snake : MonoBehaviour
     public List<Segment> Segments { get; private set; }
     public Segment GetHead() { return Segments[0]; }
 
-    [Header("References")]    
-    
+    [Header("References")]
+
     public Segment segmentPrefab;
     public Sprite[] sprites;
     public Sprite[] headSprites;
@@ -18,6 +18,7 @@ public class Snake : MonoBehaviour
 
     public int initialSize = 3;
     public float snakeSpeed = 1;
+    public bool eating = false;
     public bool isAlive;
 
     // Private variables
@@ -43,7 +44,7 @@ public class Snake : MonoBehaviour
         _eatenIndices = new List<Vector2>();
     }
 
-    
+
 
     // Initialization
     public void Initialize()
@@ -66,7 +67,7 @@ public class Snake : MonoBehaviour
         _minIndexes = minIndexes;
         _maxIndexes = maxIndexes;
     }
-    public void CreateSnake(Vector2 direction, Tile spawnTile)  
+    public void CreateSnake(Vector2 direction, Tile spawnTile)
     {
         _headDirection = direction;
 
@@ -88,41 +89,345 @@ public class Snake : MonoBehaviour
             Segments.Add(segment);
         }
 
-        // Set the sprites according to the snake composition
-        UpdateSprites();
+        //// Set the sprites according to the snake composition
+        //SetSprites();
 
         isAlive = true;
     }
-    private void UpdateSprites(bool eating = false)
+
+    // Movement functions
+    public void HandleMovement()
     {
-        // Go though all the segments
-        for (int i = 0; i < Segments.Count; i++)
+        // Input
+        HandleInput();
+
+        if (_movementTimer >= 1)
         {
-            // Get the segment from list
-            Segment segment = Segments[i];
+            // Move each segment
+            for (int i = Segments.Count - 1; i >= 0; i--)
+            {
+                // Get the segment
+                Segment segment = Segments[i];
 
-            // Head
-            if (i == 0)
-                segment.SetBodySprite(!eating ? headSprites[0] : headSprites[1]);
-            else // The first body segment
-                if (i == 1)
-                segment.SetBodySprite(sprites[0]);
-            // The last segment
-            else if (i == Segments.Count - 1)
-                segment.SetBodySprite(sprites[1]);
-            // The second and before last segments
-            else if (i == 2)
-                segment.SetBodySprite(sprites[2]);
-            else if (i == Segments.Count - 2)
-                segment.SetBodySprite(sprites[2], -1, -1);
-            // The rest of the body alternates
-            else
-                segment.SetBodySprite(i % 2 != 0 ? sprites[0] : sprites[1]);
+                // Snake Body
+                if (i != 0)
+                {
+                    // Save the tile index to change the direction
+                    if (_changedDir && !segment.ChangeDirIndexes.ContainsKey(Segments[0].Index))
+                    {
+                        // Save direction of previous head position in the body segment dictionary
+                        segment.ChangeDirIndexes.Add(Segments[0].Index, _headDirection);
+                    }
+                }
+                // Snake head
+                else
+                {
+                    // Change head direction to the new direction
+                    segment.Direction = _headDirection;
+                }
 
-            segment.UpdateSpriteDirection();
+                // Move segments
+                Move(segment);
+
+                // Handle the grid limits
+                HandleGridLimits(segment);
+
+                // Updated segment direction when on the correct tile index
+                UpdateSegmentDirection(segment);
+
+                // Set the sprites
+                SetSprite(segment, i);
+
+                // Set rotation
+                SetSpriteRotation(segment, i);
+            }
+
+            // Reset timer
+            _movementTimer = 0;
+            _changedDir = false;
+        }
+        else
+            _movementTimer += snakeSpeed * Time.deltaTime;
+    }
+    private void HandleInput()
+    {
+        Vector2 currHeadDir = GetHead().Direction;
+
+        // Right
+        if (Input.GetKeyDown(KeyCode.RightArrow) && currHeadDir != -Vector2.right)
+        {
+            if (currHeadDir == Vector2.right)
+                return;
+
+            _headDirection = Vector2.right;
+            _changedDir = true;
+        }
+
+        // Left
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) && currHeadDir != Vector2.right)
+        {
+            if (currHeadDir == -Vector2.right)
+                return;
+
+            _headDirection = -Vector2.right;
+            _changedDir = true;
+        }
+
+        // Up
+        else if (Input.GetKeyDown(KeyCode.UpArrow) && currHeadDir != -Vector2.up)
+        {
+            if (currHeadDir == Vector2.up)
+                return;
+
+            _headDirection = Vector2.up;
+            _changedDir = true;
+        }
+
+        //Down
+        else if (Input.GetKeyDown(KeyCode.DownArrow) && currHeadDir != Vector2.up)
+        {
+            if (currHeadDir == -Vector2.up)
+                return;
+
+            _headDirection = -Vector2.up;
+            _changedDir = true;
         }
     }
-    
+    private void Move(Segment segment)
+    {
+        Vector2 position = segment.transform.position + (Vector3)(segment.Direction * segment.Size);
+        Vector2 index = segment.Index + segment.Direction;
+
+        segment.SetPosition(position, index);
+    }
+    private void HandleGridLimits(Segment segment)
+    {
+        // Far left
+        if (segment.Index.x < 0)
+        {
+            Vector2 position = new Vector2(_maxPositions.x, segment.transform.position.y);
+            Vector2 index = new Vector2(_maxIndexes.x - 1, segment.Index.y);
+
+            segment.SetPosition(position, index);
+        }
+        // Far
+        else if (segment.Index.x > _maxIndexes.x - 1)
+        {
+            Vector2 position = new Vector2(_minPositions.x, segment.transform.position.y);
+            Vector2 index = new Vector2(_minIndexes.x, segment.Index.y);
+
+            segment.SetPosition(position, index);
+        }
+        if (segment.Index.y < 0)
+        {
+            Vector2 position = new Vector2(segment.transform.position.x, _maxPositions.y);
+            Vector2 index = new Vector2(segment.Index.x, _maxIndexes.y - 1);
+
+            segment.SetPosition(position, index);
+        }
+        else if (segment.Index.y > _maxIndexes.y - 1)
+        {
+            Vector2 position = new Vector2(segment.transform.position.x, _minPositions.y);
+            Vector2 index = new Vector2(segment.Index.x, _minIndexes.y);
+
+            segment.SetPosition(position, index);
+        }
+
+    }
+    private void UpdateSegmentDirection(Segment segment)
+    {
+        segment.changeDir = false;
+        foreach (Vector2 index in segment.ChangeDirIndexes.Keys)
+        {
+            // Segment is on a 'change dir' index
+            if (segment.Index == index)
+            {
+                segment.changeDir = true;
+
+                Vector2 currDir = segment.Direction;
+                Vector2 newDir = segment.ChangeDirIndexes[index];
+                if (newDir == Vector2.up)
+                {
+                    if (currDir == -Vector2.right)
+                        segment.clockwise = true;
+                    else if (currDir == Vector2.right)
+                        segment.clockwise = false;
+                }
+                else if (newDir == -Vector2.up)
+                {
+                    if (currDir == Vector2.right)
+                        segment.clockwise = true;
+                    else if (currDir == -Vector2.right)
+                        segment.clockwise = false;
+                }
+                else if (newDir == Vector2.right)
+                {
+                    if (currDir == Vector2.up)
+                        segment.clockwise = true;
+                    else if (currDir == -Vector2.up)
+                        segment.clockwise = false;
+                }
+                else if (newDir == -Vector2.right)
+                {
+                    if (currDir == -Vector2.up)
+                        segment.clockwise = true;
+                    else if (currDir == Vector2.up)
+                        segment.clockwise = false;
+                }
+
+                // Apply change direction to the segment
+                segment.Direction = segment.ChangeDirIndexes[index];
+
+                // Remove item from the dictionary
+                segment.ChangeDirIndexes.Remove(index);
+                break;
+            }
+        }
+    }
+
+    private void SetSprite(Segment segment, int i)
+    {
+        // Head
+        if (i == 0)
+            segment.SetBodySprite(!eating ? headSprites[0] : headSprites[1]);
+        else
+        {
+            // Tail
+            if (i == Segments.Count - 1)
+                segment.SetBodySprite(sprites[3]);
+            // Normal body
+            else if (!segment.changeDir)
+                segment.SetBodySprite(sprites[0]);
+            // Body corner
+            else
+                segment.SetBodySprite(sprites[2], 1, segment.clockwise ? 1 : -1);
+            
+
+            // Override sprites when passing through an eaten spot
+            foreach (Vector2 eatenIndex in _eatenIndices)
+            {
+                if (segment.Index == eatenIndex)
+                {
+                    // Fat body
+                    if (i != Segments.Count - 1)
+                        segment.SetBodySprite(sprites[1]);
+                    // Remove index from list when it reaches the tail
+                    else
+                    {
+                        _eatenIndices.RemoveAt(0);
+                        break;
+                    }
+                }
+
+            }
+        }
+    }
+    private void SetSpriteRotation(Segment segment, int i)
+    {
+        // Update the rotation
+        float rotation = segment.GetRotationFromDirection();
+        segment.transform.rotation = Quaternion.Euler(0, 0, rotation);
+
+        // Flip head when direction is left (Head only)
+        if (i == 0)
+        {
+            bool flipY = segment.Direction.x == -1;
+            segment.SpriteRenderer.flipY = flipY;
+        }
+    }
+
+
+    // Collision functions
+    public bool CheckSelfCollision()
+    {
+        if (_movementTimer >= 1)
+        {
+            // Get the next position of the head
+            Vector2 nextHeadPos = GetHead().Index + _headDirection;
+
+            // Go through all the segments (excluding the head)
+            for (int i = 1; i < Segments.Count; i++)
+            {
+                // If the next position collides with the body
+                if (nextHeadPos == Segments[i].Index)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+    public bool CheckCollisionWith(Point point)
+    {
+        if (point == null)
+            return false;
+
+        Segment head = Segments[0];
+
+        // Check for all collision index of the point
+        for (int i = 0; i < point.collisionIndices.Length; i++)
+        {
+            // Animate head when eating
+            if (head.Index + 1 * head.Direction == point.collisionIndices[i] || head.Index == point.collisionIndices[i])
+                head.SetBodySprite(headSprites[1]);
+            else
+                head.SetBodySprite(headSprites[0]);
+
+            // Check if head index is the same as the point
+            if (head.Index == point.collisionIndices[i])
+            {
+                eating = true;
+                _eatenIndices.Add(point.collisionIndices[i]);
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public void Grow()
+    {
+        // Create a new segment
+        Segment newSegment = Instantiate(segmentPrefab, transform);
+
+        // Set the position at the end of the body
+        Segment tail = Segments[Segments.Count - 1];
+        Vector2 position = (Vector2)tail.transform.position + (newSegment.Size * -tail.Direction);
+        Vector2 index = tail.Index + (-tail.Direction);
+
+        // Initialize it
+        newSegment.Initialize(position, index, TileType.Type.Segment);
+        newSegment.Direction = tail.Direction;
+        newSegment.transform.rotation = Quaternion.Euler(0, 0, tail.GetRotationFromDirection());
+
+        // Copy all saved 'change directions' dictionary references
+        newSegment.InheritChangeDirectionIndices(tail);
+
+        // Add segment to the list
+        Segments.Add(newSegment);
+    }
+
+    // To remove ------------------------------------------------
+    public bool IsCollidingWithEatenPoint()
+    {
+        if (_eatenIndices.Count > 0)
+        {
+            // Go though all the segments
+            for (int i = 0; i < Segments.Count; i++)
+            {
+                // Get the segment from list
+                Segment segment = Segments[i];
+
+                // Check if any segment is colliding with the point position
+                for (int j = 0; j < _eatenIndices.Count; j++)
+                {
+                    if (segment.Index == _eatenIndices[j])
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     public void UpdateEatenPoints()
     {
         // Go though all the segments
@@ -172,235 +477,11 @@ public class Snake : MonoBehaviour
                 else
                     segment.SetBodySprite(i % 2 != 0 ? sprites[0] : sprites[1]);
             }
-
-            segment.UpdateSpriteDirection();
         }
     }
-
-    // Movement functions
-    public void HandleMovement()
-    {
-        // Input
-        HandleInput();
-
-        if (_movementTimer >= 1)
-        {
-            // Move each segment
-            for (int i = Segments.Count - 1; i >= 0; i--)
-            {
-                // Get the segment
-                Segment segment = Segments[i];
-
-                // Snake Body
-                if (i != 0)
-                {
-                    // Save the tile index to change the direction
-                    if (_changedDir && !segment.ChangeDirIndexes.ContainsKey(Segments[0].Index))
-                    {
-                        // Save direction of previous head position in the body segment dictionary
-                        segment.ChangeDirIndexes.Add(Segments[0].Index, _headDirection);
-                    }
-                }
-                // Snake head
-                else
-                {
-                    // Change head direction to the new direction
-                    segment.Direction = _headDirection;
-                }
-
-                // Move segments
-                Move(segment);
-
-                // Handle the grid limits
-                HandleGridLimits(segment);
-
-                // Updated segment direction when on the correct tile index
-                CheckSegmentChangeDir(segment);
-            }
-
-            // Reset timer
-            _movementTimer = 0;
-            _changedDir = false;
-        }
-        else
-            _movementTimer += snakeSpeed * Time.deltaTime;
-    }
-    private void HandleInput()
-    {
-        // Right
-        if (Input.GetKeyDown(KeyCode.RightArrow) && GetHead().Direction != -Vector2.right)
-        {
-            _headDirection = Vector2.right;
-            _changedDir = true;
-        }
-
-        // Left
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) && GetHead().Direction != Vector2.right)
-        {
-            _headDirection = -Vector2.right;
-            _changedDir = true;
-        }
-
-        // Up
-        else if (Input.GetKeyDown(KeyCode.UpArrow) && GetHead().Direction != -Vector2.up)
-        {
-            _headDirection = Vector2.up;
-            _changedDir = true;
-        }
-
-        //Down
-        else if (Input.GetKeyDown(KeyCode.DownArrow) && GetHead().Direction != Vector2.up)
-        {
-            _headDirection = -Vector2.up;
-            _changedDir = true;
-        }
-    }
-    private void Move(Segment segment)
-    {
-        Vector2 position = segment.transform.position + (Vector3)(segment.Direction * segment.Size);
-        Vector2 index = segment.Index + segment.Direction;
-
-        segment.SetPosition(position, index);
-        segment.UpdateSpriteDirection();
-    }
-    private void HandleGridLimits(Segment segment)
-    {
-        // Far left
-        if (segment.Index.x < 0)
-        {
-            Vector2 position = new Vector2(_maxPositions.x, segment.transform.position.y);
-            Vector2 index = new Vector2(_maxIndexes.x - 1, segment.Index.y);
-
-            segment.SetPosition(position, index);
-        }
-        // Far
-        else if (segment.Index.x > _maxIndexes.x - 1)
-        {
-            Vector2 position = new Vector2(_minPositions.x, segment.transform.position.y);
-            Vector2 index = new Vector2(_minIndexes.x, segment.Index.y);
-
-            segment.SetPosition(position, index);
-        }
-        if (segment.Index.y < 0)
-        {
-            Vector2 position = new Vector2(segment.transform.position.x, _maxPositions.y);
-            Vector2 index = new Vector2(segment.Index.x, _maxIndexes.y - 1);
-
-            segment.SetPosition(position, index);
-        }
-        else if (segment.Index.y > _maxIndexes.y - 1)
-        {
-            Vector2 position = new Vector2(segment.transform.position.x, _minPositions.y);
-            Vector2 index = new Vector2(segment.Index.x, _minIndexes.y);
-
-            segment.SetPosition(position, index);
-        }
-
-    }
-    private void CheckSegmentChangeDir(Segment segment)
-    {
-        foreach (Vector2 index in segment.ChangeDirIndexes.Keys)
-        {
-            // Segment is on a 'change dir' index
-            if (segment.Index == index)
-            {
-                // Apply change direction to the segment
-                segment.Direction = segment.ChangeDirIndexes[index];
-
-                // Remove item from the dictionary
-                segment.ChangeDirIndexes.Remove(index);
-                break;
-            }
-        }
-    }
-
-    // Collision functions
-    public bool CheckSelfCollision()
-    {
-        if (_movementTimer >= 1)
-        {
-            // Get the next position of the head
-            Vector2 nextHeadPos = GetHead().Index + _headDirection;
-
-            // Go through all the segments (excluding the head)
-            for (int i = 1; i < Segments.Count; i++)
-            {
-                // If the next position collides with the body
-                if (nextHeadPos == Segments[i].Index)
-                    return true;
-            }
-        }
-
-        return false;
-    }
-    public bool CheckCollisionWith(Point point)
-    {
-        if (point == null)
-            return false;
-
-        Segment head = Segments[0];
-
-        // Check for all collision index of the point
-        for (int i = 0; i < point.collisionIndices.Length; i++)
-        {
-            // Animate head when eating
-            if (head.Index + 1 * head.Direction == point.collisionIndices[i] || head.Index == point.collisionIndices[i])
-                head.SetBodySprite(headSprites[1]);
-            else
-                head.SetBodySprite(headSprites[0]);
-
-            // Check if head index is the same as the point
-            if (head.Index == point.collisionIndices[i])
-            {
-                _eatenIndices.Add(point.collisionIndices[i]);
-                return true;
-            }
-        }
-
-        return false;
-    }
-    public bool IsCollidingWithEatenPoint()
-    {
-        if (_eatenIndices.Count > 0)
-        {
-            // Go though all the segments
-            for (int i = 0; i < Segments.Count; i++)
-            {
-                // Get the segment from list
-                Segment segment = Segments[i];
-
-                // Check if any segment is colliding with the point position
-                for (int j = 0; j < _eatenIndices.Count; j++)
-                    if (segment.Index == _eatenIndices[j])
-                        return true;
-            }
-        }
-        return false;
-    }
-    public void Grow()
-    {
-        // Create a new segment
-        Segment newSegment = Instantiate(segmentPrefab, transform);
-
-        // Set the position at the end of the body
-        Segment tail = Segments[Segments.Count - 1];
-        Vector2 position = (Vector2)tail.transform.position + (newSegment.Size * -tail.Direction);
-        Vector2 index = tail.Index + (-tail.Direction);
-
-        // Initialize it
-        newSegment.Initialize(position, index, TileType.Type.Segment);
-        newSegment.Direction = tail.Direction;
-
-        // Copy all saved 'change directions' dictionary references
-        newSegment.InheritTailDirections(tail);
-
-        // Add segment to the list
-        Segments.Add(newSegment);
-
-        // Update the tail sprites
-        UpdateSprites(true);
-    }
+    // To remove ------------------------------------------------
     
+
     // Despawn functions
     public void Die(Action despawn)
     {

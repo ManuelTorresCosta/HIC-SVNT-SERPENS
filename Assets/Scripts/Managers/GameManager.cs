@@ -113,8 +113,6 @@ public class GameManager : MonoBehaviour
 
                         // Remove point
                         Points.DespawnCommonPoint();
-
-                        //Effects.ColorFadeEffect();
                     }
                     else if (Snake.CheckCollisionWith(Points.rarePoint))
                     {
@@ -126,13 +124,13 @@ public class GameManager : MonoBehaviour
 
                         // Remove point
                         Points.DespawnRarePoint(true);
-
-                        //Effects.ColorFadeEffect();
                     }
+                    else
+                        Snake.eating = false;
 
                     // Update snake sprites when it eats
-                    if (Snake.IsCollidingWithEatenPoint())
-                        Snake.UpdateEatenPoints();
+                    //if (Snake.IsCollidingWithEatenPoint())
+                    //    Snake.UpdateEatenPoints();
                 }
 
             }

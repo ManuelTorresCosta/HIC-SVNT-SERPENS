@@ -45,8 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdcb6ae1940181a4ca6c85c231a71bb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  X: 0
-  Y: 0
+  collisionIndices: []
 --- !u!212 &7659747653615450476
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -88,12 +87,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 943754243, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
+  m_Sprite: {fileID: -1233815251, guid: b3350d076c71cc2458c117096dd55cf0, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.24, y: 0.24}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
