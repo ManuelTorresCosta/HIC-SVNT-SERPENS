@@ -127,10 +127,6 @@ public class GameManager : MonoBehaviour
                     }
                     else
                         Snake.eating = false;
-
-                    // Update snake sprites when it eats
-                    //if (Snake.IsCollidingWithEatenPoint())
-                    //    Snake.UpdateEatenPoints();
                 }
 
             }

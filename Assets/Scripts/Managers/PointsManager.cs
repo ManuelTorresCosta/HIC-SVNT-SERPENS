@@ -31,6 +31,8 @@ public class PointsManager : MonoBehaviour
         {
             Point point = commonPointsParent.GetChild(i).GetComponent<Point>();
             commonPoints.Add(point);
+
+            point.gameObject.SetActive(false);
         }
         _totalCommonPoints = commonPoints.Count;
 
@@ -39,6 +41,8 @@ public class PointsManager : MonoBehaviour
         {
             Point point = rarePointsParent.GetChild(i).GetComponent<Point>();
             rarePoints.Add(point);
+
+            point.gameObject.SetActive(false);
         }
     }
 

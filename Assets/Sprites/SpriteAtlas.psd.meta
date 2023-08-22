@@ -139,8 +139,8 @@ TextureImporter:
       name: Body 1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 487
+        x: 45
+        y: 488
         width: 24
         height: 24
       alignment: 0
@@ -160,8 +160,8 @@ TextureImporter:
       name: Body 3
       rect:
         serializedVersion: 2
-        x: 25
-        y: 487
+        x: 93
+        y: 488
         width: 24
         height: 24
       alignment: 0
@@ -181,8 +181,8 @@ TextureImporter:
       name: Square 12x12
       rect:
         serializedVersion: 2
-        x: 37
-        y: 439
+        x: 0
+        y: 500
         width: 12
         height: 12
       alignment: 0
@@ -199,11 +199,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Head
+      name: Head 1
       rect:
         serializedVersion: 2
-        x: 49
-        y: 487
+        x: 141
+        y: 488
         width: 24
         height: 24
       alignment: 0
@@ -223,7 +223,7 @@ TextureImporter:
       name: Horizontal Lines
       rect:
         serializedVersion: 2
-        x: 75
+        x: 192
         y: 273
         width: 320
         height: 239
@@ -244,8 +244,8 @@ TextureImporter:
       name: Square 24x24
       rect:
         serializedVersion: 2
-        x: 49
-        y: 439
+        x: 0
+        y: 488
         width: 24
         height: 24
       alignment: 0
@@ -265,8 +265,8 @@ TextureImporter:
       name: Square
       rect:
         serializedVersion: 2
-        x: 38
-        y: 440
+        x: 1
+        y: 501
         width: 10
         height: 10
       alignment: 0
@@ -496,8 +496,8 @@ TextureImporter:
       name: Body 2
       rect:
         serializedVersion: 2
-        x: 25
-        y: 463
+        x: 69
+        y: 488
         width: 24
         height: 24
       alignment: 0
@@ -517,8 +517,8 @@ TextureImporter:
       name: Head 2
       rect:
         serializedVersion: 2
-        x: 49
-        y: 463
+        x: 165
+        y: 488
         width: 24
         height: 24
       alignment: 0
@@ -538,12 +538,12 @@ TextureImporter:
       name: Body 4
       rect:
         serializedVersion: 2
-        x: 1
-        y: 463
+        x: 117
+        y: 488
         width: 24
         height: 24
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -551,6 +551,48 @@ TextureImporter:
       bones: []
       spriteID: 3f219b3e55701a74db2096341e93ea4d
       internalID: -1181229231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Point Common
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 463
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce21185230a55654c8563816e4a262ab
+      internalID: -335379907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Point Rare
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 451
+        width: 36
+        height: 36
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83596a59886e55842bf39e21ca8b6902
+      internalID: 2111734166
       vertices: []
       indices: 
       edges: []
@@ -580,11 +622,13 @@ TextureImporter:
       Font 7: 127328769
       Font 8: -1777075317
       Font 9: 263060898
-      Head: -1610755490
+      Head 1: -1610755490
       Head 2: 796449294
       Head_1: -1353177742
       Head_2: 1154250466
       Horizontal Lines: 448533946
+      Point Common: -335379907
+      Point Rare: 2111734166
       Square: 372369822
       Square 12x12: -285309627
       Square 24x24: -1233815251
