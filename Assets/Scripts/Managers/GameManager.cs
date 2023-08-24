@@ -44,8 +44,7 @@ public class GameManager : MonoBehaviour
         isGameplay = true;
     }
 
-
-
+    
     // Functions
     public void Run(float inputX, float inputY)
     {

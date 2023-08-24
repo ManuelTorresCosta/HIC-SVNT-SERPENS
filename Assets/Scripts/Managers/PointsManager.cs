@@ -6,16 +6,21 @@ public class PointsManager : MonoBehaviour
 {
     public Point pointPrefab;
 
+    [Header("Rare Points")]
+
     public Transform commonPointsParent;
     public List<Point> commonPoints { get; private set; }
     public Point commonPoint { get; private set; }
-    private int _totalCommonPoints;
+    public int _commonPointsCaptured = 0;
 
-    public Point rarePoint { get; private set; }
+    [Header("Common Points")]
+
     public Transform rarePointsParent;
     public List<Point> rarePoints { get; private set; }
-    private int _rarePointsCapturedCounter = 0;
+    public Point rarePoint { get; private set; }
+    public int _rarePointsCaptured = 0;
     public float rarePointValue;
+    public float rarePointDevalueSpeed = 18f;
 
 
     // Unity functions
@@ -34,7 +39,6 @@ public class PointsManager : MonoBehaviour
 
             point.gameObject.SetActive(false);
         }
-        _totalCommonPoints = commonPoints.Count;
 
         // Get the legends to the list
         for (int i = 0; i < rarePointsParent.childCount; i++)
@@ -50,7 +54,7 @@ public class PointsManager : MonoBehaviour
     // Functions
     public bool CanSpawnCommonPoint()
     {
-        return commonPoint == null;
+        return commonPoint == null && rarePoint == null;
     }
     public void SpawnRandomCommonPoint(List<Segment> segments)
     {
@@ -99,15 +103,20 @@ public class PointsManager : MonoBehaviour
 
         // Turn the point null in order to respawn another
         commonPoint = null;
+
+        // Only work towards next rare point if no rare points are present
+        if (rarePoint == null)
+            _commonPointsCaptured++;
     }
     
     public bool CanSpawnRarePoint()
     {
         if (rarePoint == null)
         {
-            if (_totalCommonPoints - commonPoints.Count == 3)
+            // Only spawn rare point if captured 3 common points
+            if (_commonPointsCaptured >= 3)
             {
-                _totalCommonPoints = commonPoints.Count;
+                _commonPointsCaptured = 0;
                 return true;
             }
         }
@@ -115,7 +124,7 @@ public class PointsManager : MonoBehaviour
     }
     public void SpawnRandomRarePoint(List<Segment> segments)
     {
-        bool lastPoint = _rarePointsCapturedCounter >= 3;
+        bool lastPoint = _rarePointsCaptured >= 3;
 
         if (!lastPoint)
         {
@@ -181,7 +190,7 @@ public class PointsManager : MonoBehaviour
         rarePoint = null;
 
         if (captured)
-            _rarePointsCapturedCounter++;
+            _rarePointsCaptured++;
     }
     public bool IsRarePointTimeEnded()
     {
@@ -189,7 +198,7 @@ public class PointsManager : MonoBehaviour
         {
             if (rarePointValue > 0)
             {
-                rarePointValue -= 20f * Time.deltaTime;
+                rarePointValue -= rarePointDevalueSpeed * Time.deltaTime;
                 rarePoint.Value = (int)rarePointValue;
                 return false;
             }
@@ -197,7 +206,6 @@ public class PointsManager : MonoBehaviour
             {
                 rarePointValue = 0;
                 rarePoint.Value = (int)rarePointValue;
-                _totalCommonPoints = commonPoints.Count;
                 return true;
             }
         }
@@ -205,7 +213,7 @@ public class PointsManager : MonoBehaviour
     }
     public bool MaxRarePointsCaptured()
     {
-        return _rarePointsCapturedCounter > 3;
+        return _rarePointsCaptured > 3;
     }
 
     // Old
