@@ -8,6 +8,7 @@ public class ScoreManager : MonoBehaviour
     public Sprite[] fonts;
 
     [Header("Score UI")]
+    public Text scoreText;
     public Image[] scoreDigits;
 
     [Header("Tale")]
@@ -15,7 +16,7 @@ public class ScoreManager : MonoBehaviour
     public Image[] taleDigits;
 
     [Header("Stone")]
-    public Image stoneText;
+    public Text stoneText;
     public Image stoneDigit;
 
     [Header("Bonus point")]
@@ -34,7 +35,7 @@ public class ScoreManager : MonoBehaviour
     public void SetUIActive(bool value)
     {
         // Score
-        bonusPointImage.gameObject.SetActive(value);
+        scoreText.gameObject.SetActive(value);
         foreach (Image scoreDigit in scoreDigits)
             scoreDigit.gameObject.SetActive(value);
 
