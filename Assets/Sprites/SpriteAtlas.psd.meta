@@ -287,9 +287,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 140
+        y: 306
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -308,9 +308,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 86
-        y: 140
+        y: 306
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -328,10 +328,10 @@ TextureImporter:
       name: Font 2
       rect:
         serializedVersion: 2
-        x: 171
-        y: 140
+        x: 1
+        y: 161
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -349,10 +349,10 @@ TextureImporter:
       name: Font 3
       rect:
         serializedVersion: 2
-        x: 256
-        y: 140
+        x: 86
+        y: 161
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -370,10 +370,10 @@ TextureImporter:
       name: Font 4
       rect:
         serializedVersion: 2
-        x: 341
-        y: 140
+        x: 1
+        y: 16
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -391,10 +391,10 @@ TextureImporter:
       name: Font 5
       rect:
         serializedVersion: 2
-        x: 426
-        y: 140
+        x: 86
+        y: 16
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -412,10 +412,10 @@ TextureImporter:
       name: Font 6
       rect:
         serializedVersion: 2
-        x: 1
-        y: 7
+        x: 171
+        y: 128
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -433,10 +433,10 @@ TextureImporter:
       name: Font 7
       rect:
         serializedVersion: 2
-        x: 86
-        y: 7
+        x: 256
+        y: 128
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -454,10 +454,10 @@ TextureImporter:
       name: Font 8
       rect:
         serializedVersion: 2
-        x: 171
-        y: 7
+        x: 341
+        y: 128
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -475,10 +475,10 @@ TextureImporter:
       name: Font 9
       rect:
         serializedVersion: 2
-        x: 256
-        y: 7
+        x: 426
+        y: 128
         width: 84
-        height: 132
+        height: 144
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

@@ -19,11 +19,11 @@ public class Point : Tile
     {
         switch (tileType)
         {
-            case TileType.Type.CommonPoint:
+            case TileType.Type.Tale:
                 Value = 10;
                 break;
 
-            case TileType.Type.RarePoint:
+            case TileType.Type.Stone:
                 Value = 99;
                 break;
 

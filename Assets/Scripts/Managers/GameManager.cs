@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         // Create the snake objects
         Snake.CreateSnake(Vector2.right, Tiles.Spawn);
 
-        Score.SetRarePointUIActive(false);
+        Score.SetBonusPointUIActive(false);
 
         // Starts gameplay on Update()
         isGameplay = true;
@@ -56,36 +56,36 @@ public class GameManager : MonoBehaviour
             if (Snake.isAlive)
             {
                 // Spawn a point if no points are on the grid
-                if (Points.CanSpawnCommonPoint())
-                    Points.SpawnRandomCommonPoint(Snake.Segments);
+                if (Points.CanSpawnTale())
+                    Points.SpawnTale(Snake.Segments);
 
                 // Spawn a legend if no legends are active
-                if (Points.CanSpawnRarePoint())
+                if (Points.CanSpawnStone())
                 {
-                    Points.SpawnRandomRarePoint(Snake.Segments);
-                    Score.SetRarePointUIActive(true);
+                    Points.SpawnRandomStone(Snake.Segments);
+                    Score.SetBonusPointUIActive(true);
                 }
 
                 // Sets despawn timer for rare point
-                if (Points.IsRarePointTimeEnded() || Points.rarePoint == null)
+                if (Points.IsStoneTimeEnded() || Points.Stone == null)
                 {
-                    Points.DespawnRarePoint(false);
-                    Score.SetRarePointUIActive(false);
+                    Points.DespawnStone(false);
+                    Score.SetBonusPointUIActive(false);
                 }
                 // Update the UI
                 else
-                    if (Points.rarePoint != null)
-                        Score.UpdateRarePointUI((int)Points.rarePointValue);
+                    if (Points.Stone != null)
+                        Score.UpdateBonusPointDigits((int)Points.stoneValue);
 
                 // Check end game conditions
-                if (Snake.CheckSelfCollision() || Points.MaxRarePointsCaptured())
+                if (Snake.CheckSelfCollision() || Points.MaxStonesCaptured())
                 {
                     // Removes map borders (and grid)
                     Tiles.DeleteMap();
 
                     // Despawn points
-                    Points.DespawnCommonPoint();
-                    Points.DespawnRarePoint(true);
+                    Points.DespawnTale();
+                    Points.DespawnStone(true);
 
                     // Disable score UI
                     Score.SetUIActive(false);
@@ -102,27 +102,27 @@ public class GameManager : MonoBehaviour
                     Snake.HandleMovement(inputX, inputY);
 
                     // Check collision with a point
-                    if (Snake.CheckCollisionWith(Points.commonPoint))
+                    if (Snake.CheckCollisionWith(Points.Tale))
                     {
                         // Make snake grow
                         Snake.Grow();
 
                         // Add point value to score
-                        Score.AddPoint(Points.commonPoint.Value);
+                        Score.AddPoint(Points.Tale.Value, TileType.Type.Tale);
 
                         // Remove point
-                        Points.DespawnCommonPoint();
+                        Points.DespawnTale();
                     }
-                    else if (Snake.CheckCollisionWith(Points.rarePoint))
+                    else if (Snake.CheckCollisionWith(Points.Stone))
                     {
                         // Make snake grow
                         Snake.Grow();
 
                         // Add point value to score
-                        Score.AddPoint(Points.rarePoint.Value);
+                        Score.AddPoint(Points.Stone.Value, TileType.Type.Stone);
 
                         // Remove point
-                        Points.DespawnRarePoint(true);
+                        Points.DespawnStone(true);
                     }
                     else
                         Snake.eating = false;

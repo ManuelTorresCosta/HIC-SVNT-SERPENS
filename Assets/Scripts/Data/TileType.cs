@@ -9,8 +9,8 @@ public class TileType
         Grid,
         Border,
         Segment,
-        CommonPoint,
-        RarePoint,
+        Tale,
+        Stone,
         GameOver
     }
 }

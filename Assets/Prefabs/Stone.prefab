@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 280229816746403738}
   - component: {fileID: 7659747653615450476}
   m_Layer: 0
-  m_Name: RarePoint
+  m_Name: Stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -8,43 +8,43 @@ public class PointsManager : MonoBehaviour
 
     [Header("Rare Points")]
 
-    public Transform commonPointsParent;
-    public List<Point> commonPoints { get; private set; }
-    public Point commonPoint { get; private set; }
-    public int _commonPointsCaptured = 0;
+    public Transform talesParent;
+    public List<Point> talesList { get; private set; }
+    public Point Tale { get; private set; }
+    public int _talesCaptured = 0;
 
     [Header("Common Points")]
 
-    public Transform rarePointsParent;
-    public List<Point> rarePoints { get; private set; }
-    public Point rarePoint { get; private set; }
-    public int _rarePointsCaptured = 0;
-    public float rarePointValue;
-    public float rarePointDevalueSpeed = 18f;
+    public Transform stonesParent;
+    public List<Point> stonesList { get; private set; }
+    public Point Stone { get; private set; }
+    private int _stonesCaptured = 0;
+    public float stoneValue;
+    public float stoneDevalueSpeed = 18f;
 
 
     // Unity functions
     private void Awake()
     {
-        commonPoints = new List<Point>();
-        rarePoints = new List<Point>();
+        talesList = new List<Point>();
+        stonesList = new List<Point>();
     }
     private void Start()
     {
         // Get the points to the list
-        for (int i = 0; i < commonPointsParent.childCount; i++)
+        for (int i = 0; i < talesParent.childCount; i++)
         {
-            Point point = commonPointsParent.GetChild(i).GetComponent<Point>();
-            commonPoints.Add(point);
+            Point point = talesParent.GetChild(i).GetComponent<Point>();
+            talesList.Add(point);
 
             point.gameObject.SetActive(false);
         }
 
         // Get the legends to the list
-        for (int i = 0; i < rarePointsParent.childCount; i++)
+        for (int i = 0; i < stonesParent.childCount; i++)
         {
-            Point point = rarePointsParent.GetChild(i).GetComponent<Point>();
-            rarePoints.Add(point);
+            Point point = stonesParent.GetChild(i).GetComponent<Point>();
+            stonesList.Add(point);
 
             point.gameObject.SetActive(false);
         }
@@ -52,15 +52,15 @@ public class PointsManager : MonoBehaviour
 
 
     // Functions
-    public bool CanSpawnCommonPoint()
+    public bool CanSpawnTale()
     {
-        return commonPoint == null && rarePoint == null;
+        return Tale == null && Stone == null;
     }
-    public void SpawnRandomCommonPoint(List<Segment> segments)
+    public void SpawnTale(List<Segment> segments)
     {
         // Generate a random index from the list
-        int randomIndex = Random.Range(0, commonPoints.Count);
-        commonPoint = commonPoints[randomIndex];
+        int randomIndex = Random.Range(0, talesList.Count);
+        Tale = talesList[randomIndex];
 
         // Create a bool in case of the point being in the same index as the snake
         bool recursive = false;
@@ -69,7 +69,7 @@ public class PointsManager : MonoBehaviour
         foreach (Segment segment in segments)
         {
             // If the index is the same
-            if (segment.Index == commonPoint.collisionIndices[0])
+            if (segment.Index == Tale.collisionIndices[0])
             {
                 recursive = true;
                 break;
@@ -80,67 +80,67 @@ public class PointsManager : MonoBehaviour
         if (!recursive)
         {
             // Enable object
-            commonPoint.gameObject.SetActive(true);
+            Tale.gameObject.SetActive(true);
 
             // Initialize it at the random position
-            commonPoint.Initialize(commonPoint.transform.position, commonPoint.Index, TileType.Type.CommonPoint);
+            Tale.Initialize(Tale.transform.position, Tale.Index, TileType.Type.Tale);
         }
         // Try again
         else
-            SpawnRandomCommonPoint(segments);
+            SpawnTale(segments);
 
     }
-    public void DespawnCommonPoint()
+    public void DespawnTale()
     {
-        if (commonPoint == null)
+        if (Tale == null)
             return;
 
         // Remove point from the list
-        commonPoints.Remove(commonPoint);
+        talesList.Remove(Tale);
 
         // Remove gameobject from the scene
-        Destroy(commonPoint.gameObject);
+        Destroy(Tale.gameObject);
 
         // Turn the point null in order to respawn another
-        commonPoint = null;
+        Tale = null;
 
         // Only work towards next rare point if no rare points are present
-        if (rarePoint == null)
-            _commonPointsCaptured++;
+        if (Stone == null)
+            _talesCaptured++;
     }
     
-    public bool CanSpawnRarePoint()
+    public bool CanSpawnStone()
     {
-        if (rarePoint == null)
+        if (Stone == null)
         {
             // Only spawn rare point if captured 3 common points
-            if (_commonPointsCaptured >= 3)
+            if (_talesCaptured >= 3)
             {
-                _commonPointsCaptured = 0;
+                _talesCaptured = 0;
                 return true;
             }
         }
         return false;
     }
-    public void SpawnRandomRarePoint(List<Segment> segments)
+    public void SpawnRandomStone(List<Segment> segments)
     {
-        bool lastPoint = _rarePointsCaptured >= 3;
+        bool lastPoint = _stonesCaptured >= 3;
 
         if (!lastPoint)
         {
             // Generate a random index from the list
-            int randomIndex = Random.Range(0, rarePoints.Count);
-            rarePoint = rarePoints[randomIndex];
+            int randomIndex = Random.Range(0, stonesList.Count);
+            Stone = stonesList[randomIndex];
         }
         // Spawns the last rarePoint
         else
         {
-            foreach (Point point in rarePoints)
+            foreach (Point point in stonesList)
                 if (point.collisionIndices[0] == new Vector2(5, 30))
-                    rarePoint = point;
+                    Stone = point;
         }
 
-        if (rarePoint != null)
+        if (Stone != null)
         {
             // Create a bool in case of the point being in the same index as the snake
             bool recursive = false;
@@ -148,10 +148,10 @@ public class PointsManager : MonoBehaviour
             // Check if the snake is on the random tile
             foreach (Segment segment in segments)
             {
-                for (int i = 0; i < rarePoint.collisionIndices.Length; i++)
+                for (int i = 0; i < Stone.collisionIndices.Length; i++)
                 {
                     // If the index is the same
-                    if (segment.Index == rarePoint.collisionIndices[i] || commonPoint.collisionIndices[0] == rarePoint.collisionIndices[i])
+                    if (segment.Index == Stone.collisionIndices[i] || Tale.collisionIndices[0] == Stone.collisionIndices[i])
                     {
                         recursive = true;
                         break;
@@ -163,57 +163,57 @@ public class PointsManager : MonoBehaviour
             if (!recursive || lastPoint)
             {
                 // Enable object
-                rarePoint.gameObject.SetActive(true);
+                Stone.gameObject.SetActive(true);
 
                 // Initialize it at the random position
-                rarePoint.Initialize(rarePoint.transform.position, rarePoint.Index, TileType.Type.RarePoint);
+                Stone.Initialize(Stone.transform.position, Stone.Index, TileType.Type.Stone);
 
-                rarePointValue = rarePoint.Value;
+                stoneValue = Stone.Value;
             }
             // Try again
             else
-                SpawnRandomRarePoint(segments);
+                SpawnRandomStone(segments);
         }
     }
-    public void DespawnRarePoint(bool captured)
+    public void DespawnStone(bool captured)
     {
-        if (rarePoint == null)
+        if (Stone == null)
             return;
 
         // Remove point from the list
-        rarePoints.Remove(rarePoint);
+        stonesList.Remove(Stone);
 
         // Remove gameobject from the scene
-        Destroy(rarePoint.gameObject);
+        Destroy(Stone.gameObject);
 
         // Turn the point null in order to respawn another
-        rarePoint = null;
+        Stone = null;
 
         if (captured)
-            _rarePointsCaptured++;
+            _stonesCaptured++;
     }
-    public bool IsRarePointTimeEnded()
+    public bool IsStoneTimeEnded()
     {
-        if (rarePoint != null)
+        if (Stone != null)
         {
-            if (rarePointValue > 0)
+            if (stoneValue > 0)
             {
-                rarePointValue -= rarePointDevalueSpeed * Time.deltaTime;
-                rarePoint.Value = (int)rarePointValue;
+                stoneValue -= stoneDevalueSpeed * Time.deltaTime;
+                Stone.Value = (int)stoneValue;
                 return false;
             }
             else
             {
-                rarePointValue = 0;
-                rarePoint.Value = (int)rarePointValue;
+                stoneValue = 0;
+                Stone.Value = (int)stoneValue;
                 return true;
             }
         }
         return false;
     }
-    public bool MaxRarePointsCaptured()
+    public bool MaxStonesCaptured()
     {
-        return _rarePointsCaptured > 3;
+        return _stonesCaptured > 3;
     }
 
     // Old
@@ -244,10 +244,10 @@ public class PointsManager : MonoBehaviour
         if (!recursive)
         {
             // Instantiate object
-            commonPoint = Instantiate(pointPrefab, transform);
+            Tale = Instantiate(pointPrefab, transform);
 
             // Initialize it at the random position
-            commonPoint.Initialize(randomTile.transform.position, randomTile.Index, TileType.Type.CommonPoint);
+            Tale.Initialize(randomTile.transform.position, randomTile.Index, TileType.Type.Tale);
         }
         // Try again
         else

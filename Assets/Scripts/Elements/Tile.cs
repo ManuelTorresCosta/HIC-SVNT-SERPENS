@@ -39,13 +39,13 @@ public class Tile : MonoBehaviour
                 name = "Border " + transform.parent.childCount;                
                 break;
 
-            case TileType.Type.CommonPoint:
+            case TileType.Type.Tale:
                 SpriteRenderer.sortingOrder = 2;
                 SpriteRenderer.color = Color.black;
                 //name = "Point";
                 break;
 
-            case TileType.Type.RarePoint:
+            case TileType.Type.Stone:
                 SpriteRenderer.sortingOrder = 2;
                 SpriteRenderer.color = Color.black;
                 //name = "BonusPoint";
