@@ -7,6 +7,7 @@ using System;
 public class EffectsManager : MonoBehaviour
 {
     public Animator Animator { get; private set; }
+    public Camera Camera { get; private set; }
     public Animator CamAnimation { get; private set; }
     public AnalogGlitch Analog { get; private set; }
     public DigitalGlitch Digital { get; private set; }
@@ -20,7 +21,7 @@ public class EffectsManager : MonoBehaviour
     private void Awake()
     {
         Animator = GetComponent<Animator>();
-
+        Camera = Camera.main;
         CamAnimation = Camera.main.GetComponent<Animator>();
         Analog = CamAnimation.GetComponent<AnalogGlitch>();
         Digital = CamAnimation.GetComponent<DigitalGlitch>();

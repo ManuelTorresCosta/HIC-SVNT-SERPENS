@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,7 +10,9 @@ public class GameManager : MonoBehaviour
     public Snake Snake { get; private set; }
     public PointsManager Points { get; private set; }
     public ScoreManager Score { get; private set; }
-    public EffectsManager Effects;
+    public EffectsManager Effects { get; private set; }
+
+    public GameObject gameOverObj;
 
     public bool isGameplay;
     private float _timer = 0f;
@@ -23,6 +26,7 @@ public class GameManager : MonoBehaviour
         Snake = GetComponentInChildren<Snake>();
         Points = GetComponentInChildren<PointsManager>();
         Score = GetComponentInChildren<ScoreManager>();
+        Effects = transform.parent.GetComponentInChildren<EffectsManager>();
     }
     private void Start()
     {
@@ -55,27 +59,7 @@ public class GameManager : MonoBehaviour
 
             if (Snake.isAlive)
             {
-                // Spawn a point if no points are on the grid
-                if (Points.CanSpawnTale())
-                    Points.SpawnTale(Snake.Segments);
-
-                // Spawn a legend if no legends are active
-                if (Points.CanSpawnStone())
-                {
-                    Points.SpawnRandomStone(Snake.Segments);
-                    Score.SetBonusPointUIActive(true);
-                }
-
-                // Sets despawn timer for rare point
-                if (Points.IsStoneTimeEnded() || Points.Stone == null)
-                {
-                    Points.DespawnStone(false);
-                    Score.SetBonusPointUIActive(false);
-                }
-                // Update the UI
-                else
-                    if (Points.Stone != null)
-                        Score.UpdateBonusPointDigits((int)Points.stoneValue);
+                HandlePoints();
 
                 // Check end game conditions
                 if (Snake.CheckSelfCollision() || Points.MaxStonesCaptured())
@@ -90,8 +74,15 @@ public class GameManager : MonoBehaviour
                     // Disable score UI
                     Score.SetUIActive(false);
 
-                    // Run the gameover effect
-                    Effects.RunGameOver();
+                    // If Last stone captured
+                    if (Points.MaxStonesCaptured())
+                        Effects.RunGameOver();
+                    else
+                    {
+                        // Show game over text
+                        //Effects.Camera.backgroundColor = Color.black;
+                        gameOverObj.gameObject.SetActive(true);
+                    }
 
                     isGameplay = false;
                 }
@@ -139,13 +130,18 @@ public class GameManager : MonoBehaviour
                 Snake.isAlive = false;
             });
 
-            // Checks if game over effect is finished
-            if (Effects.IsGameOverFinished())
-                SceneManager.LoadScene(1);
+            // Last stone captured
+            if (Points.MaxStonesCaptured())
+            {
+                // Checks if game over effect is finished
+                if (Effects.IsGameOverFinished())
+                    SceneManager.LoadScene(1);
+            }
+            else if (Input.anyKeyDown)
+                SceneManager.LoadScene(0);
         }
-
-        
     }
+
 
     private void HandleInputActivity(float inputX, float inputY)
     {
@@ -178,5 +174,29 @@ public class GameManager : MonoBehaviour
 
             _timer = 0;
         }
+    }
+    private void HandlePoints()
+    {
+        // Spawn a point if no points are on the grid
+        if (Points.CanSpawnTale())
+            Points.SpawnTale(Snake.Segments);
+
+        // Spawn a legend if no legends are active
+        if (Points.CanSpawnStone())
+        {
+            Points.SpawnRandomStone(Snake.Segments);
+            Score.SetBonusPointUIActive(true);
+        }
+
+        // Sets despawn timer for rare point
+        if (Points.IsStoneTimeEnded() || Points.Stone == null)
+        {
+            Points.DespawnStone(false);
+            Score.SetBonusPointUIActive(false);
+        }
+        // Update the UI
+        else
+            if (Points.Stone != null)
+            Score.UpdateBonusPointDigits((int)Points.stoneValue);
     }
 }

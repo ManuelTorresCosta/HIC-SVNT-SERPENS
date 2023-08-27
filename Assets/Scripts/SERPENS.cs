@@ -20,6 +20,8 @@ public class SERPENS : MonoBehaviour
     // Unity Functions
     private void Awake()
     {
+        Application.targetFrameRate = 30;
+
         Menu = GetComponentInChildren<MenuManager>();
         Game = GetComponentInChildren<GameManager>();
     }
