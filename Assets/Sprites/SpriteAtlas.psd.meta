@@ -224,9 +224,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 192
-        y: 273
+        y: 272
         width: 320
-        height: 239
+        height: 240
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -629,6 +629,7 @@ TextureImporter:
       Horizontal Lines: 448533946
       Point Common: -335379907
       Point Rare: 2111734166
+      SpriteAtlas_0: 278092880
       Square: 372369822
       Square 12x12: -285309627
       Square 24x24: -1233815251

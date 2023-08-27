@@ -37,7 +37,7 @@ public class MenuManager : MonoBehaviour
         switch (_state)
         {
             case State.MENU:
-                Effects.GlitchEffect();
+                //Effects.GlitchEffect();
                 break;
 
             case State.TRANSITION:

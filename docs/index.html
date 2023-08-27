@@ -49,17 +49,6 @@
 			const appId = (params.get('appId') !== null && params.get('appId') !== undefined) ? params.get('appId') : '';
 			return appId;
 		}
-        setInterval(function () {
-    if (typeof TOTAL_MEMORY !== 'undefined') {
-        try {
-            var totalMem = TOTAL_MEMORY / 1024.0 / 1024.0;
-            var usedMem = (TOTAL_STACK + (STATICTOP - STATIC_BASE) +
-                (DYNAMICTOP - DYNAMIC_BASE)) / 1024.0 / 1024.0;
-            console.log('Memory stats - used: ' + Math.ceil(usedMem) + 'M' +
-                ' free: ' + Math.floor(totalMem - usedMem) + 'M');
-        } catch (e) { }
-    }
-}, 5000);
 		
 		window.appId = GetParamId();
     </script>
