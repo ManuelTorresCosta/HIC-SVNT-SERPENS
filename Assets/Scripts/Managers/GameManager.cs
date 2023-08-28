@@ -59,10 +59,38 @@ public class GameManager : MonoBehaviour
 
             if (Snake.isAlive)
             {
+                // Spawns points
                 HandlePoints();
 
                 // Snake movement
-                if ( !Snake.CheckSelfCollision() && !Points.MaxStonesCaptured())
+                Snake.HandleMovement(inputX, inputY);
+
+                if (Snake.hasCollided || Points.MaxStonesCaptured())
+                {
+                    // Removes map borders (and grid)
+                    Tiles.DeleteMap();
+
+                    // Despawn points
+                    Points.DespawnTale();
+                    Points.DespawnStone(true);
+
+                    // Disable score UI
+                    Score.SetUIActive(false);
+
+                    // If Last stone captured
+                    if (Points.MaxStonesCaptured())
+                        Effects.RunGameOver();
+                    else
+                    {
+                        // Show game over text
+                        //Effects.Camera.backgroundColor = Color.black;
+                        gameOverObj.gameObject.SetActive(true);
+                    }
+
+                    isGameplay = false;
+                }
+                // Check end game conditions
+                else
                 {
                     // Move snake
                     Snake.HandleMovement(inputX, inputY);
@@ -89,34 +117,7 @@ public class GameManager : MonoBehaviour
 
                         // Remove point
                         Points.DespawnStone(true);
-                    }
-                    else
-                        Snake.eating = false;
-                }
-                // Check end game conditions
-                else
-                {
-                    // Removes map borders (and grid)
-                    Tiles.DeleteMap();
-
-                    // Despawn points
-                    Points.DespawnTale();
-                    Points.DespawnStone(true);
-
-                    // Disable score UI
-                    Score.SetUIActive(false);
-
-                    // If Last stone captured
-                    if (Points.MaxStonesCaptured())
-                        Effects.RunGameOver();
-                    else
-                    {
-                        // Show game over text
-                        //Effects.Camera.backgroundColor = Color.black;
-                        gameOverObj.gameObject.SetActive(true);
-                    }
-
-                    isGameplay = false;
+                    }                   
                 }
             }
         }

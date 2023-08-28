@@ -19,6 +19,7 @@ public class Snake : MonoBehaviour
     public int initialSize = 3;
     public float snakeSpeed = 1;
     public bool eating = false;
+    public bool hasCollided = false;
     public bool isAlive;
 
     // Private variables
@@ -97,60 +98,6 @@ public class Snake : MonoBehaviour
     }
 
     // Movement functions
-    public void HandleMovement(float inpuX, float inputY)
-    {
-        // Input
-        HandleInput(inpuX, inputY);
-
-        if (_movementTimer >= 1)
-        {
-            // Move each segment
-            for (int i = Segments.Count - 1; i >= 0; i--)
-            {
-                // Get the segment
-                Segment segment = Segments[i];
-
-                // Snake Body
-                if (i != 0)
-                {
-                    // Save the tile index to change the direction
-                    if (_changedDir && !segment.ChangeDirIndexes.ContainsKey(Segments[0].Index))
-                    {
-                        // Save direction of previous head position in the body segment dictionary
-                        segment.ChangeDirIndexes.Add(Segments[0].Index, _headDirection);
-                    }
-                }
-                // Snake head
-                else
-                {
-                    // Change head direction to the new direction
-                    segment.Direction = _headDirection;
-                }
-
-                // Move segments
-                Move(segment);
-
-                // Handle the grid limits
-                HandleGridLimits(segment);
-
-                // Updated segment direction when on the correct tile index
-                UpdateSegmentDirection(segment);
-
-                // Set the sprites
-                SetSprite(segment, i);
-
-                // Set rotation
-                SetSpriteRotation(segment, i);
-            }
-
-            // Reset timer
-            _movementTimer = 0;
-            _changedDir = false;
-        }
-        else
-            _movementTimer += snakeSpeed * Time.deltaTime;
-    }
-
     private void HandleInput(float inputX, float inputY)
     {
         // Get head direction reference
@@ -195,6 +142,64 @@ public class Snake : MonoBehaviour
             _headDirection = -Vector2.up;
             _changedDir = true;
         }
+    }
+    public void HandleMovement(float inpuX, float inputY)
+    {
+        // Input
+        HandleInput(inpuX, inputY);
+
+        if (_movementTimer >= 1)
+        {
+            // Move each segment
+            for (int i = Segments.Count - 1; i >= 0; i--)
+            {
+                // Get the segment
+                Segment segment = Segments[i];
+
+                // Snake Body
+                if (i != 0)
+                {
+                    // Save the tile index to change the direction
+                    if (_changedDir && !segment.ChangeDirIndexes.ContainsKey(Segments[0].Index))
+                    {
+                        // Save direction of previous head position in the body segment dictionary
+                        segment.ChangeDirIndexes.Add(Segments[0].Index, _headDirection);
+                    }
+                }
+                // Snake head
+                else
+                {
+                    // Change head direction to the new direction
+                    segment.Direction = _headDirection;
+                }
+
+                if (!CheckSelfCollision())
+                {
+                    // Move segments
+                    Move(segment);
+
+                    // Handle the grid limits
+                    HandleGridLimits(segment);
+
+                    // Updated segment direction when on the correct tile index
+                    UpdateSegmentDirection(segment);
+
+                    // Set the sprites
+                    SetSprite(segment, i);
+
+                    // Set rotation
+                    SetSpriteRotation(segment, i);
+                }
+                else
+                    hasCollided = true;
+            }
+
+            // Reset timer
+            _movementTimer = 0;
+            _changedDir = false;
+        }
+        else
+            _movementTimer += snakeSpeed * Time.deltaTime;
     }
     private void Move(Segment segment)
     {
@@ -343,18 +348,15 @@ public class Snake : MonoBehaviour
     // Collision functions
     public bool CheckSelfCollision()
     {
-        if (_movementTimer >= 1)
-        {
-            // Get the next position of the head
-            Vector2 nextHeadPos = GetHead().Index + _headDirection;
+        // Get the next position of the head
+        Vector2 nextHeadPos = GetHead().Index + _headDirection;
 
-            // Go through all the segments (excluding the head)
-            for (int i = 1; i < Segments.Count; i++)
-            {
-                // If the next position collides with the body
-                if (nextHeadPos == Segments[i].Index)
-                    return true;
-            }
+        // Go through all the segments (excluding the head)
+        for (int i = 1; i < Segments.Count; i++)
+        {
+            // If the next position collides with the body
+            if (nextHeadPos == Segments[i].Index)
+                return true;
         }
 
         return false;
@@ -362,7 +364,10 @@ public class Snake : MonoBehaviour
     public bool CheckCollisionWith(Point point)
     {
         if (point == null)
+        {
+            eating = false;
             return false;
+        }
 
         Segment head = Segments[0];
 
@@ -384,6 +389,7 @@ public class Snake : MonoBehaviour
             }
         }
 
+        eating = false;
         return false;
     }
     public void Grow()

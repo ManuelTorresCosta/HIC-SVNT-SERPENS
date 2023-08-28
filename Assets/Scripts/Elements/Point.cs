@@ -20,7 +20,7 @@ public class Point : Tile
         switch (tileType)
         {
             case TileType.Type.Tale:
-                Value = 10;
+                Value = 13;
                 break;
 
             case TileType.Type.Stone:
