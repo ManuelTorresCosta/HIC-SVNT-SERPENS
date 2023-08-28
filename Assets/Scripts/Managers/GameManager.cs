@@ -61,33 +61,8 @@ public class GameManager : MonoBehaviour
             {
                 HandlePoints();
 
-                // Check end game conditions
-                if (Snake.CheckSelfCollision() || Points.MaxStonesCaptured())
-                {
-                    // Removes map borders (and grid)
-                    Tiles.DeleteMap();
-
-                    // Despawn points
-                    Points.DespawnTale();
-                    Points.DespawnStone(true);
-
-                    // Disable score UI
-                    Score.SetUIActive(false);
-
-                    // If Last stone captured
-                    if (Points.MaxStonesCaptured())
-                        Effects.RunGameOver();
-                    else
-                    {
-                        // Show game over text
-                        //Effects.Camera.backgroundColor = Color.black;
-                        gameOverObj.gameObject.SetActive(true);
-                    }
-
-                    isGameplay = false;
-                }
                 // Snake movement
-                else
+                if ( !Snake.CheckSelfCollision() && !Points.MaxStonesCaptured())
                 {
                     // Move snake
                     Snake.HandleMovement(inputX, inputY);
@@ -118,7 +93,31 @@ public class GameManager : MonoBehaviour
                     else
                         Snake.eating = false;
                 }
+                // Check end game conditions
+                else
+                {
+                    // Removes map borders (and grid)
+                    Tiles.DeleteMap();
 
+                    // Despawn points
+                    Points.DespawnTale();
+                    Points.DespawnStone(true);
+
+                    // Disable score UI
+                    Score.SetUIActive(false);
+
+                    // If Last stone captured
+                    if (Points.MaxStonesCaptured())
+                        Effects.RunGameOver();
+                    else
+                    {
+                        // Show game over text
+                        //Effects.Camera.backgroundColor = Color.black;
+                        gameOverObj.gameObject.SetActive(true);
+                    }
+
+                    isGameplay = false;
+                }
             }
         }
         else

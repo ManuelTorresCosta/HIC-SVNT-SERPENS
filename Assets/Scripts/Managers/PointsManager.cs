@@ -58,10 +58,16 @@ public class PointsManager : MonoBehaviour
     }
     public void SpawnTale(List<Segment> segments)
     {
-        // Generate a random index from the list
-        int randomIndex = Random.Range(0, talesList.Count);
+        int randomIndex;
+        int dir = _talesCaptured % 2 != 0 ? 1 : -1;
+        
+        if (dir == 1)
+            randomIndex = Random.Range(talesList.Count / 2, talesList.Count);
+        else
+            randomIndex = Random.Range(0, talesList.Count / 2);
+        
         Tale = talesList[randomIndex];
-
+        
         // Create a bool in case of the point being in the same index as the snake
         bool recursive = false;
 
@@ -124,11 +130,10 @@ public class PointsManager : MonoBehaviour
     }
     public void SpawnRandomStone(List<Segment> segments)
     {
-        bool lastPoint = _stonesCaptured >= 3;
+        bool lastPoint = _stonesCaptured == 2;
 
-        if (!lastPoint)
+        if (_stonesCaptured < 2)
         {
-            // Generate a random index from the list
             int randomIndex = Random.Range(0, stonesList.Count);
             Stone = stonesList[randomIndex];
         }
@@ -213,7 +218,7 @@ public class PointsManager : MonoBehaviour
     }
     public bool MaxStonesCaptured()
     {
-        return _stonesCaptured > 3;
+        return _stonesCaptured > 2;
     }
 
     // Old

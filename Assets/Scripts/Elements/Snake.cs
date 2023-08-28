@@ -51,7 +51,7 @@ public class Snake : MonoBehaviour
     public void Initialize()
     {
         // Set starting properties
-        _headDirection = Vector2.right;
+        //_headDirection = Vector2.right;
 
         isAlive = true;
         _changedDir = false;
