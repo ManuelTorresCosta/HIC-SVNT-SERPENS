@@ -201,17 +201,20 @@ public class PointsManager : MonoBehaviour
     {
         if (Stone != null)
         {
-            if (stoneValue > 0)
+            if (_stonesCaptured < 2)
             {
-                stoneValue -= stoneDevalueSpeed * Time.deltaTime;
-                Stone.Value = (int)stoneValue;
-                return false;
-            }
-            else
-            {
-                stoneValue = 0;
-                Stone.Value = (int)stoneValue;
-                return true;
+                if (stoneValue > 0)
+                {
+                    stoneValue -= stoneDevalueSpeed * Time.deltaTime;
+                    Stone.Value = (int)stoneValue;
+                    return false;
+                }
+                else
+                {
+                    stoneValue = 0;
+                    Stone.Value = (int)stoneValue;
+                    return true;
+                }
             }
         }
         return false;
