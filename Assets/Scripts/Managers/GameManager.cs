@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
                 // Snake movement
                 Snake.HandleMovement(inputX, inputY);
 
+                // Check end game conditions
                 if (Snake.hasCollided || Points.MaxStonesCaptured())
                 {
                     // Removes map borders (and grid)
@@ -72,7 +73,7 @@ public class GameManager : MonoBehaviour
 
                     // Despawn points
                     Points.DespawnTale();
-                    Points.DespawnStone(true);
+                    Points.DespawnStone(false);
 
                     // Disable score UI
                     Score.SetUIActive(false);
@@ -89,7 +90,7 @@ public class GameManager : MonoBehaviour
 
                     isGameplay = false;
                 }
-                // Check end game conditions
+                // Handle gameplay
                 else
                 {
                     // Move snake

@@ -18,7 +18,7 @@ public class PointsManager : MonoBehaviour
     public Transform stonesParent;
     public List<Point> stonesList { get; private set; }
     public Point Stone { get; private set; }
-    private int _stonesCaptured = 0;
+    public int _stonesCaptured = 0;
     public float stoneValue;
     public float stoneDevalueSpeed = 18f;
 
