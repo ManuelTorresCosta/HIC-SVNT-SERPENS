@@ -10,6 +10,7 @@ public class PointsManager : MonoBehaviour
 
     public Transform talesParent;
     public List<Point> talesList { get; private set; }
+    public List<Point> talesGraveyard { get; private set; }
     public Point Tale { get; private set; }
     public int _talesCaptured = 0;
 
@@ -17,6 +18,7 @@ public class PointsManager : MonoBehaviour
 
     public Transform stonesParent;
     public List<Point> stonesList { get; private set; }
+    public List<Point> stonesGraveyard { get; private set; }
     public Point Stone { get; private set; }
     public int _stonesCaptured = 0;
     public float stoneValue;
@@ -27,11 +29,13 @@ public class PointsManager : MonoBehaviour
     private void Awake()
     {
         talesList = new List<Point>();
+        talesGraveyard = new List<Point>();
+
         stonesList = new List<Point>();
     }
     private void Start()
     {
-        // Get the points to the list
+        // Get the tales to the list
         for (int i = 0; i < talesParent.childCount; i++)
         {
             Point point = talesParent.GetChild(i).GetComponent<Point>();
@@ -40,7 +44,7 @@ public class PointsManager : MonoBehaviour
             point.gameObject.SetActive(false);
         }
 
-        // Get the legends to the list
+        // Get the stones to the list
         for (int i = 0; i < stonesParent.childCount; i++)
         {
             Point point = stonesParent.GetChild(i).GetComponent<Point>();
@@ -102,10 +106,10 @@ public class PointsManager : MonoBehaviour
             return;
 
         // Remove point from the list
+        talesGraveyard.Add(Tale);
         talesList.Remove(Tale);
 
-        // Remove gameobject from the scene
-        Destroy(Tale.gameObject);
+        Tale.gameObject.SetActive(false);
 
         // Turn the point null in order to respawn another
         Tale = null;
@@ -113,6 +117,12 @@ public class PointsManager : MonoBehaviour
         // Only work towards next rare point if no rare points are present
         if (Stone == null)
             _talesCaptured++;
+
+        if (talesList.Count == 0)
+        {
+            talesList = talesGraveyard;
+            talesGraveyard.Clear();
+        }
     }
     
     public bool CanSpawnStone()
@@ -185,11 +195,18 @@ public class PointsManager : MonoBehaviour
         if (Stone == null)
             return;
 
-        // Remove point from the list
-        stonesList.Remove(Stone);
+        if (_stonesCaptured < 2)
+        {
+            // Remove point from the list
+            stonesList.Remove(Stone);
 
-        // Remove gameobject from the scene
-        Destroy(Stone.gameObject);
+            // Remove gameobject from the scene
+            Destroy(Stone.gameObject);
+        }
+        else
+            Stone.gameObject.SetActive(false);
+
+        
 
         // Turn the point null in order to respawn another
         Stone = null;
@@ -201,20 +218,17 @@ public class PointsManager : MonoBehaviour
     {
         if (Stone != null)
         {
-            if (_stonesCaptured < 2)
+            if (stoneValue > 0)
             {
-                if (stoneValue > 0)
-                {
-                    stoneValue -= stoneDevalueSpeed * Time.deltaTime;
-                    Stone.Value = (int)stoneValue;
-                    return false;
-                }
-                else
-                {
-                    stoneValue = 0;
-                    Stone.Value = (int)stoneValue;
-                    return true;
-                }
+                stoneValue -= stoneDevalueSpeed * Time.deltaTime;
+                Stone.Value = (int)stoneValue;
+                return false;
+            }
+            else
+            {
+                stoneValue = 0;
+                Stone.Value = (int)stoneValue;
+                return true;
             }
         }
         return false;
