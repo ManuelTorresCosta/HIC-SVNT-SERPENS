@@ -227,8 +227,8 @@ RectTransform:
   m_Father: {fileID: 449769267}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.251125, y: 0}
-  m_AnchorMax: {x: 0.74300003, y: 1}
+  m_AnchorMin: {x: 0.2503591, y: 0.2773161}
+  m_AnchorMax: {x: 0.74300003, y: 0.72362477}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -256,7 +256,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: ec87f16178a779049945cc8ab06ff726, type: 3}
     m_FontSize: 32
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 7
     m_MaxSize: 138
     m_Alignment: 3
@@ -268,13 +268,12 @@ MonoBehaviour:
   m_Text: "Nalgu\u0301n tempo hab\xEDa no monte unha serpente que baixaba \xE2 terra
     ch\xE1n para comer unha besta, unha ovella ou o que fose. Por medo, e pra que
     non baixase, os vecin\u0303os puxe\u0301ronse de acordo e trai\u0301anlle o\u0302
-    monte todol-os dias, um animal que sorteaban entre eles. Pasado tempo axuntaron
+    monte todol-os dias, um animal que sorteaban entre eles. \n\nPasado tempo axuntaron
     unha morea de novelos que lle deron as tecedeiras, e fixeron cos fi\u0301os bem
     retortos unha corda e un novelo grande que lle deron a comer \xE2 serpente. Axin\u0303a
     que a serpente \xE2 engul\xE9u, tiraron da corda e arrastra\u0301rona e a mataron
-    e enterraron aqu\xED no adro da ermida, e no sitio do enterramento ergueron o
-    cruceiro que hab\xEDa onde esta\u0301 o que hai hoxe. \n\nContante Ferna\u0301ndez,
-    Pi\u0301as, 1928"
+    e enterraron aqu\xED no adro da ermida.\n\nContante Ferna\u0301ndez, Pi\u0301as,
+    1928"
 --- !u!222 &205261558
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -647,7 +646,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &449769266
 Canvas:
   m_ObjectHideFlags: 0
@@ -657,7 +656,7 @@ Canvas:
   m_GameObject: {fileID: 449769263}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 2
   m_Camera: {fileID: 519420031}
   m_PlaneDistance: 10
   m_PixelPerfect: 0
@@ -680,7 +679,7 @@ RectTransform:
   m_GameObject: {fileID: 449769263}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.009259259, y: 0.009259259, z: 0.009259259}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 205261556}
@@ -691,8 +690,8 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_SizeDelta: {x: 1920.0001, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &449769268
 MonoBehaviour:
   m_ObjectHideFlags: 0
