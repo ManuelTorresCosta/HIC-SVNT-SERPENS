@@ -145,6 +145,11 @@ public class PointsManager : MonoBehaviour
         if (_stonesCaptured < 2)
         {
             int randomIndex = Random.Range(0, stonesList.Count);
+            
+            // Prevent spawning last stone (when its not the time)
+            if (stonesList[randomIndex].collisionIndices[0] == new Vector2(5, 30))
+                SpawnRandomStone(segments);
+
             Stone = stonesList[randomIndex];
         }
         // Spawns the last rarePoint
@@ -182,7 +187,6 @@ public class PointsManager : MonoBehaviour
 
                 // Initialize it at the random position
                 Stone.Initialize(Stone.transform.position, Stone.Index, TileType.Type.Stone);
-
                 stoneValue = Stone.Value;
             }
             // Try again
