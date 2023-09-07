@@ -228,7 +228,7 @@ RectTransform:
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.2503591, y: 0.2773161}
-  m_AnchorMax: {x: 0.74300003, y: 0.72362477}
+  m_AnchorMax: {x: 0.73976856, y: 0.8230536}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -259,7 +259,7 @@ MonoBehaviour:
     m_BestFit: 1
     m_MinSize: 7
     m_MaxSize: 138
-    m_Alignment: 3
+    m_Alignment: 6
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -298,7 +298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &250278502
 Transform:
   m_ObjectHideFlags: 0
@@ -600,6 +600,7 @@ GameObject:
   - component: {fileID: 449769265}
   - component: {fileID: 449769264}
   - component: {fileID: 449769268}
+  - component: {fileID: 449769269}
   m_Layer: 5
   m_Name: Cedits
   m_TagString: Untagged
@@ -706,6 +707,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputText: {fileID: 921021602}
   blinkSpeed: 1
+--- !u!111 &449769269
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 449769263}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 0498aec3d9f8d9a488f572d116252ec2, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 0498aec3d9f8d9a488f572d116252ec2, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &495136472
 GameObject:
   m_ObjectHideFlags: 0
