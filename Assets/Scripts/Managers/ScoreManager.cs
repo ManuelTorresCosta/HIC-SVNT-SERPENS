@@ -17,7 +17,7 @@ public class ScoreManager : MonoBehaviour
 
     [Header("Stone")]
     public Text stoneText;
-    public Image stoneDigit;
+    public Image[] stoneDigits;
 
     [Header("Bonus point")]
     public Image bonusPointImage;
@@ -26,7 +26,6 @@ public class ScoreManager : MonoBehaviour
     public GameObject scoreBar;
     
     [Header("Points")]
-
     public int score = 0;
     public int tales = 0;
     public int stones = 0;
@@ -46,7 +45,8 @@ public class ScoreManager : MonoBehaviour
 
         // Stone
         stoneText.gameObject.SetActive(value);
-        stoneDigit.gameObject.SetActive(value);
+        foreach (Image stoneDigit in stoneDigits)
+            stoneDigit.gameObject.SetActive(value);
 
         // Bonus point
         bonusPointImage.gameObject.SetActive(value);
@@ -119,13 +119,18 @@ public class ScoreManager : MonoBehaviour
     private void UpdateStoneDigit()
     {
         stones++;
-        string stonesString = stones.ToString();
+        string prefix = stones < 10 ? "0" : "";
+        string stonesString = prefix + stones.ToString();
 
-        // Get the index of the char in the string
-        int index = (int)char.GetNumericValue(stonesString[0]);
+        // Translate string to image
+        for (int i = 0; i < stonesString.Length; i++)
+        {
+            // Get the index of the char in the string
+            int index = (int)char.GetNumericValue(stonesString[i]);
 
-        // Get the image from the array
-        stoneDigit.sprite = fonts[index];
+            // Get the image from the array
+            stoneDigits[i].sprite = fonts[index];
+        }
     }
     public void UpdateBonusPointDigits(int rarePointValue)
     {

@@ -25,7 +25,7 @@ public class PointsManager : MonoBehaviour
     public int maxStones = 2;
     public bool ignoreLastPoint = false;
     public float stoneValue;
-    public float stoneDevalueSpeed = 20f;
+    public float stoneDevalueSpeed = 25f;
 
 
     // Unity functions
