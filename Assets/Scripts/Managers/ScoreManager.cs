@@ -129,7 +129,9 @@ public class ScoreManager : MonoBehaviour
     }
     public void UpdateBonusPointDigits(int rarePointValue)
     {
-        string valueStr = rarePointValue.ToString();
+        string prefix = rarePointValue < 10 ? "0" : "";
+        string valueStr = prefix + rarePointValue.ToString();
+
         for (int i = 0; i < valueStr.Length; i++)
         {
             int index = (int)char.GetNumericValue(valueStr[i]);

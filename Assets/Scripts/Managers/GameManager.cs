@@ -197,7 +197,9 @@ public class GameManager : MonoBehaviour
         }
         // Update the UI
         else
+        {
             if (Points.Stone != null)
-            Score.UpdateBonusPointDigits((int)Points.stoneValue);
+                Score.UpdateBonusPointDigits((int)Points.stoneValue);
+        }
     }
 }

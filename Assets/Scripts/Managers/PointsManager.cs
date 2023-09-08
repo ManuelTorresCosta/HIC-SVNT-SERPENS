@@ -17,12 +17,15 @@ public class PointsManager : MonoBehaviour
     [Header("Common Points")]
 
     public Transform stonesParent;
+    public GameObject lastStonePrefab;
     public List<Point> stonesList { get; private set; }
     public List<Point> stonesGraveyard { get; private set; }
     public Point Stone { get; private set; }
     public int _stonesCaptured = 0;
+    public int maxStones = 2;
+    public bool ignoreLastPoint = false;
     public float stoneValue;
-    public float stoneDevalueSpeed = 18f;
+    public float stoneDevalueSpeed = 20f;
 
 
     // Unity functions
@@ -32,6 +35,7 @@ public class PointsManager : MonoBehaviour
         talesGraveyard = new List<Point>();
 
         stonesList = new List<Point>();
+        stonesGraveyard = new List<Point>();
     }
     private void Start()
     {
@@ -109,6 +113,7 @@ public class PointsManager : MonoBehaviour
         talesGraveyard.Add(Tale);
         talesList.Remove(Tale);
 
+        // Make point inactive
         Tale.gameObject.SetActive(false);
 
         // Turn the point null in order to respawn another
@@ -118,6 +123,7 @@ public class PointsManager : MonoBehaviour
         if (Stone == null)
             _talesCaptured++;
 
+        // Refill list if empty to start over
         if (talesList.Count == 0)
         {
             talesList = talesGraveyard;
@@ -140,9 +146,9 @@ public class PointsManager : MonoBehaviour
     }
     public void SpawnRandomStone(List<Segment> segments)
     {
-        bool lastPoint = _stonesCaptured == 2;
+        bool lastPoint = _stonesCaptured == maxStones;
 
-        if (_stonesCaptured < 2)
+        if (!lastPoint)
         {
             int randomIndex = Random.Range(0, stonesList.Count);
             
@@ -154,33 +160,33 @@ public class PointsManager : MonoBehaviour
         }
         // Spawns the last rarePoint
         else
-        {
-            foreach (Point point in stonesList)
-                if (point.collisionIndices[0] == new Vector2(5, 30))
-                    Stone = point;
-        }
-
+            Stone = Instantiate(lastStonePrefab, stonesParent).GetComponent<Point>();
+        
         if (Stone != null)
         {
             // Create a bool in case of the point being in the same index as the snake
             bool recursive = false;
 
-            // Check if the snake is on the random tile
-            foreach (Segment segment in segments)
+            // Ignore if last pont
+            if (!lastPoint)
             {
-                for (int i = 0; i < Stone.collisionIndices.Length; i++)
+                // Check if the snake is on the random tile
+                foreach (Segment segment in segments)
                 {
-                    // If the index is the same
-                    if (segment.Index == Stone.collisionIndices[i] || Tale.collisionIndices[0] == Stone.collisionIndices[i])
+                    for (int i = 0; i < Stone.collisionIndices.Length; i++)
                     {
-                        recursive = true;
-                        break;
+                        // If the index is the same
+                        if (segment.Index == Stone.collisionIndices[i] || Tale.collisionIndices[0] == Stone.collisionIndices[i])
+                        {
+                            recursive = true;
+                            break;
+                        }
                     }
                 }
             }
             
             // Create a point
-            if (!recursive || lastPoint)
+            if (!recursive)
             {
                 // Enable object
                 Stone.gameObject.SetActive(true);
@@ -199,22 +205,34 @@ public class PointsManager : MonoBehaviour
         if (Stone == null)
             return;
 
-        if (_stonesCaptured < 2)
-        {
-            // Remove point from the list
-            stonesList.Remove(Stone);
+        // Remove point from the list
+        stonesGraveyard.Add(Tale);
+        stonesList.Remove(Tale);
 
-            // Remove gameobject from the scene
-            Destroy(Stone.gameObject);
-        }
-        else
+        // Not last point
+        if (_stonesCaptured < maxStones)
             Stone.gameObject.SetActive(false);
+        // Last point
+        else if (_stonesCaptured == maxStones)
+        {
+            Destroy(Stone.gameObject);
 
+            // Prevent next stone to be the last if player misses
+            if (!captured)
+                maxStones += 2;
+        }
         
-
         // Turn the point null in order to respawn another
         Stone = null;
 
+        // Refill list if empty to start over
+        if (stonesList.Count == 0)
+        {
+            stonesList = talesGraveyard;
+            stonesGraveyard.Clear();
+        }
+
+        // Increment stones score if the point was captured
         if (captured)
             _stonesCaptured++;
     }
@@ -231,7 +249,7 @@ public class PointsManager : MonoBehaviour
             else
             {
                 stoneValue = 0;
-                Stone.Value = (int)stoneValue;
+                Stone.Value = 0;
                 return true;
             }
         }
@@ -239,7 +257,7 @@ public class PointsManager : MonoBehaviour
     }
     public bool MaxStonesCaptured()
     {
-        return _stonesCaptured > 2;
+        return _stonesCaptured > maxStones;
     }
 
     // Old
